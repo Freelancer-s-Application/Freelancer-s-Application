@@ -16,5 +16,14 @@
         "AllowedHosts": "*",
         "ConnectionStrings": {
           "FreelancerDB": "server = <server-name>; database = <db-name>; uid= <user-name>; pwd = <password>;"
+        },
+        "Authentication": {
+          "Google": {
+            "ClientId": "Google client Id",
+            "ClientSecret": "Google client Secret"
+          }
+        },
+        "AdministratorAccount": {
+          "Email": "Administrator's Email",
         }
       }

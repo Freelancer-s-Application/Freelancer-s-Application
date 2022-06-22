@@ -5,23 +5,17 @@ using System.Collections.Generic;
 
 namespace Freelancer_s_Web.DataAccess
 {
-    public partial class Comment
+    public partial class Comment : Entity
     {
         public Comment()
         {
             InverseParentComment = new HashSet<Comment>();
         }
 
-        public int Id { get; set; }
         public int PostId { get; set; }
         public int UserId { get; set; }
         public string Content { get; set; }
         public int? ParentCommentId { get; set; }
-        public bool IsDeleted { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime? UpdatedAt { get; set; }
-        public string CreatedBy { get; set; }
-        public string UpdatedBy { get; set; }
 
         public virtual Comment ParentComment { get; set; }
         public virtual Post Post { get; set; }

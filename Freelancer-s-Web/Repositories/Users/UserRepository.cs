@@ -16,5 +16,12 @@ namespace Repositories.Users
         {
             _dbContext = dbContext;
         }
+
+        public int CreateUser(User user)
+        {
+            _dbContext.Users.Add(user);
+            _dbContext.SaveChanges();
+            return user.Id;
+        }
     }
 }

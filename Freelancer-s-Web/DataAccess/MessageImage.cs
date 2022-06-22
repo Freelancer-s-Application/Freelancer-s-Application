@@ -5,17 +5,10 @@ using System.Collections.Generic;
 
 namespace Freelancer_s_Web.DataAccess
 {
-    public partial class MessageImage
+    public partial class MessageImage : Entity
     {
-        public int Id { get; set; }
         public int Messageid { get; set; }
         public string Url { get; set; }
-        public bool IsDeleted { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime? UpdatedAt { get; set; }
-        public string CreatedBy { get; set; }
-        public string UpdatedBy { get; set; }
-
         public virtual Message Message { get; set; }
     }
 }

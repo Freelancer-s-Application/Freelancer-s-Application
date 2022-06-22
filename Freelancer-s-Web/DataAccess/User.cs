@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Freelancer_s_Web.DataAccess
 {
-    public partial class User
+    public partial class User : Entity
     {
         public User()
         {
@@ -22,7 +22,6 @@ namespace Freelancer_s_Web.DataAccess
             ReviewReviewers = new HashSet<Review>();
         }
 
-        public int Id { get; set; }
         public string Username { get; set; }
         public string Email { get; set; }
         public string Address { get; set; }
@@ -30,12 +29,6 @@ namespace Freelancer_s_Web.DataAccess
         public string PhoneNumber { get; set; }
         public string Description { get; set; }
         public int? MajorId { get; set; }
-        public bool IsDeleted { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime? UpdatedAt { get; set; }
-        public string CreatedBy { get; set; }
-        public string UpdatedBy { get; set; }
-
         public virtual Major Major { get; set; }
         public virtual ICollection<ApplicationForm> ApplicationForms { get; set; }
         public virtual ICollection<Comment> Comments { get; set; }

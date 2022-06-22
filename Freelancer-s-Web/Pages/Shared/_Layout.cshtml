@@ -1,4 +1,11 @@
-﻿<!DOCTYPE html>
+﻿@{
+@using Freelancer_s_Web.ViewModel
+@using Microsoft.AspNetCore.Http;
+@using Utils
+LoginUserVM loginUser = CustomAuthorization.loginUser;
+ViewData["Title"] = "Home page";
+}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -24,6 +31,29 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
                         </li>
+                        @{
+                            if(loginUser == null)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-page="/Authentication/Login">Login</a>
+                                </li>
+                            } else
+                            {
+                                if(loginUser.Role == "ADMIN")
+                                {
+                                        <p>YOU ARE ADMIN</p>
+                                } else
+                                {
+                                    if(loginUser.Role == "USER")
+                                    {
+                                        <p>YOU ARE USER</p>
+                                    }  
+                                }
+                                <li class="nav-item logout">
+                                            <a class="nav-link logout" asp-page="/Authentication/Login" asp-page-handler="Logout">Log out</a>
+                                 </li>
+                            }
+                        }
                     </ul>
                 </div>
             </div>

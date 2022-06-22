@@ -33,16 +33,14 @@ namespace Freelancer_s_Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRazorPages();
-            services.AddDbContext<FreelancerContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("FreelancerDB")));
-            services.AddSingleton<UnitOfWorkFactory>();
-            services.AddSingleton<UnitOfWorkFactory>();
+           
             services.AddSession(options => {
                 options.IdleTimeout = TimeSpan.FromDays(1);
                 options.Cookie.HttpOnly = true;
                 options.Cookie.IsEssential = true;
             });
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddSingleton<UnitOfWorkFactory>();
 
             services.AddAuthentication(options =>
             {
@@ -67,15 +65,6 @@ namespace Freelancer_s_Web
                     //options.CallbackPath = "/Authentication/Login?handler=GoogleResponse";
                     //options.ClaimActions.MapJsonKey("urn:google:picturre", "picture", "url");
                 });
-
-            //services.Configure<CookiePolicyOptions>(options =>
-            //{
-            //    options.MinimumSameSitePolicy = SameSiteMode.Unspecified;
-            //    options.OnAppendCookie = cookieContext =>
-            //        CheckSameSite(cookieContext.Context, cookieContext.CookieOptions);
-            //    options.OnDeleteCookie = cookieContext =>
-            //        CheckSameSite(cookieContext.Context, cookieContext.CookieOptions);
-            //});
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -98,7 +87,7 @@ namespace Freelancer_s_Web
 
             app.UseCookiePolicy(new CookiePolicyOptions
             {
-                MinimumSameSitePolicy = SameSiteMode.None,
+                MinimumSameSitePolicy = SameSiteMode.Lax,
             });
 
             app.UseAuthentication();

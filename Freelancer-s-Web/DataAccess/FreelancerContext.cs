@@ -1,4 +1,5 @@
 ﻿using System;
+using Freelancer_s_Web.Utils;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
@@ -31,6 +32,7 @@ namespace Freelancer_s_Web.DataAccess
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            optionsBuilder.UseSqlServer(AppConfiguration.GetAppsetting("ConnectionStrings", "FreelancerDB"));
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

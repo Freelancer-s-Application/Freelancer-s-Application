@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Freelancer_s_Web.DataAccess
 {
-    public partial class Major
+    public partial class Major : Entity
     {
         public Major()
         {
@@ -13,14 +13,7 @@ namespace Freelancer_s_Web.DataAccess
             Users = new HashSet<User>();
         }
 
-        public int Id { get; set; }
         public string Name { get; set; }
-        public bool IsDeleted { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime? UpdatedAt { get; set; }
-        public string CreatedBy { get; set; }
-        public string UpdatedBy { get; set; }
-
         public virtual ICollection<Post> Posts { get; set; }
         public virtual ICollection<User> Users { get; set; }
     }

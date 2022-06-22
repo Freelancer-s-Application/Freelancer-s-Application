@@ -11,7 +11,7 @@ namespace Repositories.Users
     public interface IUserRepository : IRepository<User>
     {
         //User GetUser(int id);
-        //void CreateUser(User user);
+        int CreateUser(User user);
         //void UpdateUser(User user);
         //void DeleteUser(User user);
     }

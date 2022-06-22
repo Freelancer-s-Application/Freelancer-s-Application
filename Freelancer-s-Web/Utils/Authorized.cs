@@ -8,8 +8,8 @@ namespace Freelancer_s_Web.Utils
 {
     public class Authorized : AuthorizeAttribute, IAuthorizationFilter
     {
-        private readonly string[] allowedroles;
-        public Authorized(params string[] roles)
+        private readonly string allowedroles;
+        public Authorized(string roles)
         {
             this.allowedroles = roles;
         }
@@ -20,12 +20,19 @@ namespace Freelancer_s_Web.Utils
                 context.Result = new UnauthorizedResult();
             } else
             {
-                foreach (string role in allowedroles)
+                Boolean check = false;
+                var listRole = allowedroles.Split(',');
+                foreach (string role in listRole)
                 {
-                    if (CustomAuthorization.loginUser.Role != role)
+                    if (CustomAuthorization.loginUser.Role == role)
                     {
-                        context.Result = new UnauthorizedResult();
+                        check = true;
+                        break;
                     }
+                }
+                if (!check)
+                {
+                    context.Result = new UnauthorizedResult();
                 }
             }
             return;

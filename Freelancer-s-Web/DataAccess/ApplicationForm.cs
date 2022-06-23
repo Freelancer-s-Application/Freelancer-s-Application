@@ -11,6 +11,7 @@ namespace Freelancer_s_Web.DataAccess
         public int PostId { get; set; }
         public int Status { get; set; }
         public byte[] Cv { get; set; }
+
         public virtual Post Post { get; set; }
         public virtual User User { get; set; }
     }

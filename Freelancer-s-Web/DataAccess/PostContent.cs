@@ -10,6 +10,7 @@ namespace Freelancer_s_Web.DataAccess
         public int Type { get; set; }
         public int PostId { get; set; }
         public string Url { get; set; }
+
         public virtual Post Post { get; set; }
     }
 }

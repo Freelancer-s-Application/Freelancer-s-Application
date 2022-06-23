@@ -115,9 +115,7 @@ namespace Freelancer_s_Web.DataAccess
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Name)
-                    .HasMaxLength(10)
-                    .IsFixedLength(true);
+                entity.Property(e => e.Name).HasMaxLength(50);
 
                 entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
 
@@ -358,6 +356,11 @@ namespace Freelancer_s_Web.DataAccess
             {
                 entity.Property(e => e.Address).HasMaxLength(255);
 
+                entity.Property(e => e.Avatar)
+                    .IsRequired()
+                    .HasMaxLength(500)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.CreatedAt).HasColumnType("datetime");
 
                 entity.Property(e => e.CreatedBy)
@@ -383,11 +386,6 @@ namespace Freelancer_s_Web.DataAccess
                 entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
 
                 entity.Property(e => e.UpdatedBy)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Username)
-                    .IsRequired()
                     .HasMaxLength(50)
                     .IsUnicode(false);
 

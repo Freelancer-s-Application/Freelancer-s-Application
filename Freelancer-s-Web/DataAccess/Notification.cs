@@ -12,6 +12,7 @@ namespace Freelancer_s_Web.DataAccess
         public string Content { get; set; }
         public bool IsSeen { get; set; }
         public string Title { get; set; }
+
         public virtual User Receiver { get; set; }
         public virtual User Sender { get; set; }
     }

@@ -29,7 +29,6 @@ namespace Freelancer_s_Web.Pages.Authentication
         public IActionResult OnGet()
         {
             var properties = new AuthenticationProperties { RedirectUri = Url.Page("./Login", pageHandler: "GoogleResponse") };
-
             return Challenge(properties, GoogleDefaults.AuthenticationScheme);
         }
 
@@ -41,9 +40,8 @@ namespace Freelancer_s_Web.Pages.Authentication
             var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             var principle = new ClaimsPrincipal(identity);
             string email = principle.FindFirstValue(ClaimTypes.Email);
-            string userName = principle.FindFirstValue(ClaimTypes.GivenName);
             string displayName = principle.FindFirstValue(ClaimTypes.Name);
-            string avatar = principle.FindFirstValue("urn:google:picture");
+            string avatar = principle.FindFirstValue("urn:google:picture") ?? principle.FindFirstValue("image");
             Console.WriteLine(avatar);
             if (email == AppConfiguration.GetAdminEmail())
             {
@@ -64,10 +62,9 @@ namespace Freelancer_s_Web.Pages.Authentication
                     {
                         User logging = new User()
                         {
-                            Username = userName,
                             DisplayName = displayName,
                             Email = email,
-                            CreatedBy = userName,
+                            CreatedBy = email,
                             CreatedAt = DateTime.Now,
                         };
                         int id = work.UserRepository.CreateUser(logging);

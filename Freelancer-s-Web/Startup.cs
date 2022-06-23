@@ -62,6 +62,7 @@ namespace Freelancer_s_Web
                         SecurePolicy = CookieSecurePolicy.None,
                         Expiration = TimeSpan.FromMinutes(10)
                     };
+
                     //options.CallbackPath = "/Authentication/Login?handler=GoogleResponse";
                     //options.ClaimActions.MapJsonKey("urn:google:picturre", "picture", "url");
                 });

@@ -11,7 +11,6 @@ namespace Freelancer_s_Web.DataAccess
         {
             InverseParentComment = new HashSet<Comment>();
         }
-
         public int PostId { get; set; }
         public int UserId { get; set; }
         public string Content { get; set; }

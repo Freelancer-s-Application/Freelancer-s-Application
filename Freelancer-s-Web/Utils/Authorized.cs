@@ -15,12 +15,9 @@ namespace Freelancer_s_Web.Utils
         }
         public void OnAuthorization(AuthorizationFilterContext context)
         {
-            if (CustomAuthorization.loginUser == null) 
+            Boolean check = false;
+            if (CustomAuthorization.loginUser != null) 
             {
-                context.Result = new UnauthorizedResult();
-            } else
-            {
-                Boolean check = false;
                 var listRole = allowedroles.Split(',');
                 foreach (string role in listRole)
                 {
@@ -30,10 +27,10 @@ namespace Freelancer_s_Web.Utils
                         break;
                     }
                 }
-                if (!check)
-                {
-                    context.Result = new UnauthorizedResult();
-                }
+            }
+            if (!check)
+            {
+                context.Result = new RedirectResult("/Authentication/Unauthorized");
             }
             return;
         }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace Freelancer_s_Web.DataAccess
+namespace Freelancer_s_Web.Models
 {
     public partial class Post : Entity
     {

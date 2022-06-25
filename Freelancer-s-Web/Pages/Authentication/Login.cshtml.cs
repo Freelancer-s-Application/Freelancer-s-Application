@@ -12,9 +12,9 @@ using System.Security.Claims;
 using Freelancer_s_Web.Utils;
 using Microsoft.AspNetCore.Http;
 using Freelancer_s_Web.Commons;
-using DataAccess.UnitOfWork;
+using Freelancer_s_Web.UnitOfWork;
 using Freelancer_s_Web.ViewModel;
-using Freelancer_s_Web.DataAccess;
+using Freelancer_s_Web.Models;
 using System;
 
 namespace Freelancer_s_Web.Pages.Authentication
@@ -42,13 +42,13 @@ namespace Freelancer_s_Web.Pages.Authentication
             string email = principle.FindFirstValue(ClaimTypes.Email);
             string displayName = principle.FindFirstValue(ClaimTypes.Name);
             string avatar = principle.FindFirstValue("urn:google:picture") ?? principle.FindFirstValue("image");
-            Console.WriteLine(avatar);
             if (email == AppConfiguration.GetAdminEmail())
             {
                 CustomAuthorization.Login(new LoginUserVM()
                 {
                     Id = 0,
                     Email = email,
+                    Avatar = avatar,
                     Role = CommonEnums.ROLE.ADMINISTRATOR,
                 });
                 return RedirectToPage("/Index");
@@ -64,6 +64,7 @@ namespace Freelancer_s_Web.Pages.Authentication
                         {
                             DisplayName = displayName,
                             Email = email,
+                            Avatar = avatar,
                             CreatedBy = email,
                             CreatedAt = DateTime.Now,
                         };
@@ -72,6 +73,7 @@ namespace Freelancer_s_Web.Pages.Authentication
                         {
                             Id = id,
                             Email = email,
+                            Avatar = avatar,
                             Role = CommonEnums.ROLE.USER,
                         });
                         return RedirectToPage("/Index");
@@ -82,6 +84,7 @@ namespace Freelancer_s_Web.Pages.Authentication
                         {
                             Id = user.Id,
                             Email = email,
+                            Avatar = avatar,
                             Role = CommonEnums.ROLE.USER,
                         });
                         return RedirectToPage("/Index");
@@ -92,7 +95,7 @@ namespace Freelancer_s_Web.Pages.Authentication
 
         public IActionResult OnGetLogout()
         {
-            //await HttpContext.SignOutAsync();
+            // await HttpContext.SignOutAsync();
             HttpContext.Session.Clear();
             return Redirect("/Index");
         }

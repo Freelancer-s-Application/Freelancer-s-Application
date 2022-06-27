@@ -29,6 +29,7 @@ namespace Freelancer_s_Web.DataAccess
         public string PhoneNumber { get; set; }
         public string Description { get; set; }
         public int? MajorId { get; set; }
+        public string Avatar { get; set; }
         public virtual Major Major { get; set; }
         public virtual ICollection<ApplicationForm> ApplicationForms { get; set; }
         public virtual ICollection<Comment> Comments { get; set; }

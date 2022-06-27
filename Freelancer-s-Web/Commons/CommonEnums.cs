@@ -7,5 +7,12 @@
             public const string USER = "USER";
             public const string ADMINISTRATOR = "ADMIN";
         }
+        public class POST_STATUS
+        {
+            public const int PUBLIC = 1;
+            public const int REMOVE = 0;
+            public const int PRIVATE = 2;
+        }
+
     }
 }

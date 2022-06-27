@@ -1,4 +1,5 @@
 ﻿using Freelancer_s_Web.Models;
+using Freelancer_s_Web.Utils;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -22,6 +23,34 @@ namespace Repositories.Users
             _dbContext.Users.Add(user);
             _dbContext.SaveChanges();
             return user.Id;
+        }
+
+        public async Task DeleteUser(int id)
+        {
+            var user = await GetUser(id);
+            if (user == null)
+            {
+                throw new Exception("Delete user: User not found");
+            }
+            user.IsDeleted = false;
+            await UpdateUser(user);
+        }
+
+        public async Task<User> GetCurrentUser(int id)
+        {
+            return await GetUser(CustomAuthorization.loginUser.Id);
+        }
+
+        public async Task<User> GetUser(int id)
+        {
+            var user = await _dbContext.Users.FindAsync(id);
+            return user;
+        }
+
+        public async Task UpdateUser(User user)
+        {
+            _dbContext.Update(user);
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

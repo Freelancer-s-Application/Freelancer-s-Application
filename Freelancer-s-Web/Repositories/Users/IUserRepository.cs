@@ -10,9 +10,10 @@ namespace Repositories.Users
 {
     public interface IUserRepository : IRepository<User>
     {
-        //User GetUser(int id);
+        Task<User> GetUser(int id);
         int CreateUser(User user);
-        //void UpdateUser(User user);
-        //void DeleteUser(User user);
+        Task UpdateUser(User user);
+        Task DeleteUser(int id);
+        Task<User> GetCurrentUser(int id);
     }
 }

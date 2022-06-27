@@ -7,6 +7,7 @@
 
   <ItemGroup>
     <Folder Include="Repositories\Users\" />
+    <Folder Include="Pages\Profile\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -21,9 +22,12 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.17" />
   </ItemGroup>
 
   <ItemGroup>
     <None Remove="Microsoft.AspNetCore.Authentication.Google" />
+    <None Remove="Pages\Profile\" />
+    <None Remove="Microsoft.EntityFrameworkCore.Sqlite" />
   </ItemGroup>
 </Project>

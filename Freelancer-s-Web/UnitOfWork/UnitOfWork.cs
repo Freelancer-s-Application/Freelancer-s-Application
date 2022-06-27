@@ -1,4 +1,4 @@
-﻿using Freelancer_s_Web.DataAccess;
+﻿using Freelancer_s_Web.Models;
 using Repositories.ApplicationForms;
 using Repositories.Comments;
 using Repositories.Majors;
@@ -12,7 +12,7 @@ using Repositories.Reviews;
 using Repositories.Users;
 using System;
 
-namespace DataAccess.UnitOfWork
+namespace Freelancer_s_Web.UnitOfWork
 {
     public class UnitOfWork : IUnitOfWork
     {

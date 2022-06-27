@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace Freelancer_s_Web.DataAccess
+namespace Freelancer_s_Web.Models
 {
     public partial class User : Entity
     {
@@ -21,8 +21,7 @@ namespace Freelancer_s_Web.DataAccess
             ReviewReviewees = new HashSet<Review>();
             ReviewReviewers = new HashSet<Review>();
         }
-
-        public string Username { get; set; }
+        public string Avatar { get; set; }
         public string Email { get; set; }
         public string Address { get; set; }
         public string DisplayName { get; set; }

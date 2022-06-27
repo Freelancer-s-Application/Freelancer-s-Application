@@ -12,9 +12,9 @@ using System.Security.Claims;
 using Freelancer_s_Web.Utils;
 using Microsoft.AspNetCore.Http;
 using Freelancer_s_Web.Commons;
-using DataAccess.UnitOfWork;
+using Freelancer_s_Web.UnitOfWork;
 using Freelancer_s_Web.ViewModel;
-using Freelancer_s_Web.DataAccess;
+using Freelancer_s_Web.Models;
 using System;
 
 namespace Freelancer_s_Web.Pages.Authentication
@@ -29,7 +29,6 @@ namespace Freelancer_s_Web.Pages.Authentication
         public IActionResult OnGet()
         {
             var properties = new AuthenticationProperties { RedirectUri = Url.Page("./Login", pageHandler: "GoogleResponse") };
-
             return Challenge(properties, GoogleDefaults.AuthenticationScheme);
         }
 
@@ -41,16 +40,15 @@ namespace Freelancer_s_Web.Pages.Authentication
             var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             var principle = new ClaimsPrincipal(identity);
             string email = principle.FindFirstValue(ClaimTypes.Email);
-            string userName = principle.FindFirstValue(ClaimTypes.GivenName);
             string displayName = principle.FindFirstValue(ClaimTypes.Name);
-            string avatar = principle.FindFirstValue("urn:google:picture");
-            Console.WriteLine(avatar);
+            string avatar = principle.FindFirstValue("urn:google:picture") ?? principle.FindFirstValue("image");
             if (email == AppConfiguration.GetAdminEmail())
             {
                 CustomAuthorization.Login(new LoginUserVM()
                 {
                     Id = 0,
                     Email = email,
+                    Avatar = avatar,
                     Role = CommonEnums.ROLE.ADMINISTRATOR,
                 });
                 return RedirectToPage("/Index");
@@ -64,10 +62,10 @@ namespace Freelancer_s_Web.Pages.Authentication
                     {
                         User logging = new User()
                         {
-                            Username = userName,
                             DisplayName = displayName,
                             Email = email,
-                            CreatedBy = userName,
+                            Avatar = avatar,
+                            CreatedBy = email,
                             CreatedAt = DateTime.Now,
                         };
                         int id = work.UserRepository.CreateUser(logging);
@@ -75,6 +73,7 @@ namespace Freelancer_s_Web.Pages.Authentication
                         {
                             Id = id,
                             Email = email,
+                            Avatar = avatar,
                             Role = CommonEnums.ROLE.USER,
                         });
                         return RedirectToPage("/Index");
@@ -85,6 +84,7 @@ namespace Freelancer_s_Web.Pages.Authentication
                         {
                             Id = user.Id,
                             Email = email,
+                            Avatar = avatar,
                             Role = CommonEnums.ROLE.USER,
                         });
                         return RedirectToPage("/Index");
@@ -95,7 +95,7 @@ namespace Freelancer_s_Web.Pages.Authentication
 
         public IActionResult OnGetLogout()
         {
-            //await HttpContext.SignOutAsync();
+            // await HttpContext.SignOutAsync();
             HttpContext.Session.Clear();
             return Redirect("/Index");
         }

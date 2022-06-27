@@ -1,0 +1,59 @@
+﻿@page
+@model Freelancer_s_Web.Pages.ApplicationPages.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>ApplicationForm</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="ApplicationForm.Status" class="control-label"></label>
+                <input asp-for="ApplicationForm.Status" class="form-control" />
+                <span asp-validation-for="ApplicationForm.Status" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ApplicationForm.Cv" class="control-label"></label>
+                <input asp-for="ApplicationForm.Cv" class="form-control" />
+                <span asp-validation-for="ApplicationForm.Cv" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ApplicationForm.CreatedAt" class="control-label"></label>
+                <input asp-for="ApplicationForm.CreatedAt" class="form-control" />
+                <span asp-validation-for="ApplicationForm.CreatedAt" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ApplicationForm.UpdatedAt" class="control-label"></label>
+                <input asp-for="ApplicationForm.UpdatedAt" class="form-control" />
+                <span asp-validation-for="ApplicationForm.UpdatedAt" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ApplicationForm.CreatedBy" class="control-label"></label>
+                <input asp-for="ApplicationForm.CreatedBy" class="form-control" />
+                <span asp-validation-for="ApplicationForm.CreatedBy" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ApplicationForm.UpdatedBy" class="control-label"></label>
+                <input asp-for="ApplicationForm.UpdatedBy" class="form-control" />
+                <span asp-validation-for="ApplicationForm.UpdatedBy" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

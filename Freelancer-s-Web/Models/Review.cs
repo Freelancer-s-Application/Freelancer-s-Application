@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace Freelancer_s_Web.DataAccess
+namespace Freelancer_s_Web.Models
 {
     public partial class Review : Entity
     {
@@ -11,6 +11,7 @@ namespace Freelancer_s_Web.DataAccess
         public int RevieweeId { get; set; }
         public double RatingPoint { get; set; }
         public string Comment { get; set; }
+
         public virtual User Reviewee { get; set; }
         public virtual User Reviewer { get; set; }
     }

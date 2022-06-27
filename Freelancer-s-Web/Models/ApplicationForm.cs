@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace Freelancer_s_Web.DataAccess
+namespace Freelancer_s_Web.Models
 {
     public partial class ApplicationForm : Entity
     {
@@ -11,6 +11,7 @@ namespace Freelancer_s_Web.DataAccess
         public int PostId { get; set; }
         public int Status { get; set; }
         public byte[] Cv { get; set; }
+
         public virtual Post Post { get; set; }
         public virtual User User { get; set; }
     }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
-using Freelancer_s_Web.DataAccess;
+using Freelancer_s_Web.Models;
 
 namespace Repositories
 {

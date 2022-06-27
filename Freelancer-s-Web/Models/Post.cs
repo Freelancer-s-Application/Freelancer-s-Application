@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace Freelancer_s_Web.DataAccess
+namespace Freelancer_s_Web.Models
 {
     public partial class Post : Entity
     {
@@ -13,7 +13,6 @@ namespace Freelancer_s_Web.DataAccess
             Comments = new HashSet<Comment>();
             PostContents = new HashSet<PostContent>();
         }
-
         public int UserId { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }

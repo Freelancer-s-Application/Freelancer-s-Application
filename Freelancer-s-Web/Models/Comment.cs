@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace Freelancer_s_Web.DataAccess
+namespace Freelancer_s_Web.Models
 {
     public partial class Comment : Entity
     {
@@ -11,7 +11,6 @@ namespace Freelancer_s_Web.DataAccess
         {
             InverseParentComment = new HashSet<Comment>();
         }
-
         public int PostId { get; set; }
         public int UserId { get; set; }
         public string Content { get; set; }

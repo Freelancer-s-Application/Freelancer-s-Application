@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Freelancer_s_Web.DataAccess
+namespace Freelancer_s_Web.Models
 {
     public abstract class Entity
     {

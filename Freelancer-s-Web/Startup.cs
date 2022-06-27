@@ -1,5 +1,5 @@
-using DataAccess.UnitOfWork;
-using Freelancer_s_Web.DataAccess;
+using Freelancer_s_Web.UnitOfWork;
+using Freelancer_s_Web.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
@@ -62,8 +62,9 @@ namespace Freelancer_s_Web
                         SecurePolicy = CookieSecurePolicy.None,
                         Expiration = TimeSpan.FromMinutes(10)
                     };
+
                     //options.CallbackPath = "/Authentication/Login?handler=GoogleResponse";
-                    //options.ClaimActions.MapJsonKey("urn:google:picturre", "picture", "url");
+                    options.ClaimActions.MapJsonKey("urn:google:picturre", "picture", "url");
                 });
         }
 

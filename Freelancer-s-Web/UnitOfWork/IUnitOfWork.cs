@@ -15,7 +15,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataAccess.UnitOfWork
+namespace Freelancer_s_Web.UnitOfWork
 {
     public interface IUnitOfWork : IDisposable
     {

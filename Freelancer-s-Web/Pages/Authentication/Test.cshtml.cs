@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Freelancer_s_Web.Pages.Authentication
 {
-    [Authorized("USER")]
+    [Authorized("ADMIN,USER")]
     public class TestModel : PageModel
     {
         public IActionResult OnGet()

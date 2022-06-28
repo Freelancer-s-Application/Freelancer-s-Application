@@ -1,21 +1,22 @@
 @page
-@model Freelancer_s_Web.Pages.Profile.DetailsModel
+@model Freelancer_s_Web.Pages.Profile.IndexModel
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Profile";
 }
 
-<h1>Details</h1>
+<h1>Profile</h1>
 
 <div>
-    <h4>User</h4>
+    <h4>User Profile</h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.User.Avatar)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.User.Avatar)
+            @*@Html.DisplayFor(model => model.User.Avatar)*@
+            <img href="@Model.User.Avatar"/>
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.User.Email)
@@ -48,40 +49,10 @@
             @Html.DisplayFor(model => model.User.Description)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.User.Major)
+            @Html.DisplayNameFor(model => model.User.Major.Name)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.User.Major.CreatedBy)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.User.CreatedAt)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.User.CreatedAt)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.User.UpdatedAt)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.User.UpdatedAt)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.User.IsDeleted)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.User.IsDeleted)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.User.CreatedBy)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.User.CreatedBy)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.User.UpdatedBy)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.User.UpdatedBy)
+            @Html.DisplayFor(model => model.User.Major.Name)
         </dd>
     </dl>
 </div>

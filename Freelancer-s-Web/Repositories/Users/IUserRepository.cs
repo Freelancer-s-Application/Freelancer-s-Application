@@ -14,6 +14,6 @@ namespace Repositories.Users
         int CreateUser(User user);
         Task UpdateUser(User user);
         Task DeleteUser(int id);
-        Task<User> GetCurrentUser(int id);
+        Task<User> GetCurrentUser();
     }
 }

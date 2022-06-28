@@ -32,26 +32,32 @@ ViewData["Title"] = "Home page";
                             <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
                         </li>
                         @{
-                            if(loginUser == null)
+                            if (loginUser == null)
                             {
                                 <li class="nav-item">
                                     <a class="nav-link text-dark" asp-area="" asp-page="/Authentication/Login">Login</a>
                                 </li>
-                            } else
+                            }
+                            else
                             {
-                                if(loginUser.Role == "ADMIN")
+                                if (loginUser.Role == "ADMIN")
                                 {
-                                        <p>YOU ARE ADMIN</p>
-                                } else
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark">YOU ARE ADMIN</a>
+                                    </li>
+                                }
+                                else
                                 {
-                                    if(loginUser.Role == "USER")
+                                    if (loginUser.Role == "USER")
                                     {
-                                        <p>YOU ARE USER</p>
-                                    }  
+                                        <li class="nav-item">
+                                            <a class="nav-link text-dark" asp-area="" asp-page="/Profile/Index">Profile</a>
+                                        </li>
+                                    }
                                 }
                                 <li class="nav-item logout">
-                                            <a class="nav-link logout" asp-page="/Authentication/Login" asp-page-handler="Logout">Log out</a>
-                                 </li>
+                                    <a class="nav-link logout" asp-page="/Authentication/Login" asp-page-handler="Logout">Log out</a>
+                                </li>
                             }
                         }
                     </ul>

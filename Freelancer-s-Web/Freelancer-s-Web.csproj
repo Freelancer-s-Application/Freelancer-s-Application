@@ -8,6 +8,8 @@
   <ItemGroup>
     <Folder Include="Repositories\Users\" />
     <Folder Include="Pages\Profile\" />
+    <Folder Include="wwwroot\images\" />
+    <Folder Include="wwwroot\images\avatars\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -29,5 +31,9 @@
     <None Remove="Microsoft.AspNetCore.Authentication.Google" />
     <None Remove="Pages\Profile\" />
     <None Remove="Microsoft.EntityFrameworkCore.Sqlite" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="wwwroot\images\" />
+    <Content Remove="wwwroot\images\avatars\" />
   </ItemGroup>
 </Project>

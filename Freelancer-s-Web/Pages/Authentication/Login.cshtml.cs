@@ -64,7 +64,7 @@ namespace Freelancer_s_Web.Pages.Authentication
                         {
                             DisplayName = displayName,
                             Email = email,
-                            Avatar = avatar,
+                            Avatar = avatar ?? "empty",
                             CreatedBy = email,
                             CreatedAt = DateTime.Now,
                         };

@@ -1,5 +1,6 @@
 ﻿using Freelancer_s_Web.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,11 @@ namespace Repositories.Majors
         public MajorRepository(FreelancerContext dbContext) : base(dbContext)
         {
             _dbContext = dbContext;
+        }
+
+        public DbSet<Major> GetDbSet()
+        {
+            return _dbContext.Majors;
         }
     }
 }

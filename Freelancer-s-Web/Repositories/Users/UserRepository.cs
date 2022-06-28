@@ -1,6 +1,7 @@
 ﻿using Freelancer_s_Web.Models;
 using Freelancer_s_Web.Utils;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,19 +37,21 @@ namespace Repositories.Users
             await UpdateUser(user);
         }
 
-        public async Task<User> GetCurrentUser(int id)
+        public async Task<User> GetCurrentUser()
         {
             return await GetUser(CustomAuthorization.loginUser.Id);
         }
 
         public async Task<User> GetUser(int id)
         {
-            var user = await _dbContext.Users.FindAsync(id);
+            var user = await _dbContext.Users.Include(u => u.Major).FirstOrDefaultAsync(u => u.Id == id);
             return user;
         }
 
         public async Task UpdateUser(User user)
         {
+            user.UpdatedAt = DateTime.Now;
+            user.UpdatedBy = (await GetCurrentUser()).Email;
             _dbContext.Update(user);
             await _dbContext.SaveChangesAsync();
         }

@@ -7,72 +7,87 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Freelancer_s_Web.Models;
+using Freelancer_s_Web.UnitOfWork;
+using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Http;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
+using Freelancer_s_Web.Utils;
 
 namespace Freelancer_s_Web.Pages.Profile
 {
+    [Authorized("USER")]
     public class EditModel : PageModel
     {
-        private readonly Freelancer_s_Web.Models.FreelancerContext _context;
+        private IHostingEnvironment _environment;
 
-        public EditModel(Freelancer_s_Web.Models.FreelancerContext context)
+        private UnitOfWorkFactory _unitOfWorkFactory;
+
+        public EditModel(UnitOfWorkFactory unitOfWorkFactory, IHostingEnvironment environment)
         {
-            _context = context;
+            _unitOfWorkFactory = unitOfWorkFactory;
+            _environment = environment;
         }
 
         [BindProperty]
         public User User { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        [DataType(DataType.Upload)]
+        [FileExtensions(Extensions = "png,jpg,jpeg,gif")]
+        [Display(Name = "Choose file to Upload")]
+        [BindProperty]
+        public IFormFile FileUpload { get; set; }
+
+        public async Task<IActionResult> OnGetAsync()
         {
-            if (id == null)
+            using (var work = _unitOfWorkFactory.Get)
             {
-                return NotFound();
-            }
-
-            User = await _context.Users
-                .Include(u => u.Major).FirstOrDefaultAsync(m => m.Id == id);
-
-            if (User == null)
-            {
-                return NotFound();
-            }
-           ViewData["MajorId"] = new SelectList(_context.Majors, "Id", "CreatedBy");
-            return Page();
+                User = await work.UserRepository.GetCurrentUser();
+                ViewData["MajorId"] = new SelectList(work.MajorRepository.GetDbSet(), "Id", "Name");
+                return Page();
+            } 
         }
 
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!ModelState.IsValid)
-            {
-                return Page();
-            }
-
-            _context.Attach(User).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                if (FileUpload != null)
+                {
+                    var file = Path.Combine(_environment.WebRootPath, "images", "avatars", FileUpload.FileName);
+
+                    using (var fileStream = new FileStream(file, FileMode.Create))
+                    {
+                        User.Avatar = FileUpload.FileName;
+                        await FileUpload.CopyToAsync(fileStream);
+                    }
+                }
+
+                using (var work = _unitOfWorkFactory.Get)
+                {
+                    await work.UserRepository.UpdateUser(User);
+                }
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!UserExists(User.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                //if (!UserExists(User.Id))
+                //{
+                //    return NotFound();
+                //}
+                //else
+                //{
+                //    throw;
+                //}
             }
 
             return RedirectToPage("./Index");
         }
 
-        private bool UserExists(int id)
-        {
-            return _context.Users.Any(e => e.Id == id);
-        }
+        //private bool UserExists(int id)
+        //{
+        //    return _context.Users.Any(e => e.Id == id);
+        //}
     }
 }

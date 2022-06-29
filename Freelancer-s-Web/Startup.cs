@@ -64,7 +64,7 @@ namespace Freelancer_s_Web
                     };
 
                     //options.CallbackPath = "/Authentication/Login?handler=GoogleResponse";
-                    options.ClaimActions.MapJsonKey("urn:google:picturre", "picture", "url");
+                    options.ClaimActions.MapJsonKey("urn:google:picture", "picture", "url");
                 });
         }
 

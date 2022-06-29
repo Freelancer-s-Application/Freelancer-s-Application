@@ -17,7 +17,7 @@ using Freelancer_s_Web.ViewModel;
 using Freelancer_s_Web.Models;
 using System;
 using Microsoft.Extensions.Logging;
-
+using System.Collections.Generic;
 namespace Freelancer_s_Web.Pages.Authentication
 {
     public class LoginModel : PageModel
@@ -44,10 +44,7 @@ namespace Freelancer_s_Web.Pages.Authentication
             var principle = new ClaimsPrincipal(identity);
             string email = principle.FindFirstValue(ClaimTypes.Email);
             string displayName = principle.FindFirstValue(ClaimTypes.Name);
-            string avatar = principle.FindFirstValue("urn:google:picture") ?? principle.FindFirstValue("image");
-
-            _logger.LogInformation(principle.ToString());
-
+            string avatar = principle.FindFirstValue("urn:google:picture");
             if (email == AppConfiguration.GetAdminEmail())
             {
                 CustomAuthorization.Login(new LoginUserVM()
@@ -63,7 +60,8 @@ namespace Freelancer_s_Web.Pages.Authentication
             {
                 using (var work = _unitOfWorkFactory.Get)
                 {
-                    User user = work.UserRepository.GetFirstOrDefault(p => p.Email == email);
+                    User user = work.UserRepository.GetFirstOrDefault(p => p.Email.Equals(email));
+                   // List<User> user = work.UserRepository.GetAll(e => e.Email == email).ToList();
                     if (user == null) // first time login
                     {
                         User logging = new User()

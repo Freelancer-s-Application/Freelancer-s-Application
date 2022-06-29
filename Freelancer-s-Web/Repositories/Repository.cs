@@ -57,10 +57,10 @@ namespace Repositories
         {
             IQueryable<T> query = dbSet;
 
-            if (filter != null)
-            {
-                query.Where(filter);
-            }
+            //if (filter != null)
+            //{
+            //    query.Where(filter);
+            //}
 
             if (includeProperties != null)
             {
@@ -70,8 +70,13 @@ namespace Repositories
                 }
             }
 
-            return query.FirstOrDefault();
-
+            if (filter != null)
+            {
+                return query.FirstOrDefault(filter);
+            } else
+            {
+                return query.FirstOrDefault();
+            }
         }
 
         public void Remove(T t)

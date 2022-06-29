@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using Freelancer_s_Web.DataAccess;
-using DataAccess.UnitOfWork;
+using Freelancer_s_Web.Models;
 using Freelancer_s_Web.Commons;
+using Freelancer_s_Web.UnitOfWork;
 
 namespace Freelancer_s_Web.Pages.HomePage
 {

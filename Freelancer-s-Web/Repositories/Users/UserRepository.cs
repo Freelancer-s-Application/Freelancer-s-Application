@@ -21,6 +21,7 @@ namespace Repositories.Users
         {
             _dbContext.Users.Add(user);
             _dbContext.SaveChanges();
+            Console.WriteLine(user.Id);
             return user.Id;
         }
     }

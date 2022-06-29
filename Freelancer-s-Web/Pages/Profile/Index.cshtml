@@ -16,7 +16,7 @@
         </dt>
         <dd class="col-sm-10">
             @*@Html.DisplayFor(model => model.User.Avatar)*@
-            <img href="@Model.User.Avatar"/>
+            <img src="@Model.User.Avatar" width="50" height="50" />
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.User.Email)
@@ -25,16 +25,22 @@
             @Html.DisplayFor(model => model.User.Email)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.User.Address)
+            <label class="control-label">Major Name</label>
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.User.Address)
+            @Html.DisplayFor(model => model.User.Major.Name)
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.User.DisplayName)
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.User.DisplayName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.User.Address)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.User.Address)
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.User.PhoneNumber)
@@ -48,12 +54,7 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.User.Description)
         </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.User.Major.Name)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.User.Major.Name)
-        </dd>
+
     </dl>
 </div>
 <div>

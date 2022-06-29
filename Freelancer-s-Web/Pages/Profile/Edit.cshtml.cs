@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Http;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using Freelancer_s_Web.Utils;
+using Microsoft.Extensions.Logging;
 
 namespace Freelancer_s_Web.Pages.Profile
 {
@@ -23,23 +24,22 @@ namespace Freelancer_s_Web.Pages.Profile
 
         private UnitOfWorkFactory _unitOfWorkFactory;
 
+        [BindProperty]
+        public bool _firstTime { get; set; }
+
         public EditModel(UnitOfWorkFactory unitOfWorkFactory, IHostingEnvironment environment)
         {
             _unitOfWorkFactory = unitOfWorkFactory;
             _environment = environment;
+            _firstTime = false;
         }
 
         [BindProperty]
         public User User { get; set; }
 
-        [DataType(DataType.Upload)]
-        [FileExtensions(Extensions = "png,jpg,jpeg,gif")]
-        [Display(Name = "Choose file to Upload")]
-        [BindProperty]
-        public IFormFile FileUpload { get; set; }
-
-        public async Task<IActionResult> OnGetAsync()
+        public async Task<IActionResult> OnGetAsync(string firstTime)
         {
+            if (!String.IsNullOrEmpty(firstTime)) _firstTime = true;
             using (var work = _unitOfWorkFactory.Get)
             {
                 User = await work.UserRepository.GetCurrentUser();
@@ -54,17 +54,6 @@ namespace Freelancer_s_Web.Pages.Profile
         {
             try
             {
-                if (FileUpload != null)
-                {
-                    var file = Path.Combine(_environment.WebRootPath, "images", "avatars", FileUpload.FileName);
-
-                    using (var fileStream = new FileStream(file, FileMode.Create))
-                    {
-                        User.Avatar = FileUpload.FileName;
-                        await FileUpload.CopyToAsync(fileStream);
-                    }
-                }
-
                 using (var work = _unitOfWorkFactory.Get)
                 {
                     await work.UserRepository.UpdateUser(User);
@@ -75,6 +64,7 @@ namespace Freelancer_s_Web.Pages.Profile
                 throw;
             }
 
+            if (_firstTime) return RedirectToPage("../Index");
             return RedirectToPage("./Index");
         }
 

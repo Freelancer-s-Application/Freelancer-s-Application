@@ -80,7 +80,7 @@ namespace Freelancer_s_Web.Pages.Authentication
                             Avatar = avatar,
                             Role = CommonEnums.ROLE.USER,
                         });
-                        return RedirectToPage("/Index");
+                        return RedirectToPage("/Profile/Edit", new { firstTime = "true" }) ;
                     }
                     else
                     {

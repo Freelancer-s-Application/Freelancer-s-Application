@@ -52,8 +52,8 @@ namespace Repositories.Users
         {
             user.UpdatedAt = DateTime.Now;
             user.UpdatedBy = (await GetCurrentUser()).Email;
-
-            _dbContext.Attach(user).State = EntityState.Modified;
+            //System.Diagnostics.Debug.WriteLine("From user update repo " + user.CreatedAt.ToString());
+            _dbContext.Users.Update(user);
             await _dbContext.SaveChangesAsync();
         }
     }

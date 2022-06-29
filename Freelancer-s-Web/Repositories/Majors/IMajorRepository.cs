@@ -11,6 +11,6 @@ namespace Repositories.Majors
 {
     public interface IMajorRepository : IRepository<Major>
     {
-        DbSet<Major> GetDbSet();
+        List<Major> GetAll();
     }
 }

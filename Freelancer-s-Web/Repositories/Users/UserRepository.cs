@@ -44,7 +44,7 @@ namespace Repositories.Users
 
         public async Task<User> GetUser(int id)
         {
-            var user = await _dbContext.Users.Include(u => u.Major).FirstOrDefaultAsync(u => u.Id == id);
+            var user = await _dbContext.Users.AsNoTracking().Include(u => u.Major).FirstOrDefaultAsync(u => u.Id == id);
             return user;
         }
 
@@ -52,7 +52,8 @@ namespace Repositories.Users
         {
             user.UpdatedAt = DateTime.Now;
             user.UpdatedBy = (await GetCurrentUser()).Email;
-            _dbContext.Update(user);
+
+            _dbContext.Attach(user).State = EntityState.Modified;
             await _dbContext.SaveChangesAsync();
         }
     }

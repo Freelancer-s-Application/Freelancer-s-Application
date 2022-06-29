@@ -16,15 +16,18 @@ using Freelancer_s_Web.UnitOfWork;
 using Freelancer_s_Web.ViewModel;
 using Freelancer_s_Web.Models;
 using System;
+using Microsoft.Extensions.Logging;
 
 namespace Freelancer_s_Web.Pages.Authentication
 {
     public class LoginModel : PageModel
     {
         private UnitOfWorkFactory _unitOfWorkFactory;
-        public LoginModel(UnitOfWorkFactory unitOfWorkFactory)
+        private readonly ILogger<LoginModel> _logger;
+        public LoginModel(UnitOfWorkFactory unitOfWorkFactory, ILogger<LoginModel> logger)
         {
             _unitOfWorkFactory = unitOfWorkFactory;
+            _logger = logger;
         }
         public IActionResult OnGet()
         {
@@ -42,6 +45,9 @@ namespace Freelancer_s_Web.Pages.Authentication
             string email = principle.FindFirstValue(ClaimTypes.Email);
             string displayName = principle.FindFirstValue(ClaimTypes.Name);
             string avatar = principle.FindFirstValue("urn:google:picture") ?? principle.FindFirstValue("image");
+
+            _logger.LogInformation(principle.ToString());
+
             if (email == AppConfiguration.GetAdminEmail())
             {
                 CustomAuthorization.Login(new LoginUserVM()
@@ -64,7 +70,7 @@ namespace Freelancer_s_Web.Pages.Authentication
                         {
                             DisplayName = displayName,
                             Email = email,
-                            Avatar = avatar ?? "empty",
+                            Avatar = avatar,
                             CreatedBy = email,
                             CreatedAt = DateTime.Now,
                         };

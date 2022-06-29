@@ -18,9 +18,10 @@ namespace Repositories.Majors
             _dbContext = dbContext;
         }
 
-        public DbSet<Major> GetDbSet()
+        public List<Major> GetAll()
         {
-            return _dbContext.Majors;
+            var dbset = _dbContext.Majors.AsNoTracking().ToList();
+            return dbset;
         }
     }
 }

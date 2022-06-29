@@ -43,7 +43,7 @@ namespace Freelancer_s_Web.Pages.Profile
             using (var work = _unitOfWorkFactory.Get)
             {
                 User = await work.UserRepository.GetCurrentUser();
-                ViewData["MajorId"] = new SelectList(work.MajorRepository.GetDbSet(), "Id", "Name");
+                ViewData["MajorId"] = new SelectList(work.MajorRepository.GetAll(), "Id", "Name");
                 return Page();
             } 
         }
@@ -72,14 +72,7 @@ namespace Freelancer_s_Web.Pages.Profile
             }
             catch (DbUpdateConcurrencyException)
             {
-                //if (!UserExists(User.Id))
-                //{
-                //    return NotFound();
-                //}
-                //else
-                //{
-                //    throw;
-                //}
+                throw;
             }
 
             return RedirectToPage("./Index");

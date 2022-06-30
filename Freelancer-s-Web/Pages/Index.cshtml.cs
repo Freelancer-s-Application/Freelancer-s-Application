@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 
 namespace Freelancer_s_Web.Pages
 {
-    [AllowAnonymous]
     public class IndexModel : PageModel
     {
         private readonly ILogger<IndexModel> _logger;

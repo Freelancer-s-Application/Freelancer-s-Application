@@ -35,6 +35,9 @@ namespace Freelancer_s_Web.Pages.Authentication
 
         public async Task<IActionResult> OnGetGoogleResponse()
         {
+            var authProperties = new AuthenticationProperties
+            {
+            };
             var result = await HttpContext.AuthenticateAsync();
 
             var claims = result.Principal.Identities.FirstOrDefault().Claims;
@@ -52,6 +55,10 @@ namespace Freelancer_s_Web.Pages.Authentication
                     Avatar = avatar,
                     Role = CommonEnums.ROLE.ADMINISTRATOR,
                 });
+                await HttpContext.SignInAsync(
+                    CookieAuthenticationDefaults.AuthenticationScheme,
+                    new ClaimsPrincipal(identity),
+                    authProperties);
                 return RedirectToPage("/Index");
             }
             else
@@ -59,7 +66,6 @@ namespace Freelancer_s_Web.Pages.Authentication
                 using (var work = _unitOfWorkFactory.Get)
                 {
                     User user = work.UserRepository.GetFirstOrDefault(p => p.Email.Equals(email));
-                   // List<User> user = work.UserRepository.GetAll(e => e.Email == email).ToList();
                     if (user == null) // first time login
                     {
                         User logging = new User()
@@ -78,7 +84,6 @@ namespace Freelancer_s_Web.Pages.Authentication
                             Avatar = avatar,
                             Role = CommonEnums.ROLE.USER,
                         });
-                        return RedirectToPage("/Index");
                     }
                     else
                     {
@@ -89,15 +94,19 @@ namespace Freelancer_s_Web.Pages.Authentication
                             Avatar = avatar,
                             Role = CommonEnums.ROLE.USER,
                         });
-                        return RedirectToPage("/Index");
                     }
                 }
+                await HttpContext.SignInAsync(
+                    CookieAuthenticationDefaults.AuthenticationScheme,
+                    new ClaimsPrincipal(identity),
+                    authProperties);
+                return RedirectToPage("/Index");
             }
         }
 
-        public IActionResult OnGetLogout()
+        public async Task<IActionResult> OnGetAsyncLogout()
         {
-            // await HttpContext.SignOutAsync();
+            await HttpContext.SignOutAsync();
             HttpContext.Session.Clear();
             return Redirect("/Index");
         }

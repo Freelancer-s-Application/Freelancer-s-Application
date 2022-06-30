@@ -54,6 +54,7 @@ namespace Freelancer_s_Web
                     options.ClientId = config["ClientId"];
                     options.ClientSecret = config["ClientSecret"];
                     options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                    options.Scope.Add("profile");
 
                     options.CorrelationCookie = new CookieBuilder
                     {
@@ -64,7 +65,7 @@ namespace Freelancer_s_Web
                     };
 
                     //options.CallbackPath = "/Authentication/Login?handler=GoogleResponse";
-                    options.ClaimActions.MapJsonKey("urn:google:picturre", "picture", "url");
+                    options.ClaimActions.MapJsonKey("urn:google:picture", "picture", "url");
                 });
         }
 

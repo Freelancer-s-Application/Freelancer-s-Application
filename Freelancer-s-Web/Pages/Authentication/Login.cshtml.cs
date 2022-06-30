@@ -49,6 +49,7 @@ namespace Freelancer_s_Web.Pages.Authentication
             {
                 CustomAuthorization.Login(new LoginUserVM()
                 {
+                    DisplayName = displayName,
                     Id = 0,
                     Email = email,
                     Avatar = avatar,
@@ -75,6 +76,7 @@ namespace Freelancer_s_Web.Pages.Authentication
                         int id = work.UserRepository.CreateUser(logging);
                         CustomAuthorization.Login(new LoginUserVM()
                         {
+                            DisplayName = displayName,
                             Id = id,
                             Email = email,
                             Avatar = avatar,
@@ -86,6 +88,7 @@ namespace Freelancer_s_Web.Pages.Authentication
                     {
                         CustomAuthorization.Login(new LoginUserVM()
                         {
+                            DisplayName = displayName,
                             Id = user.Id,
                             Email = email,
                             Avatar = avatar,

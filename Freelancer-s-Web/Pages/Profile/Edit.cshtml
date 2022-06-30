@@ -20,11 +20,15 @@
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <img src="@Model.User.Avatar" width="50" height="50" />
+
                 @{
                     if (!Model._firstTime)
                     {
-                        <img src="@Model.User.Avatar" width="50" height="50" />
+                        <img class="rounded-circle border" src="@Model.User.Avatar" width="150" height="150" />
+                    }
+                    if (Model._firstTime)
+                    {
+                        <img class="rounded-circle border" src="@Model.User.Avatar" width="150" height="150" />
                     }
                 }
                 <input asp-for="User.Avatar" class="form-control" hidden />

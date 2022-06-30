@@ -1,0 +1,50 @@
+﻿@page
+@model Freelancer_s_Web.Pages.HomePage.IndexModel
+
+@{
+    ViewData["Title"] = "HomePage";
+}
+
+<h1>HomePage</h1>
+
+<div class="row">
+    <div class="col-sm-4 mb-4">
+        <input type="text" id="myFilter" class="form-control" onkeyup="myFunction()" placeholder="Search for card name...">
+    </div>
+</div>
+
+<div id="myProducts">
+    @foreach (var item in Model.Post)
+    {
+
+        <div class="card">
+            <div class=" card-title">
+                @Html.DisplayFor(modelItem => item.Title)
+            </div>
+            <div class="card-body">
+                <p class="card-text">@Html.DisplayFor(modelItem => item.Description).</p>
+                <a href="#" class="btn btn-primary">Open</a>
+            </div>
+        </div>
+        <br />
+
+    }
+</div>
+<script defer>
+    function myFunction() {
+        var input, filter, cards, cardContainer, title, i;
+        input = document.getElementById("myFilter");
+        filter = input.value.toUpperCase();
+        cardContainer = document.getElementById("myProducts");
+        cards = cardContainer.getElementsByClassName("card");
+        for (i = 0; i < cards.length; i++) {
+            title = cards[i].querySelector(".card-title");
+            if (title.innerText.toUpperCase().indexOf(filter) > -1) {
+                cards[i].style.display = "";
+            } else {
+                cards[i].style.display = "none";
+            }
+        }
+    }
+
+</script>

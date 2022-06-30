@@ -40,6 +40,9 @@ ViewData["Title"] = "Home page";
                             }
                             else
                             {
+                                <li class="nav-item logout">
+                                    <a class="nav-link logout" asp-page="/Authentication/Login" asp-page-handler="Logout">Log out</a>
+                                </li>
                                 if (loginUser.Role == "ADMIN")
                                 {
                                     <li class="nav-item">
@@ -51,13 +54,13 @@ ViewData["Title"] = "Home page";
                                     if (loginUser.Role == "USER")
                                     {
                                         <li class="nav-item">
-                                            <a class="nav-link text-dark" asp-area="" asp-page="/Profile/Index">Profile</a>
+                                            <a class="nav-link text-dark" asp-area="" asp-page="/Profile/Index">
+                                                <img src="@CustomAuthorization.loginUser.Avatar" width="25" height="25" />
+                                            </a>
                                         </li>
                                     }
                                 }
-                                <li class="nav-item logout">
-                                    <a class="nav-link logout" asp-page="/Authentication/Login" asp-page-handler="Logout">Log out</a>
-                                </li>
+
                             }
                         }
                     </ul>

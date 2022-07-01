@@ -10,5 +10,6 @@ namespace Repositories.Posts
 {
     public interface IPostRepository : IRepository<Post>
     {
+        Task<Post> GetPost(int id); 
     }
 }

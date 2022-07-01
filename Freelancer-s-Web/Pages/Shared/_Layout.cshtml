@@ -16,7 +16,7 @@ ViewData["Title"] = "Home page";
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm d-flex flex-row navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
                 <a class="navbar-brand" asp-area="" asp-page="/Index">Freelancer_s_Web</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -26,32 +26,44 @@ ViewData["Title"] = "Home page";
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
+                            <a class="nav-link text-dark" asp-area="" asp-page="/HomePage/Index">Home</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
                         </li>
                         @{
-                            if(loginUser == null)
+                            if (loginUser == null)
                             {
                                 <li class="nav-item">
                                     <a class="nav-link text-dark" asp-area="" asp-page="/Authentication/Login">Login</a>
                                 </li>
-                            } else
+                            }
+                            else
                             {
-                                if(loginUser.Role == "ADMIN")
-                                {
-                                        <p>YOU ARE ADMIN</p>
-                                } else
-                                {
-                                    if(loginUser.Role == "USER")
-                                    {
-                                        <p>YOU ARE USER</p>
-                                    }  
-                                }
                                 <li class="nav-item logout">
-                                            <a class="nav-link logout" asp-page="/Authentication/Login" asp-page-handler="Logout">Log out</a>
-                                 </li>
+                                    <a class="nav-link logout" asp-page="/Authentication/Login" asp-page-handler="Logout">Log out</a>
+                                </li>
+                                if (loginUser.Role == "ADMIN")
+                                {
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark">YOU ARE ADMIN</a>
+                                    </li>
+                                }
+                                else
+                                {
+                                    if (loginUser.Role == "USER")
+                                    {
+                                        <li class="nav-item ml-auto" >
+                                           
+                                            <a class="nav-link text-dark d-flex flex-row" asp-area="" asp-page="/Profile/Index">
+                                                <span>@CustomAuthorization.loginUser.DisplayName</span>
+                                           
+                                                <img class="rounded-circle mx-1 border" src="@CustomAuthorization.loginUser.Avatar" width="27" height="27" />
+                                            </a>
+                                        </li>
+                                    }
+                                }
+
                             }
                         }
                     </ul>

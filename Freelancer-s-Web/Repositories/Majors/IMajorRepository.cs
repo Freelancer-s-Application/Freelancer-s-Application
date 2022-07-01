@@ -1,5 +1,6 @@
 ﻿using Freelancer_s_Web.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,5 +11,6 @@ namespace Repositories.Majors
 {
     public interface IMajorRepository : IRepository<Major>
     {
+        List<Major> GetAll();
     }
 }

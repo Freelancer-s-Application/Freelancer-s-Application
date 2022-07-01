@@ -16,16 +16,18 @@ using Freelancer_s_Web.UnitOfWork;
 using Freelancer_s_Web.ViewModel;
 using Freelancer_s_Web.Models;
 using System;
+using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
-
 namespace Freelancer_s_Web.Pages.Authentication
 {
     public class LoginModel : PageModel
     {
         private UnitOfWorkFactory _unitOfWorkFactory;
-        public LoginModel(UnitOfWorkFactory unitOfWorkFactory)
+        private readonly ILogger<LoginModel> _logger;
+        public LoginModel(UnitOfWorkFactory unitOfWorkFactory, ILogger<LoginModel> logger)
         {
             _unitOfWorkFactory = unitOfWorkFactory;
+            _logger = logger;
         }
         public IActionResult OnGet()
         {
@@ -50,6 +52,7 @@ namespace Freelancer_s_Web.Pages.Authentication
             {
                 CustomAuthorization.Login(new LoginUserVM()
                 {
+                    DisplayName = displayName,
                     Id = 0,
                     Email = email,
                     Avatar = avatar,
@@ -79,6 +82,7 @@ namespace Freelancer_s_Web.Pages.Authentication
                         int id = work.UserRepository.CreateUser(logging);
                         CustomAuthorization.Login(new LoginUserVM()
                         {
+                            DisplayName = displayName,
                             Id = id,
                             Email = email,
                             Avatar = avatar,
@@ -89,6 +93,7 @@ namespace Freelancer_s_Web.Pages.Authentication
                     {
                         CustomAuthorization.Login(new LoginUserVM()
                         {
+                            DisplayName = displayName,
                             Id = user.Id,
                             Email = email,
                             Avatar = avatar,

@@ -54,6 +54,7 @@ namespace Freelancer_s_Web
                     options.ClientId = config["ClientId"];
                     options.ClientSecret = config["ClientSecret"];
                     options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                    options.Scope.Add("profile");
 
                     options.CorrelationCookie = new CookieBuilder
                     {

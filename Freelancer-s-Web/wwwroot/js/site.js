@@ -2,45 +2,26 @@
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
-"use strict"
+"use strict";
 
-const { signalR } = require("../lib/microsoft/signalr/dist/browser/signalr")
+var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
 
-//$(() => {
-//    LoadProdData();
-//    var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
-//    connection.start();
+connection.on("GetMessagesResponse", function (res) {
+    //console.log("GetMessagesResponse");
+    //console.log(res);
+    document.getElementById("messagesList").innerHTML = ""
+    $.each(res, (k, v) => {
+        var li = document.createElement("li");
+        li.textContent = " [ " + v.createdAt + "] " + v.content;
+        document.getElementById("messagesList").appendChild(li);
+    })
 
-//    connection.on("LoadMessage", function () {
-//        LoadMessageData();
-//    })
-//})
+});
 
-//LoadMessageData();
-
-//function LoadMessageData() {
-//    var tr = '';
-//    $.ajax({
-//        url: 'Message/GetProducts',
-//        method: 'GET',
-//        success: (result) => {
-//            $.each(result, (k, v) => {
-//                tr += `<tr>
-//                    <td> ${v.ProName} </td>
-//                    <td> ${v.Category} </td>
-//                    <td> ${v.StockQty} </td>
-//                    <td>
-//                        <a href='../Products/Edit?id=${v.ProdId}'>Edit</a> |
-//                        <a href='../Products/Details?id=${v.ProdId}'>Details</a> |
-//                        <a href='../Products/Delete?id=${v.ProdId}'>Delete</a> |
-//                    </td>
-//                    <tr>`
-//            })
-
-//            $("#tableBody").html(tr);
-//        },
-//        error: (error) => {
-//            console.log(error);
-//        }
-//    })
-//}
+connection.start().then(() => {
+    //console.log("Connected")
+    var userId = document.getElementById("userInput").value;
+    connection.invoke("GetMessages", userId).catch(function (err) {
+        return console.error(err.toString());
+    });
+});

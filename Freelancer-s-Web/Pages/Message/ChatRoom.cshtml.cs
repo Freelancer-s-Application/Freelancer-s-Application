@@ -23,15 +23,17 @@ namespace Freelancer_s_Web.Pages.Message
         public Dictionary<User, Models.Message> Conversation { get; set; }
 
         [BindProperty]
-        public int currentUserID { get; set; }
+        public User currentUser { get; set; }
+
+        [BindProperty]
+        public User companion { get; set; }
 
         public async Task OnGetAsync(int id)
         {
             using (var work = _unitOfWorkFactory.Get)
             {
-                var currentUser = await work.UserRepository.GetCurrentUser();
-                currentUserID = currentUser.Id;
-
+                currentUser = await work.UserRepository.GetCurrentUser();
+                companion = work.UserRepository.Get(id);
                 var res = await work.MessageRepository.GetConversationAsync(id);
                 foreach (var item in res)
                 {

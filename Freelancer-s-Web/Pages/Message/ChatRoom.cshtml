@@ -3,7 +3,7 @@
 @{
     
 }
-<div class="container">
+@*<div class="container">
     @{
         foreach (var item in Model.Conversation)
         {
@@ -13,7 +13,7 @@
                     <div class="col-2">
                         <img src="@item.Key.Avatar" width="50" height="50">
                     </div>
-                    <div class="col-6 border border-info">
+                    <div class="col-6 border border-2">
                         <p>@item.Value.Content</p>
                     </div>
                 </div>
@@ -21,7 +21,7 @@
             else
             {
                 <div class="row my-3 d-flex justify-content-end">
-                    <div class="col-6 border border-info">
+                    <div class="col-6 border border-2">
                         <p>@item.Value.Content</p>
                     </div>
                     <div class="col-2">
@@ -32,4 +32,36 @@
 
         }
     }
+    <input type="text" id="message" />
+    <input type="button" id="sendmessage" value="Send" />
+</div>*@
+
+<div class="container">
+    <div class="row">&nbsp;</div>
+    <div class="row">
+        <div class="col-4"><input hidden type="text" id="userInput" value="@Model.companion.Id"/></div>
+    </div>
+    <div class="row">
+        <div class="col-2">Message</div>
+        <div class="col-4"><input type="text" id="messageInput" /></div>
+    </div>
+    <div class="row">&nbsp;</div>
+    <div class="row">
+        <div class="col-6">
+            <input type="button" id="sendButton" value="Send Message" />
+        </div>
+    </div>
 </div>
+<div class="row">
+    <div class="col-12">
+        <hr />
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <ul id="messagesList"></ul>
+    </div>
+</div>
+
+<script src="~/lib/microsoft/signalr/dist/browser/signalr.js"></script>
+    <script src="~/js/site.js"></script>

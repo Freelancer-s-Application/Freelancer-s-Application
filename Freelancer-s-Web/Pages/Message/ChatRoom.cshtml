@@ -1,0 +1,35 @@
+﻿@page
+@model Freelancer_s_Web.Pages.Message.ChatRoomModel
+@{
+    
+}
+<div class="container">
+    @{
+        foreach (var item in Model.Conversation)
+        {
+            if (item.Key.Id == Model.currentUserID)
+            {
+                <div class="row my-3">
+                    <div class="col-2">
+                        <img src="@item.Key.Avatar" width="50" height="50">
+                    </div>
+                    <div class="col-6 border border-info">
+                        <p>@item.Value.Content</p>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="row my-3 d-flex justify-content-end">
+                    <div class="col-6 border border-info">
+                        <p>@item.Value.Content</p>
+                    </div>
+                    <div class="col-2">
+                        <img src="@item.Key.Avatar" width="50" height="50">
+                    </div>
+                </div>
+            }
+
+        }
+    }
+</div>

@@ -9,7 +9,6 @@
     <Folder Include="Repositories\Users\" />
     <Folder Include="Pages\Profile\" />
     <Folder Include="wwwroot\images\" />
-    <Folder Include="Pages\Message\" />
     <Folder Include="Hubs\" />
   </ItemGroup>
 

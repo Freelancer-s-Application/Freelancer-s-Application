@@ -10,5 +10,10 @@ namespace Repositories.Messages
 {
     public interface IMessageRepository : IRepository<Message>
     {
+        Task<Dictionary<int, Message>> GetCompanionsAsync();
+
+        Task<Dictionary<int, Message>> GetConversationAsync(int id);
+
+        Task SendMessage(Message message);
     }
 }

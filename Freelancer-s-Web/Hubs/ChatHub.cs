@@ -1,6 +1,8 @@
-﻿using Freelancer_s_Web.UnitOfWork;
+﻿using Freelancer_s_Web.Models;
+using Freelancer_s_Web.UnitOfWork;
 using Microsoft.AspNetCore.SignalR;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Freelancer_s_Web.Hubs
@@ -29,7 +31,13 @@ namespace Freelancer_s_Web.Hubs
             using (var work = _unitOfWorkFactory.Get)
             {
                 var conversations = await work.MessageRepository.GetConversationAsync(Int32.Parse(userId));
-                await Clients.All.SendAsync("GetMessagesResponse", conversations);
+                List<KeyValuePair<User, Message>> res = new List<KeyValuePair<User, Message>>();
+                conversations.ForEach(item =>
+                {
+                    res.Add(new KeyValuePair<User, Message>(work.UserRepository.Get(item.Key), item.Value));
+                });
+
+                await Clients.All.SendAsync("GetMessagesResponse", res);
             }
         }
 

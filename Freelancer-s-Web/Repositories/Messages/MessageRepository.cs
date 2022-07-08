@@ -40,6 +40,7 @@ namespace Repositories.Messages
             return Companions;
         }
 
+        //id: companion id
         public async Task<List<KeyValuePair<int, Message>>> GetConversationAsync(int id)
         {
             var currentUserId = CustomAuthorization.loginUser.Id;
@@ -49,6 +50,7 @@ namespace Repositories.Messages
             {
                 if ((message.SenderId == currentUserId && message.ReceiverId == id) || (message.ReceiverId == currentUserId && message.SenderId == id))
                 {
+                    if (message.ReceiverId == currentUserId) message.IsSeen = true;
                     Conversation.Add(new KeyValuePair<int, Message>(message.SenderId, message));
                 }
             }

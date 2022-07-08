@@ -57,5 +57,6 @@ namespace Repositories.Users
             _dbContext.Users.Update(user);
             await _dbContext.SaveChangesAsync();
         }
+
     }
 }

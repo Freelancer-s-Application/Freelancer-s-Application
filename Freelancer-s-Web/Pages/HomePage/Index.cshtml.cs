@@ -21,14 +21,15 @@ namespace Freelancer_s_Web.Pages.HomePage
         }
 
         public IList<Post> Post { get; set; }
-
+     
+        
         public async Task OnGetAsync()
         {
             using (var work = _unitOfWorkFactory.Get)
             {
                
-                Post = await work.PostRepository.GetAll(post => post.Status == CommonEnums.POST_STATUS.PUBLIC, null, "User,Major").ToListAsync();
-         
+                Post = await work.PostRepository.GetAll(post => post.Status == CommonEnums.POST_STATUS.PUBLIC, null, "User,Major,Comments").ToListAsync();
+               
             }
         }
     }

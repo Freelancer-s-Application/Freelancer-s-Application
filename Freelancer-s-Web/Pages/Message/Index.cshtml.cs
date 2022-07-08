@@ -35,7 +35,9 @@ namespace Freelancer_s_Web.Pages.Message
                 foreach(var item in res)
                 {
                     Companions.Add(work.UserRepository.Get(item.Key), item.Value);
+                    
                 }
+                System.Diagnostics.Debug.Print(Companions.Count.ToString());
             }
         }
     }

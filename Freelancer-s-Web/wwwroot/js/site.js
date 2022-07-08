@@ -4,24 +4,24 @@
 // Write your JavaScript code.
 "use strict";
 
-var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
+//var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
 
-connection.on("GetMessagesResponse", function (res) {
-    //console.log("GetMessagesResponse");
-    //console.log(res);
-    document.getElementById("messagesList").innerHTML = ""
-    $.each(res, (k, v) => {
-        var li = document.createElement("li");
-        li.textContent = " [ " + v.createdAt + "] " + v.content;
-        document.getElementById("messagesList").appendChild(li);
-    })
+//connection.on("GetMessagesResponse", function (res) {
+//    //console.log("GetMessagesResponse");
+//    //console.log(res);
+//    document.getElementById("messagesList").innerHTML = ""
+//    $.each(res, (k, v) => {
+//        var li = document.createElement("li");
+//        li.textContent = " [ " + v.createdAt + "] " + v.content;
+//        document.getElementById("messagesList").appendChild(li);
+//    })
 
-});
+//});
 
-connection.start().then(() => {
-    //console.log("Connected")
-    var userId = document.getElementById("userInput").value;
-    connection.invoke("GetMessages", userId).catch(function (err) {
-        return console.error(err.toString());
-    });
-});
+//connection.start().then(() => {
+//    var userId = document.getElementById("userInput").value;
+//    connection.invoke("GetMessages", userId).catch(function (err) {
+//        return console.error(err.toString());
+//    });
+//});
+

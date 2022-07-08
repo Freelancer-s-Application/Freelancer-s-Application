@@ -65,3 +65,43 @@
 
 <script src="~/lib/microsoft/signalr/dist/browser/signalr.js"></script>
     <script src="~/js/site.js"></script>
+<script>
+    var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
+
+    connection.on("GetMessagesResponse", function (res) {
+        //console.log("GetMessagesResponse");
+        console.log(res);
+        document.getElementById("messagesList").innerHTML = ""
+        res.forEach(item => {
+            var li = document.createElement("li");
+            const [dateValues, timeValues] = item.value.createdAt.split('T');
+            const [hh, mm, ss] = timeValues.split(':')
+
+            li.textContent = " [" + `${dateValues} ${hh}:${mm}` + "] " + item.key + ": " + item.value.content;
+            document.getElementById("messagesList").appendChild(li);
+        })
+        @*$.each(res, (item) => {
+            var li = document.createElement("li");
+            li.textContent = " [" + item.value.createdAt + "] "+ item.key + ": " + item.value.content;
+            document.getElementById("messagesList").appendChild(li);
+        })*@
+
+    });
+
+    connection.start().then(() => {
+        var userId = document.getElementById("userInput").value;
+        connection.invoke("GetMessages", userId).catch(function (err) {
+            return console.error(err.toString());
+        });
+    });
+
+    var sendBtn = document.getElementById("sendButton")
+    sendBtn.addEventListener("click", () => {
+        var userId = document.getElementById("userInput").value;
+        var messageInput = document.getElementById("messageInput").value;
+        connection.invoke("SendMessage", userId, messageInput).catch(function (err) {
+            return console.error(err.toString());
+        });
+    })
+
+</script>

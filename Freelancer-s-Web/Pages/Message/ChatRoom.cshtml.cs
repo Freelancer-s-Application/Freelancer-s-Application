@@ -16,11 +16,11 @@ namespace Freelancer_s_Web.Pages.Message
         {
             //_context = context;
             _unitOfWorkFactory = unitOfWorkFactory;
-            Conversation = new Dictionary<User, Models.Message>();
+            Conversation = new List<KeyValuePair<User, Models.Message>>();
         }
 
         [BindProperty]
-        public Dictionary<User, Models.Message> Conversation { get; set; }
+        public List<KeyValuePair<User, Models.Message>> Conversation { get; set; }
 
         [BindProperty]
         public User currentUser { get; set; }
@@ -37,8 +37,10 @@ namespace Freelancer_s_Web.Pages.Message
                 var res = await work.MessageRepository.GetConversationAsync(id);
                 foreach (var item in res)
                 {
-                    Conversation.Add(work.UserRepository.Get(item.Key), item.Value);
+                    Conversation.Add(new KeyValuePair<User, Models.Message>(work.UserRepository.Get(item.Key), item.Value));
+                    
                 }
+                System.Diagnostics.Debug.Print(Conversation.Count.ToString());
             }
         }
     }

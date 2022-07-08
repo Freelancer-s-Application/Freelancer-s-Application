@@ -12,9 +12,16 @@ namespace Freelancer_s_Web.Hubs
         {
             _unitOfWorkFactory = unitOfWorkFactory;
         }
-        public async Task SendMessage(string username, string message)
+        public async Task SendMessage(string id, string message)
         {
-			await Clients.All.SendAsync("ReceiveMessage", username, message, DateTime.Now.ToShortDateString());
+            using (var work = _unitOfWorkFactory.Get)
+            {
+                if (int.TryParse(id, out int receiverId))
+                {
+                    await work.MessageRepository.SendMessage(receiverId, message);
+                }
+                await GetMessages(id);
+            }
         }
 
 		public async Task GetMessages(string userId)
@@ -25,6 +32,7 @@ namespace Freelancer_s_Web.Hubs
                 await Clients.All.SendAsync("GetMessagesResponse", conversations);
             }
         }
-	}
+
+    }
 }
 

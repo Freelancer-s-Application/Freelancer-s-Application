@@ -12,8 +12,8 @@ namespace Repositories.Messages
     {
         Task<Dictionary<int, Message>> GetCompanionsAsync();
 
-        Task<Dictionary<int, Message>> GetConversationAsync(int id);
+        Task<List<KeyValuePair<int, Message>>> GetConversationAsync(int id);
 
-        Task SendMessage(Message message);
+        Task SendMessage(int id, string messageContent);
     }
 }

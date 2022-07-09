@@ -6,25 +6,30 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Freelancer_s_Web.Models;
+using Freelancer_s_Web.UnitOfWork;
 
 namespace Freelancer_s_Web.Pages.PostPage
 {
+    //Post page management of admin
+
     public class IndexModel : PageModel
     {
-        private readonly Freelancer_s_Web.Models.FreelancerContext _context;
+        private UnitOfWorkFactory _unitOfWorkFactory;
 
-        public IndexModel(Freelancer_s_Web.Models.FreelancerContext context)
+        public IndexModel(UnitOfWorkFactory unitOfWorkFactory)
         {
-            _context = context;
+            //_context = context;
+            _unitOfWorkFactory = unitOfWorkFactory;
         }
 
-        public IList<Post> Post { get;set; }
+        public List<Post> Post { get; set; }
 
         public async Task OnGetAsync()
         {
-            Post = await _context.Posts
-                .Include(p => p.Major)
-                .Include(p => p.User).ToListAsync();
+            using (var work = _unitOfWorkFactory.Get)
+            {
+                Post = await work.PostRepository.GetAllPosts();
+            }
         }
     }
 }

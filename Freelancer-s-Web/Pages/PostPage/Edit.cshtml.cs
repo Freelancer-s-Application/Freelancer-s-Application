@@ -7,16 +7,20 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Freelancer_s_Web.Models;
+using Freelancer_s_Web.UnitOfWork;
 
 namespace Freelancer_s_Web.Pages.PostPage
 {
     public class EditModel : PageModel
     {
+        private UnitOfWorkFactory _unitOfWorkFactory;
+
         private readonly Freelancer_s_Web.Models.FreelancerContext _context;
 
-        public EditModel(Freelancer_s_Web.Models.FreelancerContext context)
+        public EditModel(Freelancer_s_Web.Models.FreelancerContext context, UnitOfWorkFactory unitOfWorkFactory)
         {
             _context = context;
+            _unitOfWorkFactory = unitOfWorkFactory;
         }
 
         [BindProperty]
@@ -29,16 +33,17 @@ namespace Freelancer_s_Web.Pages.PostPage
                 return NotFound();
             }
 
-            Post = await _context.Posts
-                .Include(p => p.Major)
-                .Include(p => p.User).FirstOrDefaultAsync(m => m.Id == id);
+            using (var work = _unitOfWorkFactory.Get)
+            {
+                Post = await work.PostRepository.GetPost(id);
+            }
 
             if (Post == null)
             {
                 return NotFound();
             }
-           ViewData["MajorId"] = new SelectList(_context.Majors, "Id", "CreatedBy");
-           ViewData["UserId"] = new SelectList(_context.Users, "Id", "Avatar");
+           ViewData["MajorId"] = new SelectList(_context.Majors, "Id", "Name");
+           ViewData["UserId"] = new SelectList(_context.Users, "Id", "DisplayName");
             return Page();
         }
 
@@ -51,11 +56,12 @@ namespace Freelancer_s_Web.Pages.PostPage
                 return Page();
             }
 
-            _context.Attach(Post).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                using (var work = _unitOfWorkFactory.Get)
+                {
+                    await work.PostRepository.UpdatePost(Post);
+                }
             }
             catch (DbUpdateConcurrencyException)
             {

@@ -20,6 +20,8 @@ namespace Freelancer_s_Web.Pages.PostPage
         }
 
         public Post Post { get; set; }
+        public IEnumerable<PostContent> postContents { get; set; }
+        public IEnumerable<Comment> comments { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int id)
         {
@@ -27,6 +29,10 @@ namespace Freelancer_s_Web.Pages.PostPage
             using (var work = _unitOfWorkFactory.Get)
             {
                 Post = await work.PostRepository.GetPost(id);
+                
+                postContents = await work.PostContentRepository.GetAllPostContentByPostId(id);
+
+                comments = await work.CommentRepository.GetAllCommentByPostId(id);
             }
 
             if (Post == null)

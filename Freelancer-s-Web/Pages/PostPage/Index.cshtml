@@ -1,11 +1,15 @@
 ﻿@page
+@using Freelancer_s_Web.Commons
 @model Freelancer_s_Web.Pages.PostPage.IndexModel
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+@*Post page management of admin*@
+
+
+<h1>Admin Post Management</h1>
 
 <p>
     <a asp-page="Create">Create New</a>
@@ -67,14 +71,29 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Max)
             </td>
+                @if (item.Status == CommonEnums.POST_STATUS.PUBLIC)
+                {
+                    <td>
+                       @Html.DisplayName("PUBLIC")
+                    </td>
+                }
+                else if (item.Status == CommonEnums.POST_STATUS.PRIVATE)
+                {
+                    <td>
+                       @Html.DisplayName("PRIVATE")
+                    </td>
+                }
+                else
+                {
+                    <td>
+                       @Html.DisplayName("REMOVE")
+                    </td>
+                }
             <td>
-                @Html.DisplayFor(modelItem => item.Status)
+                @Html.DisplayFor(modelItem => item.Major.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Major.CreatedBy)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.User.Avatar)
+                @Html.DisplayFor(modelItem => item.User.DisplayName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CreatedAt)

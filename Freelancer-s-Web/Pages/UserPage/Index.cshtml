@@ -1,0 +1,145 @@
+﻿@page
+@model Freelancer_s_Web.Pages.UserPage.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.User[0].Avatar)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User[0].Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User[0].Address)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User[0].DisplayName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User[0].PhoneNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User[0].Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User[0].Major)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User[0].CreatedAt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User[0].UpdatedAt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User[0].IsDeleted)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User[0].CreatedBy)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User[0].UpdatedBy)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.User) {
+        <tr>
+            <td>
+                <img class="rounded-circle mx-1 border" src="@item.Avatar" width="27" height="27" />
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Address)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DisplayName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PhoneNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Major.CreatedBy)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedAt)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UpdatedAt)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsDeleted)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedBy)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UpdatedBy)
+            </td>
+            <td>
+                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                @if(item.IsDeleted == false)
+                {
+                    <form method="post" asp-page-handler="Remove" asp-route-id="@item.Id">
+                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#remove-user-@item.Id">Remove</button>
+                        <div class="modal" id="remove-user-@item.Id" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h2 class="modal-title">Cancel</h2>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Are you sure you want to remove @item.Email?</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-success">Yes, Delete</button>
+                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                } else
+                {
+                     <form method="post" asp-page-handler="Activate" asp-route-id="@item.Id">
+                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#activate-user-@item.Id">Activate</button>
+                        <div class="modal" id="activate-user-@item.Id" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h2 class="modal-title">Cancel</h2>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Are you sure you want to activate @item.Email?</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-success">Yes, Delete</button>
+                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>   
+                }
+                
+                
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

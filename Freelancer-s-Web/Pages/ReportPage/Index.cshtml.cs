@@ -6,28 +6,27 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Freelancer_s_Web.Models;
-using Freelancer_s_Web.UnitOfWork;
 using Freelancer_s_Web.Utils;
+using Freelancer_s_Web.UnitOfWork;
 
-namespace Freelancer_s_Web.Pages.PostPage
+namespace Freelancer_s_Web.Pages.ReportPage
 {
-    //Post page management of admin
     [Authorized("ADMIN")]
     public class IndexModel : PageModel
     {
         private UnitOfWorkFactory _unitOfWorkFactory;
-
         public IndexModel(UnitOfWorkFactory unitOfWorkFactory)
         {
             _unitOfWorkFactory = unitOfWorkFactory;
         }
 
-        public List<Post> Post { get; set; }
+        public IList<Report> Report { get;set; }
+
         public async Task OnGetAsync()
         {
             using (var work = _unitOfWorkFactory.Get)
             {
-                Post = await work.PostRepository.GetAllPosts();
+                Report = work.ReportRepository.GetAll(null, null, "Reportee,Reporter").ToList();
             }
         }
     }

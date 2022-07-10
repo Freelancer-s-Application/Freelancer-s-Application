@@ -48,7 +48,16 @@ ViewData["Title"] = "Home page";
                                 if (loginUser.Role == "ADMIN")
                                 {
                                     <li class="nav-item">
-                                        <a class="nav-link text-dark">YOU ARE ADMIN</a>
+                                        <a class="nav-link text-dark d-flex flex-row">YOU ARE ADMIN</a>
+                                    </li>
+                                    <li class="nav-item">
+                                         <a class="nav-link text-dark" asp-area="" asp-page="/ReportPage/Index">View Reports</a>
+                                    </li>
+                                    <li class="nav-item">
+                                         <a class="nav-link text-dark" asp-area="" asp-page="/PostPage/Index">Post Management</a>
+                                    </li>
+                                    <li class="nav-item">
+                                         <a class="nav-link text-dark" asp-area="" asp-page="/UserPage/Index">User Management</a>
                                     </li>
                                 }
                                 else
@@ -57,7 +66,7 @@ ViewData["Title"] = "Home page";
                                     {
 
                                         <li class="nav-item">
-                                            <a class="nav-link text-dark" asp-area="" asp-page="">Create Post</a>
+                                            <a class="nav-link text-dark" asp-area="" asp-page="/PostPage/Create">Create Post</a>
                                         </li>
                                         <li class="nav-item">
                                             <a class="nav-link text-dark" asp-page="/Message/Index">Messages</a>

@@ -8,23 +8,26 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Freelancer_s_Web.Models;
 using Freelancer_s_Web.UnitOfWork;
+using Freelancer_s_Web.Utils;
+using Freelancer_s_Web.Commons;
 
 namespace Freelancer_s_Web.Pages.PostPage
 {
+    [Authorized("USER,ADMIN")]
     public class EditModel : PageModel
     {
         private UnitOfWorkFactory _unitOfWorkFactory;
 
-        private readonly Freelancer_s_Web.Models.FreelancerContext _context;
 
-        public EditModel(Freelancer_s_Web.Models.FreelancerContext context, UnitOfWorkFactory unitOfWorkFactory)
+        public EditModel(UnitOfWorkFactory unitOfWorkFactory)
         {
-            _context = context;
             _unitOfWorkFactory = unitOfWorkFactory;
         }
 
         [BindProperty]
         public Post Post { get; set; }
+        public IList<Major> majorList;
+
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -36,14 +39,23 @@ namespace Freelancer_s_Web.Pages.PostPage
             using (var work = _unitOfWorkFactory.Get)
             {
                 Post = await work.PostRepository.GetPost(id);
+                if (Post.UserId != CustomAuthorization.loginUser.Id && CustomAuthorization.loginUser.Role != CommonEnums.ROLE.ADMINISTRATOR)
+                {
+                    return Redirect("/Unauthorized");
+                }
             }
 
             if (Post == null)
             {
                 return NotFound();
             }
-           ViewData["MajorId"] = new SelectList(_context.Majors, "Id", "Name");
-           ViewData["UserId"] = new SelectList(_context.Users, "Id", "DisplayName");
+            using (var work = _unitOfWorkFactory.Get)
+            {
+                majorList = work.MajorRepository.GetAll().ToList();
+                ViewData["MajorId"] = new SelectList(majorList, "Id", "Name");
+                ViewData["UserId"] = CustomAuthorization.loginUser.Id;
+            }
+                
             return Page();
         }
 
@@ -51,36 +63,30 @@ namespace Freelancer_s_Web.Pages.PostPage
         // For more details, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!ModelState.IsValid)
-            {
-                return Page();
-            }
-
             try
             {
                 using (var work = _unitOfWorkFactory.Get)
                 {
+                    Post = await work.PostRepository.GetPost(Post.Id);
+                    if (Post == null)
+                    {
+                        return NotFound();
+                    }
+                    if (Post.UserId != CustomAuthorization.loginUser.Id && CustomAuthorization.loginUser.Role != CommonEnums.ROLE.ADMINISTRATOR)
+                    {
+                        return Redirect("/Unauthorized");
+                    }
+                    Post.UpdatedAt = DateTime.Now;
+                    Post.UpdatedBy = CustomAuthorization.loginUser.Email;
                     await work.PostRepository.UpdatePost(Post);
                 }
             }
-            catch (DbUpdateConcurrencyException)
+            catch (Exception ex)
             {
-                if (!PostExists(Post.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                TempData["Error"] = ex.Message;
+                return Redirect("/Index");
             }
-
             return RedirectToPage("./Index");
-        }
-
-        private bool PostExists(int id)
-        {
-            return _context.Posts.Any(e => e.Id == id);
         }
     }
 }

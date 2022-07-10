@@ -8,7 +8,6 @@ using Repositories.Notifications;
 using Repositories.PostContents;
 using Repositories.Posts;
 using Repositories.Reports;
-using Repositories.Reviews;
 using Repositories.Users;
 using System;
 
@@ -25,7 +24,6 @@ namespace Freelancer_s_Web.UnitOfWork
         IPostRepository _postRepository { get; }
         IPostContentRepository _postContentRepository { get; }
         IReportRepository _reportRepository { get; }
-        IReviewRepository _reviewRepository { get; }
         IUserRepository _userRepository { get; }
 
         private FreelancerContext _db;
@@ -43,7 +41,6 @@ namespace Freelancer_s_Web.UnitOfWork
             _postRepository = new PostRepository(db);
             _postContentRepository = new PostContentRepository(db);
             _reportRepository = new ReportRepository(db);
-            _reviewRepository = new ReviewRepository(db);
             _userRepository = new UserRepository(db);
         }
 
@@ -56,7 +53,6 @@ namespace Freelancer_s_Web.UnitOfWork
         public IPostRepository PostRepository => _postRepository;
         public IPostContentRepository PostContentRepository => _postContentRepository;
         public IReportRepository ReportRepository => _reportRepository;
-        public IReviewRepository ReviewRepository => _reviewRepository;
         public IUserRepository UserRepository => _userRepository;
 
         public void Dispose()

@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Freelancer_s_Web.Models;
 using Freelancer_s_Web.UnitOfWork;
+using Freelancer_s_Web.Utils;
 
 namespace Freelancer_s_Web.Pages.PostPage
 {
+    [Authorized("USER,ADMIN")]
     public class DetailsModel : PageModel
     {
         private UnitOfWorkFactory _unitOfWorkFactory;

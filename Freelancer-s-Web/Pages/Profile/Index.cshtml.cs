@@ -15,13 +15,15 @@ namespace Freelancer_s_Web.Pages.Profile
     public class IndexModel : PageModel
     {
         private UnitOfWorkFactory _unitOfWorkFactory;
-
         public IndexModel(UnitOfWorkFactory unitOfWorkFactory)
         {
             _unitOfWorkFactory = unitOfWorkFactory;
         }
 
         public User User { get; set; }
+
+        public Boolean? Editable;
+
 
         public async Task<IActionResult> OnGetAsync()
         {
@@ -35,6 +37,23 @@ namespace Freelancer_s_Web.Pages.Profile
             {
                 return NotFound();
             }
+            Editable = true;
+            return Page();
+        }
+
+        public IActionResult OnGetDetail(int id)
+        {
+
+            using (var work = _unitOfWorkFactory.Get)
+            {
+                User = work.UserRepository.Get(id);
+            }
+
+            if (User == null)
+            {
+                return NotFound();
+            }
+            Editable = false;
             return Page();
         }
     }

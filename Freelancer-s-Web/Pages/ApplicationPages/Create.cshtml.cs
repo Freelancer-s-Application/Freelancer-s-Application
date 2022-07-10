@@ -9,6 +9,7 @@ using Freelancer_s_Web.Models;
 using Freelancer_s_Web.UnitOfWork;
 using Freelancer_s_Web.Utils;
 using System.IO;
+using Freelancer_s_Web.Commons;
 
 namespace Freelancer_s_Web.Pages.ApplicationPages
 {
@@ -48,6 +49,7 @@ namespace Freelancer_s_Web.Pages.ApplicationPages
         {
             ApplicationForm.PostId = postId;
             ApplicationForm.UserId = CustomAuthorization.loginUser.Id;
+            ApplicationForm.Status = CommonEnums.APPLICATION_FORM_STATUS.PENDING;
             ApplicationForm.CreatedAt = DateTime.Now;
             ApplicationForm.CreatedBy = CustomAuthorization.loginUser.Email;
             using (var memoryStream = new MemoryStream())

@@ -14,5 +14,13 @@
             public const int PRIVATE = 2;
         }
 
+        public class APPLICATION_FORM_STATUS
+        {
+            public const int PENDING = 1;
+            public const int APPROVED = 2;
+            public const int REMOVED = 0;
+            public const int CANCELED = 3;
+
+        }
     }
 }

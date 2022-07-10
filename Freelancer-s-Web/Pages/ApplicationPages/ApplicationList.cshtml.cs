@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Freelancer_s_Web.Models;
 using Freelancer_s_Web.UnitOfWork;
 using Freelancer_s_Web.Utils;
+using Freelancer_s_Web.Commons;
 
 namespace Freelancer_s_Web.Pages.ApplicationPages
 {
@@ -28,7 +29,7 @@ namespace Freelancer_s_Web.Pages.ApplicationPages
             {
                 ApplicationForm = work.ApplicationFormRepository.GetAllFormByPostIdExceptCV(postId).ToList();
                 Post = work.PostRepository.Get(postId);
-                if(Post.User.Id != CustomAuthorization.loginUser.Id)
+                if(Post.UserId != CustomAuthorization.loginUser.Id)
                 {
                     return Redirect("/Authentication/Unauthorized");
                 }
@@ -50,5 +51,65 @@ namespace Freelancer_s_Web.Pages.ApplicationPages
                 return File(form.Cv, "application/pdf", "cv-" + form.User.Email+ ".pdf");
             }
         }
+
+        public IActionResult OnPostApprove(int id)
+        {
+            using (var work = _unitOfWorkFactory.Get)
+            {
+                ApplicationForm form = work.ApplicationFormRepository.GetFirstOrDefault(a => a.Id == id, "User,Post");
+                if (form == null)
+                {
+                    return NotFound();
+                }
+                form.Status = CommonEnums.APPLICATION_FORM_STATUS.APPROVED;
+                form.UpdatedAt = DateTime.Now;
+                form.UpdatedBy = CustomAuthorization.loginUser.Email;
+                work.ApplicationFormRepository.UpdateForm(form);
+                work.Save();
+                ApplicationForm = work.ApplicationFormRepository.GetAllFormByPostIdExceptCV(form.PostId).ToList();
+                Post = work.PostRepository.Get(form.PostId);
+                return Page();
+            }
+        }
+
+        public IActionResult OnPostCancel(int id)
+        {
+            using (var work = _unitOfWorkFactory.Get)
+            {
+                ApplicationForm form = work.ApplicationFormRepository.GetFirstOrDefault(a => a.Id == id, "User,Post");
+                if (form == null)
+                {
+                    return NotFound();
+                }
+                form.Status = CommonEnums.APPLICATION_FORM_STATUS.CANCELED;
+                form.UpdatedAt = DateTime.Now;
+                form.UpdatedBy = CustomAuthorization.loginUser.Email;
+                work.ApplicationFormRepository.UpdateForm(form);
+                work.Save();
+                ApplicationForm = work.ApplicationFormRepository.GetAllFormByPostIdExceptCV(form.PostId).ToList();
+                Post = work.PostRepository.Get(form.PostId);
+                return Page();
+            }
+        }
+
+        //public IActionResult OnPostConfirmAndClosePost(int id)
+        //{
+        //    using (var work = _unitOfWorkFactory.Get)
+        //    {
+        //        Post post = work.PostRepository.GetFirstOrDefault(a => a.Id == id);
+        //        if (post == null)
+        //        {
+        //            return NotFound();
+        //        }
+        //        post.Status = CommonEnums.POST_STATUS.CONFIRMED;
+        //        post.UpdatedAt = DateTime.Now;
+        //        post.UpdatedBy = CustomAuthorization.loginUser.Email;
+        //        work.PostRepository.UpdateForm(form);
+        //        work.Save();
+        //        ApplicationForm = work.ApplicationFormRepository.GetAllFormByPostIdExceptCV(form.PostId).ToList();
+        //        Post = work.PostRepository.Get(form.PostId);
+        //        return Page();
+        //    }
+        //}
     }
 }

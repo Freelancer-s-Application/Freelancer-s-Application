@@ -28,8 +28,17 @@ namespace Repositories.ApplicationForms
                 {
                     Id = f.Id,
                     User = f.User,
+                    Status = f.Status,
                     Post = f.Post,
+                    UserId = f.UserId,
+                    PostId = f.PostId,
                 });
         }
+
+        public void UpdateForm(ApplicationForm form)
+        {
+            _dbContext.ApplicationForms.Update(form);
+        }
+
     }
 }

@@ -11,6 +11,7 @@ namespace Repositories.ApplicationForms
     public interface IApplicationFormRepository : IRepository<ApplicationForm>
     {
         public IEnumerable<ApplicationForm> GetAllFormByPostIdExceptCV(int postId);
+        public void UpdateForm(ApplicationForm form);
 
     }
 }

@@ -16,8 +16,6 @@ namespace Freelancer_s_Web.Models
         public int UserId { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
-        public string Min { get; set; }
-        public string Max { get; set; }
         public int Status { get; set; }
         public int? MajorId { get; set; }
 

@@ -29,7 +29,7 @@ namespace Freelancer_s_Web.Pages.Authentication
             _unitOfWorkFactory = unitOfWorkFactory;
             _logger = logger;
         }
-        public IActionResult OnGet()
+        public IActionResult OnGetLogin()
         {
             var properties = new AuthenticationProperties { RedirectUri = Url.Page("./Login", pageHandler: "GoogleResponse") };
             return Challenge(properties, GoogleDefaults.AuthenticationScheme);
@@ -58,10 +58,10 @@ namespace Freelancer_s_Web.Pages.Authentication
                     Avatar = avatar,
                     Role = CommonEnums.ROLE.ADMINISTRATOR,
                 });
-                await HttpContext.SignInAsync(
-                    CookieAuthenticationDefaults.AuthenticationScheme,
-                    new ClaimsPrincipal(identity),
-                    authProperties);
+                //await HttpContext.SignInAsync(
+                //    CookieAuthenticationDefaults.AuthenticationScheme,
+                //    new ClaimsPrincipal(identity),
+                //    authProperties);
                 return RedirectToPage("/Index");
             }
             else
@@ -101,17 +101,17 @@ namespace Freelancer_s_Web.Pages.Authentication
                         });
                     }
                 }
-                await HttpContext.SignInAsync(
-                    CookieAuthenticationDefaults.AuthenticationScheme,
-                    new ClaimsPrincipal(identity),
-                    authProperties);
+                //await HttpContext.SignInAsync(
+                //    CookieAuthenticationDefaults.AuthenticationScheme,
+                //    new ClaimsPrincipal(identity),
+                //    authProperties);
                 return RedirectToPage("/Index");
             }
         }
 
-        public async Task<IActionResult> OnGetAsyncLogout()
+        public async Task<IActionResult> OnGetLogoutAsync()
         {
-            await HttpContext.SignOutAsync();
+            //await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             HttpContext.Session.Clear();
             return Redirect("/Index");
         }

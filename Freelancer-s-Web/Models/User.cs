@@ -18,8 +18,6 @@ namespace Freelancer_s_Web.Models
             Posts = new HashSet<Post>();
             ReportReportees = new HashSet<Report>();
             ReportReporters = new HashSet<Report>();
-            ReviewReviewees = new HashSet<Review>();
-            ReviewReviewers = new HashSet<Review>();
         }
         public string Avatar { get; set; }
         public string Email { get; set; }
@@ -38,7 +36,5 @@ namespace Freelancer_s_Web.Models
         public virtual ICollection<Post> Posts { get; set; }
         public virtual ICollection<Report> ReportReportees { get; set; }
         public virtual ICollection<Report> ReportReporters { get; set; }
-        public virtual ICollection<Review> ReviewReviewees { get; set; }
-        public virtual ICollection<Review> ReviewReviewers { get; set; }
     }
 }

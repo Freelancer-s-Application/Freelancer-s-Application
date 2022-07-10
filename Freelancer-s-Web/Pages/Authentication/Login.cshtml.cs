@@ -90,7 +90,11 @@ namespace Freelancer_s_Web.Pages.Authentication
                         });
                     }
                     else
-                    {
+                    {   if (user.IsDeleted)
+                        {
+                            TempData["Error"] = "Your account has been deactivated!! Please contact administrator for more information!";
+                            return Redirect("/Index");
+                        }
                         CustomAuthorization.Login(new LoginUserVM()
                         {
                             DisplayName = displayName,

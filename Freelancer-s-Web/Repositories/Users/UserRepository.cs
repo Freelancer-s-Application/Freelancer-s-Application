@@ -52,7 +52,7 @@ namespace Repositories.Users
         public async Task UpdateUser(User user)
         {
             user.UpdatedAt = DateTime.Now;
-            user.UpdatedBy = (await GetCurrentUser()).Email;
+            user.UpdatedBy = CustomAuthorization.loginUser.Email;
             //System.Diagnostics.Debug.WriteLine("From user update repo " + user.CreatedAt.ToString());
             _dbContext.Users.Update(user);
             await _dbContext.SaveChangesAsync();

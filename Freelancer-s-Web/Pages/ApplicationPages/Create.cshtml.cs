@@ -30,7 +30,7 @@ namespace Freelancer_s_Web.Pages.ApplicationPages
             using (var work = _unitOfWorkFactory.Get)
             {
                 Post = work.PostRepository.GetFirstOrDefault(post => post.Id == postId, "Major,User");
-                if (Post == null)
+                if (Post == null || Post.Status != CommonEnums.POST_STATUS.PUBLIC)
                 {
                     return NotFound();
                 }

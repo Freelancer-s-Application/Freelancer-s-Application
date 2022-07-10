@@ -58,8 +58,31 @@
     </dl>
 </div>
 <div>
-    @if (Model.Editable != null && Model.Editable == true)
+    @if (Model.IsLoggingIn != null && Model.IsLoggingIn == true)
     {
         <a asp-page="./Edit" asp-route-id="@Model.User.Id">Edit</a> 
+    }
+    @if (Model.IsLoggingIn != null && Model.IsLoggingIn == false)
+    {
+        <form method="post" asp-page-handler="Report" asp-route-id="@Model.User.Id">
+            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#report-user">Report</button>
+            <div class="modal" id="report-user" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h2 class="modal-title">Cancel</h2>
+                        </div>
+                        <div class="modal-body">
+                            <p>Are you sure you want to report @Model.User.Email?</p>
+                            <input type="text" name="content"/>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-success">Yes, Report</button>
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
     }
 </div>

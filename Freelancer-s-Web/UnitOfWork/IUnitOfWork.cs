@@ -7,7 +7,6 @@ using Repositories.Notifications;
 using Repositories.PostContents;
 using Repositories.Posts;
 using Repositories.Reports;
-using Repositories.Reviews;
 using Repositories.Users;
 using System;
 using System.Collections.Generic;
@@ -28,7 +27,6 @@ namespace Freelancer_s_Web.UnitOfWork
         IPostRepository PostRepository { get; }
         IPostContentRepository PostContentRepository { get; }
         IReportRepository ReportRepository { get; }
-        IReviewRepository ReviewRepository { get; }
         IUserRepository UserRepository { get; }
         void Save();
     }

@@ -6,16 +6,20 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Freelancer_s_Web.Models;
+using Freelancer_s_Web.UnitOfWork;
+using Freelancer_s_Web.Commons;
+using Freelancer_s_Web.Utils;
 
 namespace Freelancer_s_Web.Pages.PostPage
 {
+    [Authorized("USER,ADMIN")]
     public class DeleteModel : PageModel
     {
-        private readonly Freelancer_s_Web.Models.FreelancerContext _context;
+        private UnitOfWorkFactory _unitOfWorkFactory;
 
-        public DeleteModel(Freelancer_s_Web.Models.FreelancerContext context)
+        public DeleteModel(UnitOfWorkFactory unitOfWorkFactory)
         {
-            _context = context;
+            _unitOfWorkFactory = unitOfWorkFactory;
         }
 
         [BindProperty]
@@ -27,11 +31,10 @@ namespace Freelancer_s_Web.Pages.PostPage
             {
                 return NotFound();
             }
-
-            Post = await _context.Posts
-                .Include(p => p.Major)
-                .Include(p => p.User).FirstOrDefaultAsync(m => m.Id == id);
-
+            using (var work = _unitOfWorkFactory.Get)
+            {
+                Post = work.PostRepository.GetFirstOrDefault(p => p.Id == id);
+            }
             if (Post == null)
             {
                 return NotFound();
@@ -46,15 +49,28 @@ namespace Freelancer_s_Web.Pages.PostPage
                 return NotFound();
             }
 
-            Post = await _context.Posts.FindAsync(id);
-
-            if (Post != null)
+            using (var work = _unitOfWorkFactory.Get)
             {
-                _context.Posts.Remove(Post);
-                await _context.SaveChangesAsync();
+                Post = work.PostRepository.GetFirstOrDefault(p => p.Id == id);
+                if (Post == null)
+                {
+                    return NotFound();
+                }
+                Post.Status = CommonEnums.POST_STATUS.REMOVE;
+                Post.IsDeleted = true;
+                Post.UpdatedAt = DateTime.Now;
+                Post.UpdatedBy = CustomAuthorization.loginUser.Email;
+                await work.PostRepository.UpdatePost(Post);
+                work.Save();
             }
-
-            return RedirectToPage("./Index");
+            if (CustomAuthorization.loginUser.Role == CommonEnums.ROLE.ADMINISTRATOR)
+            {
+                return RedirectToPage("./Index");
+            }
+            else
+            {
+                return RedirectToPage("/HomePage/Index");
+            }
         }
     }
 }

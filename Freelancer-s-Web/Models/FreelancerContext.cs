@@ -27,7 +27,6 @@ namespace Freelancer_s_Web.Models
         public virtual DbSet<Post> Posts { get; set; }
         public virtual DbSet<PostContent> PostContents { get; set; }
         public virtual DbSet<Report> Reports { get; set; }
-        public virtual DbSet<Review> Reviews { get; set; }
         public virtual DbSet<User> Users { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -312,36 +311,6 @@ namespace Freelancer_s_Web.Models
                     .HasForeignKey(d => d.ReporterId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Reports_Users");
-            });
-
-            modelBuilder.Entity<Review>(entity =>
-            {
-                entity.Property(e => e.Comment).HasMaxLength(1000);
-
-                entity.Property(e => e.CreatedAt).HasColumnType("datetime");
-
-                entity.Property(e => e.CreatedBy)
-                    .IsRequired()
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
-
-                entity.Property(e => e.UpdatedBy)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.HasOne(d => d.Reviewee)
-                    .WithMany(p => p.ReviewReviewees)
-                    .HasForeignKey(d => d.RevieweeId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Reviews_Users1");
-
-                entity.HasOne(d => d.Reviewer)
-                    .WithMany(p => p.ReviewReviewers)
-                    .HasForeignKey(d => d.ReviewerId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Reviews_Users");
             });
 
             modelBuilder.Entity<User>(entity =>

@@ -12,6 +12,7 @@ using Freelancer_s_Web.Commons;
 
 namespace Freelancer_s_Web.Pages.PostPage
 {
+    [Authorized("USER")]
     public class CreateModel : PageModel
     {
         private UnitOfWorkFactory _unitOfWorkFactory;
@@ -35,7 +36,6 @@ namespace Freelancer_s_Web.Pages.PostPage
         [BindProperty]
         public Post Post { get; set; }
 
-        // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
             try
@@ -49,7 +49,7 @@ namespace Freelancer_s_Web.Pages.PostPage
                     await work.PostRepository.CreatePost(Post);
                 }
 
-                return RedirectToPage("./Index");
+                return RedirectToPage("/HomePage/Index");
             } catch (Exception ex)
             {
                 using (var work = _unitOfWorkFactory.Get)

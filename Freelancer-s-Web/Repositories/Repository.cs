@@ -34,7 +34,7 @@ namespace Repositories
 
             if (filter != null)
             {
-                query = query.Where(filter);
+                query = query.AsNoTracking().Where(filter);
             }
 
             if (includeProperties != null)

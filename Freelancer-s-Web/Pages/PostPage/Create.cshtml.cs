@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Freelancer_s_Web.Models;
 using Freelancer_s_Web.UnitOfWork;
+using Freelancer_s_Web.Utils;
+using Freelancer_s_Web.Commons;
 
 namespace Freelancer_s_Web.Pages.PostPage
 {
@@ -14,19 +16,20 @@ namespace Freelancer_s_Web.Pages.PostPage
     {
         private UnitOfWorkFactory _unitOfWorkFactory;
 
-        private readonly Freelancer_s_Web.Models.FreelancerContext _context;
-
-        public CreateModel(Freelancer_s_Web.Models.FreelancerContext context, UnitOfWorkFactory unitOfWorkFactory)
+        public CreateModel(UnitOfWorkFactory unitOfWorkFactory)
         {
-            _context = context;
             _unitOfWorkFactory = unitOfWorkFactory;
         }
-
+        public IList<Major> majorList;
         public IActionResult OnGet()
         {
-        ViewData["MajorId"] = new SelectList(_context.Majors, "Id", "Name");
-        ViewData["UserId"] = new SelectList(_context.Users, "Id", "DisplayName");
-            return Page();
+            using (var work = _unitOfWorkFactory.Get)
+            {
+                majorList = work.MajorRepository.GetAll().ToList();
+                ViewData["MajorId"] = new SelectList(majorList, "Id", "Name");
+                ViewData["UserId"] = CustomAuthorization.loginUser.Id;
+                return Page();
+            }
         }
 
         [BindProperty]
@@ -35,17 +38,30 @@ namespace Freelancer_s_Web.Pages.PostPage
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return Page();
-            }
+                Post.UserId = CustomAuthorization.loginUser.Id;
+                Post.CreatedAt = DateTime.Now;
+                Post.CreatedBy = CustomAuthorization.loginUser.Email;
+                Post.Status = CommonEnums.POST_STATUS.PUBLIC;
+                using (var work = _unitOfWorkFactory.Get)
+                {
+                    await work.PostRepository.CreatePost(Post);
+                }
 
-            using (var work = _unitOfWorkFactory.Get)
+                return RedirectToPage("./Index");
+            } catch (Exception ex)
             {
-                await work.PostRepository.CreatePost(Post);
+                using (var work = _unitOfWorkFactory.Get)
+                {
+                    majorList = work.MajorRepository.GetAll().ToList();
+                    ViewData["MajorId"] = new SelectList(majorList, "Id", "Name");
+                    ViewData["UserId"] = CustomAuthorization.loginUser.Id;
+                    ViewData["Error"] = ex.Message;
+                    return Page();
+                }
             }
-
-            return RedirectToPage("./Index");
+            
         }
     }
 }

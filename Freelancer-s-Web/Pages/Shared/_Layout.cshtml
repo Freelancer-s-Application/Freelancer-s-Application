@@ -36,7 +36,7 @@ ViewData["Title"] = "Home page";
                             if (loginUser == null)
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-page="/Authentication/Login">Login</a>
+                                    <a class="nav-link text-dark" asp-area="" asp-page="/Authentication/Login" asp-page-handler="Login">Login</a>
                                 </li>
                             }
                             else

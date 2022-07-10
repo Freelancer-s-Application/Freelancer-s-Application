@@ -1,5 +1,6 @@
 ﻿using Freelancer_s_Web.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,5 +17,28 @@ namespace Repositories.ApplicationForms
         {
             _dbContext = dbContext;
         }
+
+        public IEnumerable<ApplicationForm> GetAllFormByPostIdExceptCV(int postId)
+        {
+            return _dbContext.ApplicationForms
+                .Include(f => f.Post)
+                .Include(f => f.User)
+                .Where(f => f.PostId == postId)
+                .Select(f => new ApplicationForm()
+                {
+                    Id = f.Id,
+                    User = f.User,
+                    Status = f.Status,
+                    Post = f.Post,
+                    UserId = f.UserId,
+                    PostId = f.PostId,
+                });
+        }
+
+        public void UpdateForm(ApplicationForm form)
+        {
+            _dbContext.ApplicationForms.Update(form);
+        }
+
     }
 }

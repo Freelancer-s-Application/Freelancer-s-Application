@@ -1,4 +1,5 @@
 ﻿@page
+@using Freelancer_s_Web.Commons
 @model Freelancer_s_Web.Pages.ApplicationPages.ApplicationListModel
 
 @{
@@ -8,7 +9,7 @@
 <h1>ApplicationList</h1>
 
 <p>
-    <a asp-page="Create">Create New</a>
+    @*<a href="ApplicationPages/Create?postId=@Model.Post.Id">Create New</a>*@
 </p>
 <table class="table">
     <thead>
@@ -17,28 +18,10 @@
                 @Html.DisplayNameFor(model => model.ApplicationForm[0].Status)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ApplicationForm[0].Cv)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ApplicationForm[0].Post)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.ApplicationForm[0].User)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ApplicationForm[0].CreatedAt)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ApplicationForm[0].UpdatedAt)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ApplicationForm[0].IsDeleted)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ApplicationForm[0].CreatedBy)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ApplicationForm[0].UpdatedBy)
+             <th>
+                CV
             </th>
             <th></th>
         </tr>
@@ -50,35 +33,95 @@
                 @Html.DisplayFor(modelItem => item.Status)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Cv)
+                @Html.DisplayFor(modelItem => item.User.DisplayName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Post.CreatedBy)
+                <a asp-page="/ApplicationPages/ApplicationList" asp-page-handler="DownloadCV" asp-route-id="@item.Id">Download CV</a>
+                @*<form asp-page-handler="DownloadCV">
+                    <input type="hidden" value="@item.Id" name="id"/>
+                    <input type="submit" value="Download CV" />
+                </form>*@
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.User.Avatar)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedAt)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UpdatedAt)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsDeleted)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedBy)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UpdatedBy)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                @{
+                    if(item.Status == CommonEnums.APPLICATION_FORM_STATUS.PENDING)
+                    {
+                        <a asp-area="" asp-page="/Profile/Index" asp-page-handler="Detail" asp-route-id="@item.User.Id">Candidate's Profile</a> 
+                        <form method="post" asp-page-handler="Cancel" asp-route-id="@item.Id">
+                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#confirm-cancel-@item.Id">Cancel</button>
+                            <div class="modal" id="confirm-cancel-@item.Id" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h2 class="modal-title">Cancel</h2>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>Are you sure you want to cancel @item.User.Email?</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn btn-success">Yes, Confirm Cancel</button>
+                                            <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form> 
+                        <form method="post" asp-page-handler="Approve" asp-route-id="@item.Id">
+                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#confirm-approve-@item.Id">Approve</button>
+                            <div class="modal" id="confirm-approve-@item.Id" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h2 class="modal-title">Approve</h2>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>Are you sure you want to approve @item.User.Email?</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn btn-success">Yes, Approve</button>
+                                            <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    } else
+                    {
+                        if(item.Status == CommonEnums.APPLICATION_FORM_STATUS.APPROVED) 
+                        {
+                            <p>Approved</p>
+                        }
+                        if(item.Status == CommonEnums.APPLICATION_FORM_STATUS.CANCELED) 
+                        {
+                            <p>Canceled</p>
+                        }
+                        if(item.Status == CommonEnums.APPLICATION_FORM_STATUS.REMOVED) 
+                        {
+                            <p>Removed</p>
+                        }
+                    }
+                 }
             </td>
         </tr>
 }
     </tbody>
 </table>
+<form method="post" asp-page-handler="ConfirmAndClosePost" asp-route-id="@Model.Post.Id">
+    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#confirm-post">Confirm and close post</button>
+    <div class="modal" id="confirm-post" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title">Cancel</h2>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to confirm and close post: @Model.Post.Title?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Yes, Confirm</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form> 

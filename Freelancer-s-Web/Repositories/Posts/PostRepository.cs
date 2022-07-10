@@ -13,7 +13,6 @@ namespace Repositories.Posts
     public class PostRepository : Repository<Post>, IPostRepository
     {
         private readonly FreelancerContext _dbContext;
-
         public PostRepository(FreelancerContext dbContext) : base(dbContext)
         {
             _dbContext = dbContext;

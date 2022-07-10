@@ -58,5 +58,8 @@
     </dl>
 </div>
 <div>
-    <a asp-page="./Edit" asp-route-id="@Model.User.Id">Edit</a> 
+    @if (Model.Editable != null && Model.Editable == true)
+    {
+        <a asp-page="./Edit" asp-route-id="@Model.User.Id">Edit</a> 
+    }
 </div>

@@ -4,7 +4,16 @@
 @{
     ViewData["Title"] = "HomePage";
 }
+<style>
 
+
+    .filterDiv {
+        display: none;
+    }
+    .show {
+        display: contents;
+    }
+</style>
 <h1>HomePage</h1>
 
 <div class="row">
@@ -12,22 +21,40 @@
         <input type="text" id="myFilter" class="form-control" onkeyup="myFunction()" placeholder="Search for card name...">
     </div>
 </div>
-
+<div id="myBtnContainer">
+    <button class="btn active" onclick="filterSelection('all')"> Show all</button>
+    <button class="btn" onclick="filterSelection('6')"> SE</button>
+    <button class="btn" onclick="filterSelection('7')">SA</button>
+    <button class="btn" onclick="filterSelection('8')">IA</button>
+    <button class="btn" onclick="filterSelection('9')">AI</button>
+    <button class="btn" onclick="filterSelection('10')">General</button>
+</div>
+<br />
 <div id="myProducts">
     @foreach (var item in Model.Post)
     {
+    
+    <div class="filterDiv @Html.DisplayFor(modelItem => item.MajorId)">
+        <a href="#">
+            <div class="card ">
+                <div class="card-title p-2">
+                    <h2>@Html.DisplayFor(modelItem => item.Title)</h2>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">@Html.DisplayFor(modelItem => item.Description).</p>
+                    <p class="card-text">@Html.DisplayFor(modelItem => item.Major.Name).</p>
+                    <p class="card-text"></p>
+                    <div class="d-flex flex-row">
+                        <p class="card-text">Comment: @Html.DisplayFor(modelItem => item.Comments.Count).</p>
+                        <p class="card-text mx-2">Min - Max: @Html.DisplayFor(modelItem => item.Min)- @Html.DisplayFor(modelItem => item.Max)</p>
+                    </div>
 
-        <div class="card">
-            <div class=" card-title">
-                @Html.DisplayFor(modelItem => item.Title)
+                </div>
             </div>
-            <div class="card-body">
-                <p class="card-text">@Html.DisplayFor(modelItem => item.Description).</p>
-                <a href="#" class="btn btn-primary">Open</a>
-            </div>
+        </a>
+            <br />
         </div>
-        <br />
-
+   
     }
 </div>
 <script defer>
@@ -46,5 +73,46 @@
             }
         }
     }
+    filterSelection("all")
+    function filterSelection(c) {
+        var x, i;
+        x = document.getElementsByClassName("filterDiv");
+        if (c == "all") c = "";
+        for (i = 0; i < x.length; i++) {
+            w3RemoveClass(x[i], "show");
+            if (x[i].className.indexOf(c) > -1) w3AddClass(x[i], "show");
+        }
+    }
 
+    function w3AddClass(element, name) {
+        var i, arr1, arr2;
+        arr1 = element.className.split(" ");
+        arr2 = name.split(" ");
+        for (i = 0; i < arr2.length; i++) {
+            if (arr1.indexOf(arr2[i]) == -1) { element.className += " " + arr2[i]; }
+        }
+    }
+
+    function w3RemoveClass(element, name) {
+        var i, arr1, arr2;
+        arr1 = element.className.split(" ");
+        arr2 = name.split(" ");
+        for (i = 0; i < arr2.length; i++) {
+            while (arr1.indexOf(arr2[i]) > -1) {
+                arr1.splice(arr1.indexOf(arr2[i]), 1);
+            }
+        }
+        element.className = arr1.join(" ");
+    }
+
+    // Add active class to the current button (highlight it)
+    var btnContainer = document.getElementById("myBtnContainer");
+    var btns = btnContainer.getElementsByClassName("btn");
+    for (var i = 0; i < btns.length; i++) {
+        btns[i].addEventListener("click", function () {
+            var current = document.getElementsByClassName("active");
+            current[0].className = current[0].className.replace(" active", "");
+            this.className += " active";
+        });
+    }
 </script>

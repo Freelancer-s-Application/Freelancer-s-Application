@@ -1,5 +1,6 @@
 ﻿using Freelancer_s_Web.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,5 +17,15 @@ namespace Repositories.Comments
         {
             _dbContext = dbContext;
         }
+
+        public async Task<IEnumerable<Comment>> GetAllCommentByPostId(int id)
+        {
+            var comments = await _dbContext.Comments
+                .Include(c => c.User)
+                .Where(pc => pc.PostId == id).ToListAsync();
+
+            return comments;
+        }
+
     }
 }

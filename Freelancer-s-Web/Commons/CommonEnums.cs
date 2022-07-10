@@ -13,6 +13,10 @@
             public const int REMOVE = 0;
             public const int PRIVATE = 2;
         }
-
+        public class POST_CONTENT_TYPE
+        {
+            public const int IMAGE = 1;
+            public const int VIDEO = 2;
+        }
     }
 }

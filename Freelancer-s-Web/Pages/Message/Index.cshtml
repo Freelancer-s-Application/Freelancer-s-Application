@@ -1,0 +1,46 @@
+@page
+@model Freelancer_s_Web.Pages.Message.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="container">
+        
+        @{
+            foreach(var item in Model.Companions)
+            {
+                <div class="row my-2">
+                    <div class="col-2">
+                            <img src="@item.Key.DisplayName" width="50" height="50" class="rounded-circle mx-1 border">
+                    </div>
+                    <div class="col-6 d-flex align-items-center">
+                        <a asp-page="./ChatRoom" asp-route-id="@item.Key.Id">
+                            <p class="m-0">@item.Key.DisplayName</p>
+                        </a>
+                    </div>
+                </div>
+                <div class="row p-2 border-bottom">
+                    <div class="col-8 d-flex align-items-center">
+                        <p class="m-0 overflow-hidden">@item.Value.Content</p>
+                    </div>
+                    <div class="col-4 d-flex align-items-center">
+                        <p class="m-0">@item.Value.CreatedAt</p>
+                    </div>
+                </div>
+            }
+        }
+        @*<div class="row">
+            <div class="col-6">
+                <ul id="messgaesList"></ul>
+            </div>
+        </div>
+        <br />
+        <input type="text" id="message" autocomplete="off" />
+        <input type="button" id="sendButton" value="Send Message" />*@
+</div>
+
+<script src="~/lib/microsoft/signalr/dist/browser/signalr.js"></script>
+<script>
+
+</script>

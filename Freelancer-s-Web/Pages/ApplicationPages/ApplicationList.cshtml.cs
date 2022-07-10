@@ -92,24 +92,24 @@ namespace Freelancer_s_Web.Pages.ApplicationPages
             }
         }
 
-        //public IActionResult OnPostConfirmAndClosePost(int id)
-        //{
-        //    using (var work = _unitOfWorkFactory.Get)
-        //    {
-        //        Post post = work.PostRepository.GetFirstOrDefault(a => a.Id == id);
-        //        if (post == null)
-        //        {
-        //            return NotFound();
-        //        }
-        //        post.Status = CommonEnums.POST_STATUS.CONFIRMED;
-        //        post.UpdatedAt = DateTime.Now;
-        //        post.UpdatedBy = CustomAuthorization.loginUser.Email;
-        //        work.PostRepository.UpdateForm(form);
-        //        work.Save();
-        //        ApplicationForm = work.ApplicationFormRepository.GetAllFormByPostIdExceptCV(form.PostId).ToList();
-        //        Post = work.PostRepository.Get(form.PostId);
-        //        return Page();
-        //    }
-        //}
+        public async Task<IActionResult> OnPostConfirmAndClosePostAsync(int id)
+        {
+            using (var work = _unitOfWorkFactory.Get)
+            {
+                Post post = work.PostRepository.GetFirstOrDefault(a => a.Id == id);
+                if (post == null)
+                {
+                    return NotFound();
+                }
+                post.Status = CommonEnums.POST_STATUS.PRIVATE;
+                post.UpdatedAt = DateTime.Now;
+                post.UpdatedBy = CustomAuthorization.loginUser.Email;
+                await work.PostRepository.UpdatePost(post);
+                work.Save();
+                ApplicationForm = work.ApplicationFormRepository.GetAllFormByPostIdExceptCV(id).ToList();
+                Post = work.PostRepository.Get(id);
+                return Page();
+            }
+        }
     }
 }

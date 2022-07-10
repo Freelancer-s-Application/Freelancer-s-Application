@@ -1,0 +1,72 @@
+@page
+@model Freelancer_s_Web.Pages.Message.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Message</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Message.SenderId" class="control-label"></label>
+                <select asp-for="Message.SenderId" class ="form-control" asp-items="ViewBag.SenderId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Message.ReceiverId" class="control-label"></label>
+                <select asp-for="Message.ReceiverId" class ="form-control" asp-items="ViewBag.ReceiverId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Message.Content" class="control-label"></label>
+                <input asp-for="Message.Content" class="form-control" />
+                <span asp-validation-for="Message.Content" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Message.IsSeen" /> @Html.DisplayNameFor(model => model.Message.IsSeen)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="Message.CreatedAt" class="control-label"></label>
+                <input asp-for="Message.CreatedAt" class="form-control" />
+                <span asp-validation-for="Message.CreatedAt" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Message.UpdatedAt" class="control-label"></label>
+                <input asp-for="Message.UpdatedAt" class="form-control" />
+                <span asp-validation-for="Message.UpdatedAt" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Message.IsDeleted" /> @Html.DisplayNameFor(model => model.Message.IsDeleted)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="Message.CreatedBy" class="control-label"></label>
+                <input asp-for="Message.CreatedBy" class="form-control" />
+                <span asp-validation-for="Message.CreatedBy" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Message.UpdatedBy" class="control-label"></label>
+                <input asp-for="Message.UpdatedBy" class="form-control" />
+                <span asp-validation-for="Message.UpdatedBy" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

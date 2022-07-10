@@ -1,0 +1,121 @@
+﻿@page
+@using Freelancer_s_Web.Commons
+@model Freelancer_s_Web.Pages.PostPage.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+@*Post page management of admin*@
+
+
+<h1>Admin Post Management</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Post[0].Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Post[0].Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Post[0].Min)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Post[0].Max)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Post[0].Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Post[0].Major)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Post[0].User)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Post[0].CreatedAt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Post[0].UpdatedAt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Post[0].IsDeleted)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Post[0].CreatedBy)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Post[0].UpdatedBy)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Post) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Min)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Max)
+            </td>
+                @if (item.Status == CommonEnums.POST_STATUS.PUBLIC)
+                {
+                    <td>
+                       @Html.DisplayName("PUBLIC")
+                    </td>
+                }
+                else if (item.Status == CommonEnums.POST_STATUS.PRIVATE)
+                {
+                    <td>
+                       @Html.DisplayName("PRIVATE")
+                    </td>
+                }
+                else
+                {
+                    <td>
+                       @Html.DisplayName("REMOVE")
+                    </td>
+                }
+            <td>
+                @Html.DisplayFor(modelItem => item.Major.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.DisplayName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedAt)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UpdatedAt)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsDeleted)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedBy)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UpdatedBy)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

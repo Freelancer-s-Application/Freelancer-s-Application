@@ -10,5 +10,6 @@ namespace Repositories.Comments
 {
     public interface ICommentRepository : IRepository<Comment>
     {
+        Task<IEnumerable<Comment>> GetAllCommentByPostId(int id);
     }
 }

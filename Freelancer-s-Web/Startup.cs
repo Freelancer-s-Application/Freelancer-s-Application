@@ -15,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Freelancer_s_Web.Hubs;
 
 namespace Freelancer_s_Web
 {
@@ -67,6 +68,8 @@ namespace Freelancer_s_Web
                     //options.CallbackPath = "/Authentication/Login?handler=GoogleResponse";
                     options.ClaimActions.MapJsonKey("urn:google:picture", "picture", "url");
                 });
+
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -101,6 +104,7 @@ namespace Freelancer_s_Web
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
+                endpoints.MapHub<ChatHub>("/chathub");
             });
         }
     }

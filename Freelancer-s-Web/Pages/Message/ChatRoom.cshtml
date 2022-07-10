@@ -1,0 +1,122 @@
+﻿@page
+@model Freelancer_s_Web.Pages.Message.ChatRoomModel
+@{
+    
+}
+@*<div class="container">
+    @{
+        foreach (var item in Model.Conversation)
+        {
+            if (item.Key.Id == Model.currentUserID)
+            {
+                <div class="row my-3">
+                    <div class="col-2">
+                        <img src="@item.Key.Avatar" width="50" height="50">
+                    </div>
+                    <div class="col-6 border border-2">
+                        <p>@item.Value.Content</p>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="row my-3 d-flex justify-content-end">
+                    <div class="col-6 border border-2">
+                        <p>@item.Value.Content</p>
+                    </div>
+                    <div class="col-2">
+                        <img src="@item.Key.Avatar" width="50" height="50">
+                    </div>
+                </div>
+            }
+
+        }
+    }
+    <input type="text" id="message" />
+    <input type="button" id="sendmessage" value="Send" />
+</div>*@
+
+<div class="container">
+    <div class="row">&nbsp;</div>
+    <div class="row">
+        <div class="col-4"><input hidden type="text" id="userInput" value="@Model.companion.Id"/></div>
+    </div>
+    <div class="row">
+        <div class="col-2">Message</div>
+        <div class="col-4"><input type="text" id="messageInput"/></div>
+    </div>
+    <div class="row">&nbsp;</div>
+    <div class="row">
+        <div class="col-6">
+            <input type="button" id="sendButton" value="Send Message"/>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <hr />
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <ul id="messagesList" class="d-flex flex-column" style="list-style-type: none; overflow: scroll; max-height: 500px"></ul>
+    </div>
+</div>
+
+<script src="~/lib/microsoft/signalr/dist/browser/signalr.js"></script>
+    <script src="~/js/site.js"></script>
+    <script>
+    var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
+
+    connection.on("GetMessagesResponse", function (res) {
+        //console.log("GetMessagesResponse");
+        console.log(res);
+        var userId = document.getElementById("userInput").value;
+        document.getElementById("messagesList").innerHTML = ""
+
+        var element = document.getElementById("messagesList");
+        element.scrollTo(0, element.scrollHeight);
+
+        res.forEach(item => {
+            var li = document.createElement("li");
+            const [dateValues, timeValues] = item.value.createdAt.split('T');
+            const [hh, mm, ss] = timeValues.split(':')
+
+            if (item.value.receiverId == userId) {
+                li.innerHTML = `<img src="${item.key.avatar}" width="25" height="25" class="rounded-circle mx-1 border">` + ": " + item.value.content + `<br>` + " [" + `${dateValues} ${hh}:${mm}` + (item.value.isSeen ? " Seen" : " Not seen") + "] ";
+            }
+            else {
+                li.classList.add("ml-auto");
+                li.innerHTML = item.value.content + " :" + `<img src="${item.key.avatar}" width="25" height="25" class="rounded-circle mx-1 border">` + `<br>` + " [" + `${dateValues} ${hh}:${mm}` + "] ";
+            }
+
+            document.getElementById("messagesList").appendChild(li);
+        })
+        @*$.each(res, (item) => {
+            var li = document.createElement("li");
+            li.textContent = " [" + item.value.createdAt + "] "+ item.key + ": " + item.value.content;
+            document.getElementById("messagesList").appendChild(li);
+        })*@
+
+    });
+
+    connection.start().then(() => {
+        var userId = document.getElementById("userInput").value;
+        connection.invoke("GetMessages", userId).catch(function (err) {
+            return console.error(err.toString());
+        });
+    });
+
+    var sendBtn = document.getElementById("sendButton")
+    sendBtn.addEventListener("click", () => {
+        var userId = document.getElementById("userInput").value;
+        var messageInput = document.getElementById("messageInput").value;
+        if (!messageInput || messageInput.trim().length == 0) {
+            alert("Message cant empty");
+            return;
+        }
+        connection.invoke("SendMessage", userId, messageInput).catch(function (err) {
+            return console.error(err.toString());
+        });
+    })
+    </script>

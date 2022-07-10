@@ -38,6 +38,12 @@ namespace Freelancer_s_Web.Pages.ApplicationPages
                 {
                     return Redirect("/Authentication/Unauthorized");
                 }
+                ApplicationForm applicationForm = work.ApplicationFormRepository.GetFirstOrDefault(a => a.UserId == CustomAuthorization.loginUser.Id && a.PostId == postId);
+                if (applicationForm != null)
+                {
+                    TempData["Error"] = "You have applied this post!!!";
+                    return RedirectToPage("/Index");
+                }
             }
             return Page();
         }

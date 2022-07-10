@@ -232,14 +232,6 @@ namespace Freelancer_s_Web.Models
                     .IsRequired()
                     .HasMaxLength(1000);
 
-                entity.Property(e => e.Max)
-                    .HasMaxLength(10)
-                    .IsFixedLength(true);
-
-                entity.Property(e => e.Min)
-                    .HasMaxLength(10)
-                    .IsFixedLength(true);
-
                 entity.Property(e => e.Title)
                     .IsRequired()
                     .HasMaxLength(255);

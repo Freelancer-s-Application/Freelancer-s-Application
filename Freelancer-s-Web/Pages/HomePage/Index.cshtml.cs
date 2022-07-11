@@ -30,6 +30,7 @@ namespace Freelancer_s_Web.Pages.HomePage
                
                 Post = await work.PostRepository.GetAll(post => post.Status == CommonEnums.POST_STATUS.PUBLIC, null, "User,Major,Comments").ToListAsync();
                
+               
             }
         }
     }

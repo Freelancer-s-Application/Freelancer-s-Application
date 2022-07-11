@@ -99,9 +99,15 @@
                 @Html.DisplayFor(modelItem => item.UpdatedBy)
             </td>
             <td>
-                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-page="./Details" asp-route-id="@item.Id">Details</a>
+                @if (@item.IsDeleted)
+                {
+                    <p>Removed</p>
+                } else
+                {
+                     <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a>
+                    <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>   
+                }
             </td>
         </tr>
 }

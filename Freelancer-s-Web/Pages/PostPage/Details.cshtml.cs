@@ -10,6 +10,7 @@ using Freelancer_s_Web.UnitOfWork;
 using Freelancer_s_Web.Utils;
 using System.IO;
 using Freelancer_s_Web.ViewModel;
+using Freelancer_s_Web.Commons;
 
 namespace Freelancer_s_Web.Pages.PostPage
 {
@@ -39,6 +40,14 @@ namespace Freelancer_s_Web.Pages.PostPage
                 using (var work = _unitOfWorkFactory.Get)
                 {
                     Post = await work.PostRepository.GetPost(id);
+                    if(Post == null)
+                    {
+                        return NotFound();
+                    }
+                    if(Post.IsDeleted && CustomAuthorization.loginUser.Role != CommonEnums.ROLE.ADMINISTRATOR)
+                    {
+                        return NotFound();
+                    }
 
                     var postContentsDb = (await work.PostContentRepository.GetAllPostContentByPostId(id)).ToList();
                     foreach (var content in postContentsDb)
@@ -59,7 +68,7 @@ namespace Freelancer_s_Web.Pages.PostPage
                 {
                     return NotFound();
                 }
-                if (Post.UserId == CustomAuthorization.loginUser.Id)
+                if (Post.UserId == CustomAuthorization.loginUser.Id || CustomAuthorization.loginUser.Role == CommonEnums.ROLE.ADMINISTRATOR)
                 {
                     isAuthor = true;
                 }
@@ -84,7 +93,7 @@ namespace Freelancer_s_Web.Pages.PostPage
                 using (var work = _unitOfWorkFactory.Get)
                 {
                     Post = await work.PostRepository.GetPost(postId);
-                    if (Post.UserId == CustomAuthorization.loginUser.Id)
+                    if (Post.UserId == CustomAuthorization.loginUser.Id || CustomAuthorization.loginUser.Role == CommonEnums.ROLE.ADMINISTRATOR)
                     {
                         isAuthor = true;
                     }
@@ -158,6 +167,76 @@ namespace Freelancer_s_Web.Pages.PostPage
                 return Redirect("/Index");
             }
             
+        }
+        public async Task<IActionResult> OnPostRemoveAsync(int id)
+        {
+            using (var work = _unitOfWorkFactory.Get)
+            {
+                try
+                {
+                    PostContent content = work.PostContentRepository.GetFirstOrDefault(u => u.Id == id, "Post");
+                    if (content == null)
+                    {
+                        return NotFound();
+                    }
+                    if (content.Post.UserId != CustomAuthorization.loginUser.Id && CustomAuthorization.loginUser.Role != CommonEnums.ROLE.ADMINISTRATOR)
+                    {
+                        return Redirect("/Authentication/Unauthorized");
+                    }
+                    content.IsDeleted = true;
+                    content.UpdatedAt = DateTime.Now;
+                    content.UpdatedBy = CustomAuthorization.loginUser.Email;
+                    work.PostContentRepository.UpdatePostContent(content);
+                    work.Save();
+                    return Redirect("/PostPage/Details?id=" + content.PostId);
+                }
+                catch (Exception ex)
+                {
+                    TempData["Error"] = "Something went wrong! Error: " + ex.Message;
+                    return Redirect("/Index");
+                }
+            }
+            try
+            {
+                postContents = new List<PostContentBase64>();
+                using (var work = _unitOfWorkFactory.Get)
+                {
+                    Post = await work.PostRepository.GetPost(id);
+
+                    var postContentsDb = (await work.PostContentRepository.GetAllPostContentByPostId(id)).ToList();
+                    foreach (var content in postContentsDb)
+                    {
+                        postContents.Add(new PostContentBase64()
+                        {
+                            Id = content.Id,
+                            PostId = content.PostId,
+                            Post = content.Post,
+                            Type = content.Type,
+                            FileBase64 = Convert.ToBase64String(content.File),
+                        });
+                    }
+                    comments = await work.CommentRepository.GetAllCommentByPostId(id);
+                }
+
+                if (Post == null)
+                {
+                    return NotFound();
+                }
+                if (Post.UserId == CustomAuthorization.loginUser.Id || CustomAuthorization.loginUser.Role == CommonEnums.ROLE.ADMINISTRATOR)
+                {
+                    isAuthor = true;
+                }
+                else
+                {
+                    isAuthor = false;
+                }
+                return Page();
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = "Something went wrong! Error: " + ex.Message;
+                return Redirect("/Index");
+            }
         }
     }
 }

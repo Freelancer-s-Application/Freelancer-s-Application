@@ -95,7 +95,6 @@
     </dl>
 </div>
 <div class="col-md-4">
-        aspd
         @if (Model.isAuthor)
         {
         <form method="post" enctype="multipart/form-data">
@@ -109,8 +108,10 @@
                 <input type="submit" value="Add new file" class="btn btn-primary" />
             </div>
         </form>
+        <a asp-page="./Edit" asp-route-id="@Model.Post.Id" class="btn btn-primary">Edit Post</a>
+
         }
-    </div>
+</div>
 <div style="float:left; width:100%; margin-bottom:30px">
     <h3>Contents</h3>
     <hr />
@@ -145,6 +146,31 @@
         {
             <p>Cannot read file.</p>
         }
+        @if (Model.isAuthor)
+        {
+            <div>
+                <form method="post" asp-page-handler="Remove" asp-route-id="@pc.Id">
+                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#remove-content-@pc.Id">Remove</button>
+                    <div class="modal" id="remove-content-@pc.Id" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h2 class="modal-title">Cancel</h2>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Are you sure you want to remove this file?</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-success">Yes, Remove</button>
+                                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        }
+
     }
     
     
@@ -167,9 +193,8 @@
 </div>
 
 <div>
-   @* <a asp-page="./Edit" asp-route-id="@Model.Post.Id">Edit</a>
-    <a asp-page="./Index">Back to List</a>*@
-    <a asp-page="/ApplicationPages/Create" asp-route-postId="@Model.Post.Id" class="btn btn-primary">Apply</a>
-    <a asp-page="" class="btn btn-primary"></a>
-    <a asp-page="" class="btn btn-primary"></a>
+    @if(!Model.isAuthor)
+    {
+        <a href="/ApplicationPages/Create?postId=@Model.Post.Id" class="btn btn-primary">Apply</a>
+    }
 </div>

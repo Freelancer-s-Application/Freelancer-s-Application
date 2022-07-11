@@ -39,6 +39,10 @@ namespace Freelancer_s_Web.Pages.PostPage
             {
                 return NotFound();
             }
+            if (Post.IsDeleted && CustomAuthorization.loginUser.Role != CommonEnums.ROLE.ADMINISTRATOR)
+            {
+                return NotFound();
+            }
             return Page();
         }
 
@@ -60,7 +64,7 @@ namespace Freelancer_s_Web.Pages.PostPage
                 Post.IsDeleted = true;
                 Post.UpdatedAt = DateTime.Now;
                 Post.UpdatedBy = CustomAuthorization.loginUser.Email;
-                await work.PostRepository.UpdatePost(Post);
+                work.PostRepository.UpdatePost(Post);
                 work.Save();
             }
             if (CustomAuthorization.loginUser.Role == CommonEnums.ROLE.ADMINISTRATOR)

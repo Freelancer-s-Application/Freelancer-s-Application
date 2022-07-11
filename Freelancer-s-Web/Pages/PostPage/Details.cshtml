@@ -133,8 +133,6 @@
             <div class="col-sm-8">
                 <h3>Comments</h3>
                 <hr />
-
-                <form>
                 	<h2>New Comment</h2>
                 	
                     <fieldset>
@@ -148,10 +146,10 @@
                         </div>  	
                     </fieldset>
                     <button type="submit" class="btn btn-normal pull-right" id="buttong">Comment</button>
-                </form>
 
                 @foreach(var item in Model.comments) {
                     if(item.UserId == @Model.User.Id){
+                    
                     <div class="comment mt-4 text-justify float-left">
                     <img src="@item.User.Avatar" alt="" class="rounded-circle" width="40" height="40">
                     <h4>@item.User.DisplayName</h4>
@@ -161,16 +159,18 @@
                     <p>@item.Content</p>
                     </div>
                     <br>
-                    <button id="btn-person">Edit</button> <button id="btn-person">Delete</button>
-                    }else{
-                <div class="comment mt-4 text-justify float-left">
+                    <button asp-page="/CommentPage/Edit" asp-route-id="@item.Id" id="btn-person">Edit</button> 
+                    <button asp-page="/CommentPage/Edit" asp-route-id="@item.Id" id="btn-person">Delete</button>
+                    }else
+                    {
+                    <div class="comment mt-4 text-justify float-left">
                     <img src="@item.User.Avatar" alt="" class="rounded-circle" width="40" height="40">
                     <h4>@item.User.DisplayName</h4>
                     <br>
                     <span> @item.CreatedAt</span>
                     <br>
                     <p>@item.Content</p>
-                </div>
+                    </div>
                     }
                 }
             </div>

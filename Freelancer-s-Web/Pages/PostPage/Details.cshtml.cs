@@ -188,6 +188,7 @@ namespace Freelancer_s_Web.Pages.PostPage
                     content.UpdatedBy = CustomAuthorization.loginUser.Email;
                     work.PostContentRepository.UpdatePostContent(content);
                     work.Save();
+                    return Redirect("/PostPage/Details?id=" + content.PostId);
                 }
                 catch (Exception ex)
                 {

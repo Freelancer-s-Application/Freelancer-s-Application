@@ -31,6 +31,8 @@ namespace Freelancer_s_Web.Pages.PostPage
         public BufferedSingleFileUploadDb FileUpload { get; set; }
 
         public Boolean isAuthor { get; set; }
+        public User User { get; set; }
+        public Comment comment { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int id)
         {
@@ -188,7 +190,7 @@ namespace Freelancer_s_Web.Pages.PostPage
                     content.UpdatedBy = CustomAuthorization.loginUser.Email;
                     work.PostContentRepository.UpdatePostContent(content);
                     work.Save();
-                    return Redirect("/PostPage/Details?id=" + content.PostId);
+                    // return Redirect("/PostPage/Details?id=" + content.PostId);
                 }
                 catch (Exception ex)
                 {
@@ -236,6 +238,27 @@ namespace Freelancer_s_Web.Pages.PostPage
             {
                 TempData["Error"] = "Something went wrong! Error: " + ex.Message;
                 return Redirect("/Index");
+            }
+        }
+
+        public async Task<IActionResult> OnPostAsync()
+        {
+            try
+            {
+                comment.UserId = CustomAuthorization.loginUser.Id;
+                comment.CreatedAt = DateTime.Now;
+                comment.CreatedBy = CustomAuthorization.loginUser.Email;
+                using (var work = _unitOfWorkFactory.Get)
+                {
+                    await work.CommentRepository.CreateComment(comment);
+                }
+                return RedirectToPage("/PostPage/Details/{id}");
+                //return Page();
+            }
+            catch (Exception ex)
+            {
+                ViewData["Error"] = ex.Message;
+                return Page();
             }
         }
     }

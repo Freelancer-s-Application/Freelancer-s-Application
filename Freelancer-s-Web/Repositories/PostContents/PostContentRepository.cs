@@ -21,9 +21,14 @@ namespace Repositories.PostContents
         public async Task<IEnumerable<PostContent>> GetAllPostContentByPostId(int id)
         {
             var postcontents = await _dbContext.PostContents
-                .Where(pc => pc.PostId == id).ToListAsync();
+                .Where(pc => pc.PostId == id && !pc.IsDeleted).ToListAsync();
 
             return postcontents;
+        }
+
+        public void UpdatePostContent(PostContent con)
+        {
+            _dbContext.PostContents.Update(con);
         }
     }
 }

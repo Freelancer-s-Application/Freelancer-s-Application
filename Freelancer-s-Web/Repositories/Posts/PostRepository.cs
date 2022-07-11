@@ -44,10 +44,22 @@ namespace Repositories.Posts
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task UpdatePost(Post post)
+        public void UpdatePost(Post post)
         {
-            _dbContext.Attach(post).State = EntityState.Modified;
-            await _dbContext.SaveChangesAsync();
+            var user = _dbContext.Users.FirstOrDefault(u => u.Id == post.UserId);
+            var major = _dbContext.Majors.FirstOrDefault(u => u.Id == post.MajorId);
+            //var author = 
+            //var local = _dbContext.Set<Post>()
+            //    .Local
+            //    .FirstOrDefault(entry => entry.Id == post.Id);
+            //if (local != null)
+            //{
+            //    _dbContext.Entry(local).State = EntityState.Detached;
+            //}
+            _dbContext.Entry(user).State = EntityState.Unchanged;
+            _dbContext.Entry(major).State = EntityState.Unchanged;
+            //_dbContext.Entry(post).State = EntityState.Unchanged;
+            _dbContext.Posts.Update(post);
         }
     }
 }

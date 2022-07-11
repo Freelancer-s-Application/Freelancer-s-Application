@@ -49,6 +49,10 @@ namespace Freelancer_s_Web.Pages.PostPage
             {
                 return NotFound();
             }
+            if (Post.IsDeleted && CustomAuthorization.loginUser.Role != CommonEnums.ROLE.ADMINISTRATOR)
+            {
+                return NotFound();
+            }
             using (var work = _unitOfWorkFactory.Get)
             {
                 majorList = work.MajorRepository.GetAll().ToList();
@@ -67,18 +71,22 @@ namespace Freelancer_s_Web.Pages.PostPage
             {
                 using (var work = _unitOfWorkFactory.Get)
                 {
-                    Post = await work.PostRepository.GetPost(Post.Id);
-                    if (Post == null)
+                    var post = await work.PostRepository.GetPost(Post.Id);
+                    if (post == null)
                     {
                         return NotFound();
                     }
-                    if (Post.UserId != CustomAuthorization.loginUser.Id && CustomAuthorization.loginUser.Role != CommonEnums.ROLE.ADMINISTRATOR)
+                    if (post.UserId != CustomAuthorization.loginUser.Id && CustomAuthorization.loginUser.Role != CommonEnums.ROLE.ADMINISTRATOR)
                     {
                         return Redirect("/Unauthorized");
                     }
-                    Post.UpdatedAt = DateTime.Now;
-                    Post.UpdatedBy = CustomAuthorization.loginUser.Email;
-                    await work.PostRepository.UpdatePost(Post);
+                    post.Title = Post.Title;
+                    post.MajorId = Post.MajorId;
+                    post.Description = Post.Description;
+                    post.UpdatedAt = DateTime.Now;
+                    post.UpdatedBy = CustomAuthorization.loginUser.Email;
+                    work.PostRepository.UpdatePost(post);
+                    work.Save();
                 }
             }
             catch (Exception ex)

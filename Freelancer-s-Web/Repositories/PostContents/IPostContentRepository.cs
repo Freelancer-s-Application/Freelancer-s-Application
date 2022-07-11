@@ -10,6 +10,8 @@ namespace Repositories.PostContents
 {
     public interface IPostContentRepository : IRepository<PostContent>
     {
-        Task<IEnumerable<PostContent>> GetAllPostContentByPostId(int id);    
+        Task<IEnumerable<PostContent>> GetAllPostContentByPostId(int id);
+        public void UpdatePostContent(PostContent con);
+
     }
 }

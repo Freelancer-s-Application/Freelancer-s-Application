@@ -27,7 +27,7 @@ namespace Freelancer_s_Web.Pages.UserPage
             using (var work = _unitOfWorkFactory.Get)
             {
                 User = work.UserRepository
-                    .GetAll(u => !u.Email.ToLower().Equals(CustomAuthorization.loginUser.Email.ToLower()), null, "Major")
+                    .GetAll(u => !u.Email.ToLower().Equals(CustomAuthorization.loginUser.Email.ToLower()), null, "Major,ReportReportees,ReportReporters")
                     .ToList();
                 return Page();
             }

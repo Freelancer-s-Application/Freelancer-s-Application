@@ -268,11 +268,14 @@ namespace Freelancer_s_Web.Models
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Url)
+                entity.Property(e => e.File)
                     .IsRequired()
-                    .HasMaxLength(1000)
-                    .IsUnicode(false)
-                    .HasColumnName("URL");
+                    .HasColumnName("File");
+
+                entity.Property(e => e.Type)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
 
                 entity.HasOne(d => d.Post)
                     .WithMany(p => p.PostContents)

@@ -1,6 +1,6 @@
 ﻿namespace Freelancer_s_Web.Commons
 {
-    public class CommonEnums
+    public static class CommonEnums
     {
         public class ROLE
         {
@@ -22,10 +22,12 @@
             public const int CANCELED = 3;
         }
         
-        public class POST_CONTENT_TYPE
+        public static class POST_CONTENT_TYPE
         {
-            public const int IMAGE = 1;
-            public const int VIDEO = 2;
+            public static string[] PDF = { "application/pdf" };
+            public static string[] VIDEO = { "video/mp4", "video/quicktime", "video/x-ms-wmv", "video/ogg" };
+            public static string[] IMAGE = { "image/jpeg", "image/png" };
+            public static string[] AUDIO = { "audio/mp3", "audio/mp4", "audio/mpeg", "audio/mpeg3", "audio/mpg", "audio/wav", "audio/x-mpeg-3" };
         }
     }
 }

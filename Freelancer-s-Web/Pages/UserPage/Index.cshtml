@@ -35,6 +35,9 @@
                 @Html.DisplayNameFor(model => model.User[0].Major)
             </th>
             <th>
+                Num of reports
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.User[0].CreatedAt)
             </th>
             <th>
@@ -74,7 +77,10 @@
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Major.CreatedBy)
+                @Html.DisplayFor(modelItem => item.Major.Name)
+            </td>
+            <td>
+                <a href="/ReportPage/ReportedList?id=@item.Id">@Html.DisplayFor(modelItem => item.ReportReportees.Count)</a>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CreatedAt)

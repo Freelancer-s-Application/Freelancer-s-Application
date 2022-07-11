@@ -24,6 +24,8 @@ namespace Freelancer_s_Web.Pages.PostPage
         public Post Post { get; set; }
         public IEnumerable<PostContent> postContents { get; set; }
         public IEnumerable<Comment> comments { get; set; }
+        public User User { get; set; }
+        public Comment comment { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int id)
         {
@@ -35,6 +37,8 @@ namespace Freelancer_s_Web.Pages.PostPage
                 postContents = await work.PostContentRepository.GetAllPostContentByPostId(id);
 
                 comments = await work.CommentRepository.GetAllCommentByPostId(id);
+
+                User = await work.UserRepository.GetCurrentUser();  
             }
 
             if (Post == null)
@@ -42,6 +46,27 @@ namespace Freelancer_s_Web.Pages.PostPage
                 return NotFound();
             }
             return Page();
+        }
+
+        public async Task<IActionResult> OnPostAsync()
+        {
+            try
+            {
+                comment.UserId = CustomAuthorization.loginUser.Id;
+                comment.CreatedAt = DateTime.Now;
+                comment.CreatedBy = CustomAuthorization.loginUser.Email;
+                using (var work = _unitOfWorkFactory.Get)
+                {
+                    await work.CommentRepository.CreateComment(comment);
+                }
+                return RedirectToPage("/PostPage/Details/{id}");
+                //return Page();
+            }
+            catch (Exception ex)
+            {
+                ViewData["Error"] = ex.Message;
+                return Page();
+            }
         }
     }
 }

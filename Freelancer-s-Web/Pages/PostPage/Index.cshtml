@@ -10,10 +10,11 @@
 
 
 <h1>Admin Post Management</h1>
-
-<p>
-    <a asp-page="Create">Create New</a>
-</p>
+<div class="row">
+    <div class="col-sm-4 mb-4">
+        <input type="text" id="myFilter" class="form-control" onkeyup="myFunction()" placeholder="Search title...">
+    </div>
+</div>
 <table class="table">
     <thead>
         <tr>
@@ -38,23 +39,14 @@
             <th>
                 @Html.DisplayNameFor(model => model.Post[0].UpdatedAt)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Post[0].IsDeleted)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Post[0].CreatedBy)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Post[0].UpdatedBy)
-            </th>
             <th></th>
         </tr>
     </thead>
-    <tbody>
+    <tbody id="myProducts">
 @foreach (var item in Model.Post) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
+        <tr class="table">
+            <td class="title">
+                <a asp-page="./Details" asp-route-id="@item.Id"> @Html.DisplayFor(modelItem => item.Title)</a>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Description)
@@ -90,22 +82,12 @@
                 @Html.DisplayFor(modelItem => item.UpdatedAt)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.IsDeleted)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedBy)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UpdatedBy)
-            </td>
-            <td>
-                <a asp-page="./Details" asp-route-id="@item.Id">Details</a>
+          
                 @if (@item.IsDeleted)
                 {
-                    <p>Removed</p>
+                    <p class="text-danger">Removed</p>
                 } else
                 {
-                     <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a>
                     <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>   
                 }
             </td>
@@ -113,3 +95,20 @@
 }
     </tbody>
 </table>
+<script>
+    function myFunction() {
+        var input, filter, cards, cardContainer, title, i;
+        input = document.getElementById("myFilter");
+        filter = input.value.toUpperCase();
+        cardContainer = document.getElementById("myProducts");
+        cards = cardContainer.getElementsByClassName("table");
+        for (i = 0; i < cards.length; i++) {
+            title = cards[i].querySelector(".title");
+            if (title.innerText.toUpperCase().indexOf(filter) > -1) {
+                cards[i].style.display = "";
+            } else {
+                cards[i].style.display = "none";
+            }
+        }
+    }
+</script>

@@ -146,7 +146,6 @@ namespace Freelancer_s_Web.Models
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Messages_Users");
             });
-         
             modelBuilder.Entity<Post>(entity =>
             {
                 entity.Property(e => e.CreatedAt).HasColumnType("datetime");

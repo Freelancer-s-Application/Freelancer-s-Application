@@ -50,7 +50,13 @@ namespace Repositories.Messages
             {
                 if ((message.SenderId == currentUserId && message.ReceiverId == id) || (message.ReceiverId == currentUserId && message.SenderId == id))
                 {
-                    //if (message.ReceiverId == currentUserId) message.IsSeen = true;
+                    if (message.ReceiverId == currentUserId)
+                    {
+                        message.IsSeen = true;
+                        //_dbContext.Messages.Update(message);
+                        //await _dbContext.SaveChangesAsync();
+                    }
+                    
                     Conversation.Add(new KeyValuePair<int, Message>(message.SenderId, message));
                 }
             }
@@ -61,8 +67,7 @@ namespace Repositories.Messages
         {
             var currentUser = CustomAuthorization.loginUser;
             //var receiver = await _dbContext.Users.FindAsync(id);
-            Message message = new Message { Content = messageContent.Trim(), ReceiverId = id, SenderId = currentUser.Id, CreatedAt = DateTime.Now, CreatedBy = currentUser.Email, IsDeleted = false};
-
+            Message message = new Message { Content = messageContent.Trim(), ReceiverId = id, SenderId = currentUser.Id, IsSeen = false, CreatedAt = DateTime.Now, CreatedBy = currentUser.Email, IsDeleted = false};
             await _dbContext.Messages.AddAsync(message);
             await _dbContext.SaveChangesAsync();
         }

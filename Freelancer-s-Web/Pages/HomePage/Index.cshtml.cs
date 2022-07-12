@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using Freelancer_s_Web.Models;
 using Freelancer_s_Web.Commons;
 using Freelancer_s_Web.UnitOfWork;
+using Freelancer_s_Web.ViewModel;
+using Freelancer_s_Web.Utils;
 
 namespace Freelancer_s_Web.Pages.HomePage
 {
@@ -21,16 +23,14 @@ namespace Freelancer_s_Web.Pages.HomePage
         }
 
         public IList<Post> Post { get; set; }
-     
+        public LoginUserVM LoginUser { get; set; }
         
         public async Task OnGetAsync()
         {
             using (var work = _unitOfWorkFactory.Get)
             {
-               
                 Post = await work.PostRepository.GetAll(post => post.Status == CommonEnums.POST_STATUS.PUBLIC, null, "User,Major,Comments").ToListAsync();
-               
-               
+                LoginUser = CustomAuthorization.loginUser;
             }
         }
     }

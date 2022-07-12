@@ -1,9 +1,9 @@
 ﻿using Repositories.ApplicationForms;
 using Repositories.Comments;
 using Repositories.Majors;
-using Repositories.MessageImages;
+//using Repositories.MessageImages;
 using Repositories.Messages;
-using Repositories.Notifications;
+//using Repositories.Notifications;
 using Repositories.PostContents;
 using Repositories.Posts;
 using Repositories.Reports;
@@ -21,9 +21,9 @@ namespace Freelancer_s_Web.UnitOfWork
         IApplicationFormRepository ApplicationFormRepository { get; }
         ICommentRepository CommentRepository { get; }
         IMajorRepository MajorRepository { get; }
-        IMessageImageRepository MessageImageRepository { get; }
+        //IMessageImageRepository MessageImageRepository { get; }
         IMessageRepository MessageRepository { get; }
-        INotificationRepository NotificationRepository { get; }
+        //INotificationRepository NotificationRepository { get; }
         IPostRepository PostRepository { get; }
         IPostContentRepository PostContentRepository { get; }
         IReportRepository ReportRepository { get; }

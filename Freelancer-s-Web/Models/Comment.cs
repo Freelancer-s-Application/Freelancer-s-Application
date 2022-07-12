@@ -14,7 +14,7 @@ namespace Freelancer_s_Web.Models
         public int PostId { get; set; }
         public int UserId { get; set; }
         public string Content { get; set; }
-        public int? ParentCommentId { get; set; }
+        //public int? ParentCommentId { get; set; }
 
         //public virtual Comment ParentComment { get; set; }
         public virtual Post Post { get; set; }

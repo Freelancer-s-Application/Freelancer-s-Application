@@ -63,10 +63,16 @@
                        @Html.DisplayName("PRIVATE")
                     </td>
                 }
-                else
+                else if (item.Status == CommonEnums.POST_STATUS.REMOVE)
                 {
                     <td>
                        @Html.DisplayName("REMOVE")
+                    </td>
+                }
+                else if (item.Status == CommonEnums.POST_STATUS.FINISH)
+                {
+                    <td>
+                       @Html.DisplayName("FINISH")
                     </td>
                 }
             <td>

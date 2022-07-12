@@ -91,6 +91,12 @@
                         } else if (@item.Status == CommonEnums.POST_STATUS.PRIVATE)
                         {
                             <p class="text-dark card-text">Closed</p>  
+                        } else if (@item.Status == CommonEnums.POST_STATUS.REMOVE)
+                        {
+                            <p class="text-dark card-text">Remove</p>  
+                        } else if (@item.Status == CommonEnums.POST_STATUS.FINISH)
+                        {
+                            <p class="text-dark card-text">Finish</p>  
                         }
                         <div class="d-flex flex-row">
                             <p class=" text-dark card-text">Comment: @Html.DisplayFor(modelItem => item.Comments.Count)</p>

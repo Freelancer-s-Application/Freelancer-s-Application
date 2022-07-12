@@ -30,7 +30,7 @@ namespace Freelancer_s_Web.Utils
             }
             if (!check)
             {
-                context.Result = new RedirectResult("/Authentication/Unauthorized");
+                context.Result = new RedirectResult("/Authentication/Login?handler=Login");
             }
             return;
         }

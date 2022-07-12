@@ -79,7 +79,7 @@
         <form method="post" asp-page-handler="Upload" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" name="postId" value="@Model.Post.Id" />
-            <p>Upload audio, pdf, image, video</p>
+            <p>Upload audio, pdf, image, video (max file size: 4mb)</p>
             <div class="form-group">
                 <input asp-for="FileUpload.FormFile" type="file" required/>
             </div>
@@ -167,7 +167,7 @@
                     {
                         <div class="carousel-item active">
                             <div class="d-flex justify-content-center">
-                            <audio controls="controls" autobuffer="autobuffer" autoplay="autoplay">
+                            <audio controls="controls" autobuffer="autobuffer">
                                 <source class="d-block " src="data:@pc.value.Type;base64,@pc.value.FileBase64"/>
                             </audio>
                             </div>
@@ -177,7 +177,7 @@
                     {
                         <div class="carousel-item ">
                             <div class="d-flex justify-content-center">
-                            <audio controls="controls" autobuffer="autobuffer" autoplay="autoplay">
+                            <audio controls="controls" autobuffer="autobuffer">
                                 <source class="d-block " src="data:@pc.value.Type;base64,@pc.value.FileBase64"/>
                             </audio>
                             </div>
@@ -229,7 +229,7 @@
             else if (CommonEnums.POST_CONTENT_TYPE.AUDIO.Contains(pc.Type))
             {
                 <div class="col-md-8 d-flex flex-row justify-content-center align-content-center">
-                    <audio controls="controls" autobuffer="autobuffer" autoplay="autoplay">
+                    <audio controls="controls" autobuffer="autobuffer">
                         <source src="data:@pc.Type;base64,@pc.FileBase64"/>
                     </audio>
                 </div>
@@ -324,5 +324,9 @@
     {
         <a href="/ApplicationPages/Create?postId=@Model.Post.Id" class="btn btn-primary">Apply</a>
         <a class="btn btn-primary mx-3" asp-page="/Message/ChatRoom" asp-route-id="@Model.Post.UserId">Chat</a>
+    } else
+    {
+        <a href="./Delete?id=@Model.Post.Id" class="btn btn-primary">Delete</a>
+        <a href="./Finish?id=@Model.Post.Id" class="btn btn-primary">Finish</a>
     }
 </div>

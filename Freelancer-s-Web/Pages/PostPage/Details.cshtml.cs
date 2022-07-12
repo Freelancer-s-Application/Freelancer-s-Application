@@ -149,23 +149,8 @@ namespace Freelancer_s_Web.Pages.PostPage
                         }
                         else
                         {
-                            postContents = new List<PostContentBase64>();
-                            Post = await work.PostRepository.GetPost(postId);
-                            var postContentsDb = (await work.PostContentRepository.GetAllPostContentByPostId(postId)).ToList();
-                            foreach (var pc in postContentsDb)
-                            {
-                                postContents.Add(new PostContentBase64()
-                                {
-                                    Id = pc.Id,
-                                    PostId = pc.PostId,
-                                    Post = pc.Post,
-                                    Type = pc.Type,
-                                    FileBase64 = Convert.ToBase64String(pc.File),
-                                });
-                            }
-                            comments = await work.CommentRepository.GetAllCommentByPostId(postId);
-                            ModelState.AddModelError("File", "The file is too large.");
-                            return Redirect("/PostPage/Details?id=" + Post.Id);
+                            TempData["Error"] = "The file size is > 4mb";
+                            return Redirect("/Index");
                         }
                     }
                 }
@@ -176,7 +161,7 @@ namespace Freelancer_s_Web.Pages.PostPage
             }
             
         }
-        public async Task<IActionResult> OnPostRemoveAsync(int id)
+        public IActionResult OnPostRemove(int id)
         {
             comment = new Comment();
             using (var work = _unitOfWorkFactory.Get)
@@ -197,54 +182,13 @@ namespace Freelancer_s_Web.Pages.PostPage
                     content.UpdatedBy = CustomAuthorization.loginUser.Email;
                     work.PostContentRepository.UpdatePostContent(content);
                     work.Save();
-                    // return Redirect("/PostPage/Details?id=" + content.PostId);
+                    return Redirect("/PostPage/Details?id=" + content.PostId);
                 }
                 catch (Exception ex)
                 {
                     TempData["Error"] = "Something went wrong! Error: " + ex.Message;
                     return Redirect("/Index");
                 }
-            }
-            try
-            {
-                postContents = new List<PostContentBase64>();
-                using (var work = _unitOfWorkFactory.Get)
-                {
-                    Post = await work.PostRepository.GetPost(id);
-
-                    var postContentsDb = (await work.PostContentRepository.GetAllPostContentByPostId(id)).ToList();
-                    foreach (var content in postContentsDb)
-                    {
-                        postContents.Add(new PostContentBase64()
-                        {
-                            Id = content.Id,
-                            PostId = content.PostId,
-                            Post = content.Post,
-                            Type = content.Type,
-                            FileBase64 = Convert.ToBase64String(content.File),
-                        });
-                    }
-                    comments = await work.CommentRepository.GetAllCommentByPostId(id);
-                }
-
-                if (Post == null)
-                {
-                    return NotFound();
-                }
-                if (Post.UserId == CustomAuthorization.loginUser.Id || CustomAuthorization.loginUser.Role == CommonEnums.ROLE.ADMINISTRATOR)
-                {
-                    isAuthor = true;
-                }
-                else
-                {
-                    isAuthor = false;
-                }
-                return Page();
-            }
-            catch (Exception ex)
-            {
-                TempData["Error"] = "Something went wrong! Error: " + ex.Message;
-                return Redirect("/Index");
             }
         }
 

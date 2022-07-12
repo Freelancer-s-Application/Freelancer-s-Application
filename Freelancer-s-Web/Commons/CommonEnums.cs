@@ -12,6 +12,7 @@
             public const int PUBLIC = 1;
             public const int REMOVE = 0;
             public const int PRIVATE = 2;
+            public const int FINISH = 3;
         }
 
         public class APPLICATION_FORM_STATUS

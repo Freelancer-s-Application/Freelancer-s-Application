@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Freelancer_s_Web.Models;
 using Freelancer_s_Web.UnitOfWork;
 using Freelancer_s_Web.Utils;
+using Freelancer_s_Web.Commons;
 
 namespace Freelancer_s_Web.Pages.PostPage
 {
@@ -53,10 +54,11 @@ namespace Freelancer_s_Web.Pages.PostPage
 
         public async Task<IActionResult> OnPostAsync()
         {
-            //try
-            //{
-            //comment = new Comment();
-                comment.PostId = Post.Id;
+            if(CustomAuthorization.loginUser.Role == CommonEnums.ROLE.ADMINISTRATOR)
+            {
+                return NotFound();
+            }
+            comment.PostId = Post.Id;
                 comment.UserId = CustomAuthorization.loginUser.Id;
                 comment.CreatedAt = DateTime.Now;
                 comment.CreatedBy = CustomAuthorization.loginUser.Email;
@@ -65,13 +67,7 @@ namespace Freelancer_s_Web.Pages.PostPage
                     await work.CommentRepository.CreateComment(comment);
                 }
                 return Redirect("/PostPage/Details?id=" + Post.Id);
-                //return Page();
-            //}
-            //catch (Exception ex)
-            //{
-            //    ViewData["Error"] = ex.Message;
-            //    return Page();
-            //}
+                
         }
 
     }

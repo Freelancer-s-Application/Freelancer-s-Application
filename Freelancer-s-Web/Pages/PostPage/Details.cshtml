@@ -76,7 +76,7 @@
 <div class="col-md-4">
         @if (Model.isAuthor)
         {
-        <form method="post" enctype="multipart/form-data">
+        <form method="post" asp-page-handler="Upload" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" name="postId" value="@Model.Post.Id" />
             <p>Upload audio, pdf, image, video</p>
@@ -276,7 +276,7 @@
                 <h3>Comments</h3>
                 <hr />
                 	<h2>New Comment</h2>
-                	<form method="post">
+                	<form method="post" asp-page-handler="Comment">
                     <fieldset>
                         <div class="row">
                             <div class="col-sm-10 col-lg-2 hidden-xs">
@@ -284,6 +284,7 @@
                             </div>
                             <div class="form-group col-xs-12 col-sm-9 col-lg-10">
                                 <textarea asp-for="comment.Content" class="form-control" id="message" placeholder="Your comment"></textarea>
+                                <input asp-for="comment.PostId" value="@Model.Post.Id" type="hidden"/>
                             </div>
                         </div>  	
                     </fieldset>

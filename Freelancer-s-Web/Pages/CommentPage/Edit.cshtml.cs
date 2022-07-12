@@ -12,7 +12,7 @@ using Freelancer_s_Web.Utils;
 
 namespace Freelancer_s_Web.Pages.CommentPage
 {
-    [Authorized("USER,ADMIN")]
+    [Authorized("USER")]
     public class EditModel : PageModel
     {
         private UnitOfWorkFactory _unitOfWorkFactory;
@@ -34,10 +34,6 @@ namespace Freelancer_s_Web.Pages.CommentPage
             using (var work = _unitOfWorkFactory.Get)
             {
                 comment = work.CommentRepository.GetFirstOrDefault(c => c.Id == id);
-                //if (comment.Id != CustomAuthorization.loginUser.Id)
-                //{
-                //    return Redirect("/Unauthorized");
-                //}
             }
             if (comment == null)
             {
@@ -54,8 +50,6 @@ namespace Freelancer_s_Web.Pages.CommentPage
         {
                 using (var work = _unitOfWorkFactory.Get)
                 {
-                    //var cmt = work.CommentRepository.GetFirstOrDefault(c => c.Id == id);
-                    //if (cmt == null) { return NotFound(); }
                     comment.UpdatedAt = DateTime.Now;
                     comment.UpdatedBy = CustomAuthorization.loginUser.Email;
                     await work.CommentRepository.UpdateComment(comment);

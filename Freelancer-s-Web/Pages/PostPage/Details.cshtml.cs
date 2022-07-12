@@ -250,10 +250,10 @@ namespace Freelancer_s_Web.Pages.PostPage
 
         public IActionResult OnPostComment()
         {
-            //try
-            //{
-            //comment = new Comment();
-                //comment.PostId = Post.Id;
+            if (CustomAuthorization.loginUser.Role == CommonEnums.ROLE.ADMINISTRATOR)
+            {
+                return NotFound();
+            }
                 comment.UserId = CustomAuthorization.loginUser.Id;
                 comment.CreatedAt = DateTime.Now;
                 comment.CreatedBy = CustomAuthorization.loginUser.Email;
@@ -263,13 +263,7 @@ namespace Freelancer_s_Web.Pages.PostPage
                     work.Save();
                 }
                 return Redirect("/PostPage/Details?id=" + comment.PostId);
-                //return Page();
-            //}
-            //catch (Exception ex)
-            //{
-            //    ViewData["Error"] = ex.Message;
-            //    return Page();
-            //}
+
         }
 
     }

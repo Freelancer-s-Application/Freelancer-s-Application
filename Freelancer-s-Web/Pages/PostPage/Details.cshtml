@@ -182,8 +182,8 @@
                     <p>@item.Content</p>
                     </div>
                     <br>
-                    <button asp-page="/CommentPage/Edit" asp-route-id="@item.Id" id="btn-person">Edit</button> 
-                    <button asp-page="/CommentPage/Edit" asp-route-id="@item.Id" id="btn-person">Delete</button>
+                    <a asp-page="/CommentPage/Edit" asp-route-id="@item.Id" id="btn-person">Edit</a> 
+                    <a asp-page="/CommentPage/Delete" asp-route-id="@item.Id" id="btn-person">Delete</a>
                     }else
                     {
                     <div class="comment mt-4 text-justify float-left">

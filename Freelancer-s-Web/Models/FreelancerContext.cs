@@ -86,10 +86,10 @@ namespace Freelancer_s_Web.Models
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
-                entity.HasOne(d => d.ParentComment)
-                    .WithMany(p => p.InverseParentComment)
-                    .HasForeignKey(d => d.ParentCommentId)
-                    .HasConstraintName("FK_Comments_Comments");
+                //entity.HasOne(d => d.ParentComment)
+                //    .WithMany(p => p.InverseParentComment)
+                //    .HasForeignKey(d => d.ParentCommentId)
+                //    .HasConstraintName("FK_Comments_Comments");
 
                 entity.HasOne(d => d.Post)
                     .WithMany(p => p.Comments)

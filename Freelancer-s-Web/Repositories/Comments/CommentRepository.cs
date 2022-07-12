@@ -28,7 +28,8 @@ namespace Repositories.Comments
         {
             var comments = await _dbContext.Comments
                 .Include(c => c.User)
-                .Where(pc => pc.PostId == id).ToListAsync();
+                .Where(pc => pc.PostId == id)
+                .Where(c => c.IsDeleted == false).ToListAsync();
 
             return comments;
         }

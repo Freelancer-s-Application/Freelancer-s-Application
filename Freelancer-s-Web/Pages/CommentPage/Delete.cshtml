@@ -23,6 +23,6 @@
     <form method="post">
         <input type="hidden" asp-for="comment.Id" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-page="/PostPage/Detail">Back</a>
+        <a asp-page="/PostPage/Details" asp-route-id="@Model.comment.PostId">Back</a>
     </form>
 </div>

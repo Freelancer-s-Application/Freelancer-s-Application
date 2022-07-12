@@ -9,6 +9,7 @@ namespace Freelancer_s_Web.Models
     {
         public Message()
         {
+            //MessageImages = new HashSet<MessageImage>();
         }
 
         public int SenderId { get; set; }
@@ -17,5 +18,6 @@ namespace Freelancer_s_Web.Models
         public bool IsSeen { get; set; }
         public virtual User Receiver { get; set; }
         public virtual User Sender { get; set; }
+        //public virtual ICollection<MessageImage> MessageImages { get; set; }
     }
 }

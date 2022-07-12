@@ -45,8 +45,9 @@
         else if (loginUser.Role == "USER")
         {
         <div class="ml-auto mx-3 my-3">
-            <button class="btn active btn-primary" onclick="filterSelection2('all')"> Show all</button>
-            <button class="btn btn-primary" onclick="filterSelection2('@CustomAuthorization.loginUser.Id')">My Post</button>
+            <a asp-page="./Index" class="btn active btn-primary">Newsfeed</a>
+            <a asp-page="./Index" asp-page-handler="Myself" class="btn active btn-primary">My Post</a>
+            <a asp-page="./Index" asp-page-handler="Approved" class="btn active btn-primary">My Approved Post</a>
         </div>
         }
         else
@@ -82,14 +83,18 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <p class="text-dark card-text">@Html.DisplayFor(modelItem => item.Description).</p>
-                        <p class="text-dark card-text">@Html.DisplayFor(modelItem => item.Major.Name).</p>
+                        <p class="text-dark card-text">@Html.DisplayFor(modelItem => item.Description)</p>
+                        <p class="text-dark card-text">@Html.DisplayFor(modelItem => item.Major.Name)</p>
                         <p class="text-dark card-text"></p>
                         <div class="d-flex flex-row">
-                            <p class=" text-dark card-text">Comment: @Html.DisplayFor(modelItem => item.Comments.Count).</p>
+                            <p class=" text-dark card-text">Comment: @Html.DisplayFor(modelItem => item.Comments.Count)</p>
                             @if(@Model.LoginUser != null && @Model.LoginUser.Id != item.UserId && Model.LoginUser.Role != CommonEnums.ROLE.ADMINISTRATOR)
                             {
                                 <a asp-page="/ApplicationPages/Create" asp-route-postId="@item.Id" class="btn btn-primary ml-auto">Apply</a>
+                            }
+                            @if(@Model.LoginUser != null && @Model.LoginUser.Id == item.UserId && Model.LoginUser.Role != CommonEnums.ROLE.ADMINISTRATOR)
+                            {
+                                <a asp-page="/ApplicationPages/ApplicationList" asp-route-postId="@item.Id" class="btn btn-primary ml-auto">View Applied Forms</a>
                             }
                         </div>
                     </div>

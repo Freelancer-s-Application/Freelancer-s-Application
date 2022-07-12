@@ -2,7 +2,6 @@
 using Repositories.ApplicationForms;
 using Repositories.Comments;
 using Repositories.Majors;
-using Repositories.MessageImages;
 using Repositories.Messages;
 using Repositories.Notifications;
 using Repositories.PostContents;
@@ -18,7 +17,6 @@ namespace Freelancer_s_Web.UnitOfWork
         IApplicationFormRepository _applicationFormRepository { get; }
         ICommentRepository _commentRepository { get; }
         IMajorRepository _majorRepository { get; }
-        IMessageImageRepository _messageImageRepository { get; }
         IMessageRepository _messageRepository { get; }
         INotificationRepository _notificationRepository { get; }
         IPostRepository _postRepository { get; }
@@ -35,7 +33,6 @@ namespace Freelancer_s_Web.UnitOfWork
             _applicationFormRepository = new ApplicationFormRepository(db);
             _commentRepository = new CommentRepository(db);
             _majorRepository = new MajorRepository(db);
-            _messageImageRepository = new MessageImageRepository(db);
             _messageRepository = new MessageRepository(db);
             _notificationRepository = new NotificationRepository(db);
             _postRepository = new PostRepository(db);
@@ -47,7 +44,6 @@ namespace Freelancer_s_Web.UnitOfWork
         public IApplicationFormRepository ApplicationFormRepository => _applicationFormRepository;
         public ICommentRepository CommentRepository => _commentRepository;
         public IMajorRepository MajorRepository => _majorRepository;
-        public IMessageImageRepository MessageImageRepository => _messageImageRepository;
         public IMessageRepository MessageRepository => _messageRepository;
         public INotificationRepository NotificationRepository => _notificationRepository;
         public IPostRepository PostRepository => _postRepository;

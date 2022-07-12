@@ -12,7 +12,7 @@ using Freelancer_s_Web.Utils;
 
 namespace Freelancer_s_Web.Pages.CommentPage
 {
-    [Authorized("USER,ADMIN")]
+    [Authorized("USER")]
     public class EditModel : PageModel
     {
         private UnitOfWorkFactory _unitOfWorkFactory;

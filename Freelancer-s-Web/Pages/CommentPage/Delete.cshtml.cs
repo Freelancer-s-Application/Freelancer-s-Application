@@ -26,10 +26,47 @@ namespace Freelancer_s_Web.Pages.CommentPage
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            using (var work = _unitOfWorkFactory.Get)
+            {
+                comment = work.CommentRepository.GetFirstOrDefault(c => c.Id == id);
+            }
+            if (comment == null)
+            {
+                return NotFound();
+            }
+            if (comment.IsDeleted)
+            {
+                return NotFound();
+            }
+            return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(int? id)
         {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            using (var work = _unitOfWorkFactory.Get)
+            {
+                comment = work.CommentRepository.GetFirstOrDefault(p => p.Id == id);
+                var post = work.PostRepository.GetFirstOrDefault(p => p.Id == comment.PostId);
+                if (comment == null)
+                {
+                    return NotFound();
+                }
+                comment.IsDeleted = true;
+                comment.UpdatedAt = DateTime.Now;
+                comment.UpdatedBy = CustomAuthorization.loginUser.Email;
+                await work.CommentRepository.UpdateComment(comment);
+                return Redirect("/PostPage/Details?id=" + post.Id);
+            }
+
         }
     }
 }

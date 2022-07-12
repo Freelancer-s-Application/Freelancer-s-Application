@@ -32,7 +32,7 @@ namespace Freelancer_s_Web.Pages.PostPage
         public BufferedSingleFileUploadDb FileUpload { get; set; }
 
         public Boolean isAuthor { get; set; }
-        public User User { get; set; }
+        public LoginUserVM LoginUser = CustomAuthorization.loginUser;
 
         [BindProperty]
         public Comment comment { get; set; }
@@ -90,7 +90,7 @@ namespace Freelancer_s_Web.Pages.PostPage
             }
         }
 
-        public async Task<IActionResult> OnPostAsync(int postId)
+        public async Task<IActionResult> OnPostUploadAsync(int postId)
         {
             try
             {
@@ -245,7 +245,7 @@ namespace Freelancer_s_Web.Pages.PostPage
             }
         }
 
-        public async Task<IActionResult> OnPostAsync()
+        public IActionResult OnPost()
         {
             //try
             //{
@@ -256,7 +256,8 @@ namespace Freelancer_s_Web.Pages.PostPage
                 comment.CreatedBy = CustomAuthorization.loginUser.Email;
                 using (var work = _unitOfWorkFactory.Get)
                 {
-                    await work.CommentRepository.CreateComment(comment);
+                    work.CommentRepository.Add(comment);
+                    work.Save();
                 }
                 return Redirect("/PostPage/Details?id=" + Post.Id);
                 //return Page();

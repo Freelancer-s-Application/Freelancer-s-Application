@@ -61,13 +61,13 @@ namespace Freelancer_s_Web.Pages.ApplicationPages
                 {
                     return NotFound();
                 }
-                Post = work.PostRepository.Get(form.PostId);
                 var listApproved = work.ApplicationFormRepository.GetAll(f => f.PostId == form.PostId && f.Status == CommonEnums.APPLICATION_FORM_STATUS.APPROVED).ToList();
                 form.Status = CommonEnums.APPLICATION_FORM_STATUS.APPROVED;
                 form.UpdatedAt = DateTime.Now;
                 form.UpdatedBy = CustomAuthorization.loginUser.Email;
                 work.ApplicationFormRepository.UpdateForm(form);
                 work.Save();
+                Post = work.PostRepository.Get(form.PostId);
                 ApplicationForm = work.ApplicationFormRepository.GetAllFormByPostIdExceptCV(form.PostId).ToList();
                 Post = work.PostRepository.Get(form.PostId);
                 return Page();

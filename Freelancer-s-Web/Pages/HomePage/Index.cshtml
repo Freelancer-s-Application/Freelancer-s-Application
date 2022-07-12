@@ -85,7 +85,13 @@
                     <div class="card-body">
                         <p class="text-dark card-text">@Html.DisplayFor(modelItem => item.Description)</p>
                         <p class="text-dark card-text">@Html.DisplayFor(modelItem => item.Major.Name)</p>
-                        <p class="text-dark card-text"></p>
+                        @if (@item.Status == CommonEnums.POST_STATUS.PUBLIC)
+                        {
+                            <p class="text-dark card-text">On going</p>   
+                        } else if (@item.Status == CommonEnums.POST_STATUS.PRIVATE)
+                        {
+                            <p class="text-dark card-text">Closed</p>  
+                        }
                         <div class="d-flex flex-row">
                             <p class=" text-dark card-text">Comment: @Html.DisplayFor(modelItem => item.Comments.Count)</p>
                             @if(@Model.LoginUser != null && @Model.LoginUser.Id != item.UserId && Model.LoginUser.Role != CommonEnums.ROLE.ADMINISTRATOR)

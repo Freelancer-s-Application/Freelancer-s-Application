@@ -1,5 +1,6 @@
 ﻿@page
 @using Freelancer_s_Web.Commons
+@using System.Reflection.Metadata
 @model Freelancer_s_Web.Pages.PostPage.DetailsModel
 
 @{
@@ -54,7 +55,11 @@
 <h1>@Model.Post.Title</h1>
 
 <div>
-    <h4>Post Detail</h4>
+    <div class="d-flex flex-row">
+        <p> @Html.DisplayNameFor(model => model.Post.Major): @Html.DisplayFor(model => model.Post.Major.Name)</p>
+        <p class="mx-5">@Html.DisplayFor(model => model.Post.CreatedAt)</p>
+        <a class="text-dark ml-auto" asp-area="" asp-page="/Profile/Index" asp-page-handler="Detail" asp-route-id="@Model.Post.UserId"> <img class="rounded-circle mx-1 border" src="@Model.Post.User.Avatar" width="27" height="27" />@Html.DisplayFor(model => model.Post.User.DisplayName)</a>
+    </div>
     <hr />
     <dl class="row">
         @*<dt class="col-sm-2">
@@ -87,49 +92,80 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Post.Description)
         </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Post.Status)
-        </dt>
-            @if (@Model.Post.Status == CommonEnums.POST_STATUS.PUBLIC)
-                {
-                    <dd class="col-sm-10">
-                       @Html.DisplayName("PUBLIC")
-                    </dd>
-                }
-                else if (@Model.Post.Status == CommonEnums.POST_STATUS.PRIVATE)
-                {
-                    <dd class="col-sm-10">
-                       @Html.DisplayName("PRIVATE")
-                    </dd>
-                }
-                else
-                {
-                    <dd class="col-sm-10">
-                       @Html.DisplayName("REMOVE")
-                    </dd>
-                }
-    </dl>
+        </dl>
 </div>
+<div class="col-md-4">
+        @if (Model.isAuthor)
+        {
+        <form method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" name="postId" value="@Model.Post.Id" />
+            <p>Upload audio, pdf, image, video</p>
+            <div class="form-group">
+                <input asp-for="FileUpload.FormFile" type="file" required/>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Add new file" class="btn btn-primary" />
+            </div>
+        </form>
+        <a asp-page="./Edit" asp-route-id="@Model.Post.Id" class="btn btn-primary">Edit Post</a>
 
+        }
+</div>
 <div style="float:left; width:100%; margin-bottom:30px">
     <h3>Contents</h3>
     <hr />
     @foreach(var pc in Model.postContents)
     {
-        if (pc.Type == CommonEnums.POST_CONTENT_TYPE.IMAGE)
+        if (CommonEnums.POST_CONTENT_TYPE.IMAGE.Contains(pc.Type))
         {
-            <img src="@pc.Url" alt="" style="float:left;">
+            <div class="img">
+                <img src="data:@pc.Type;base64,@pc.FileBase64" alt="" style="float:left;">
+            </div>
+        }
+        else if (CommonEnums.POST_CONTENT_TYPE.VIDEO.Contains(pc.Type))
+        {
+            <div class="vid">
+                <video src="data:@pc.Type;base64,@pc.FileBase64" style="width:70%; height:500px; float:left;" controls>
+                </video>
+            </div>
+        }
+        else if (CommonEnums.POST_CONTENT_TYPE.PDF.Contains(pc.Type))
+        {
+            <div class="img">
+                <embed src="data:@pc.Type;base64,@pc.FileBase64"/>
+            </div>
+        }
+        else if (CommonEnums.POST_CONTENT_TYPE.AUDIO.Contains(pc.Type))
+        {
+            <audio controls="controls" autobuffer="autobuffer" autoplay="autoplay">
+                <source src="data:@pc.Type;base64,@pc.FileBase64"/>
+            </audio>
         }
         else
         {
-            <video style="width:70%; height:500px; float:left;" control>
-                <source src="@pc.Url" type="video/mp4">
-            </video>
+            <p>Cannot read file.</p>
         }
-    }
-</div>
-
-<div class="row">
+        @if (Model.isAuthor)
+        {
+            <div>
+                <form method="post" asp-page-handler="Remove" asp-route-id="@pc.Id">
+                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#remove-content-@pc.Id">Remove</button>
+                    <div class="modal" id="remove-content-@pc.Id" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h2 class="modal-title">Cancel</h2>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Are you sure you want to remove this file?</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-success">Yes, Remove</button>
+                                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                                </div>
+                            </div>
+                            <div class="row">
             <div class="col-sm-8">
                 <h3>Comments</h3>
                 <hr />
@@ -177,9 +213,8 @@
 </div>
 <br>
 <div>
-   @* <a asp-page="./Edit" asp-route-id="@Model.Post.Id">Edit</a>
-    <a asp-page="./Index">Back to List</a>*@
-    <a asp-page="/ApplicationPages/Create" asp-route-id="@Model.Post.Id" class="btn btn-primary">Apply</a>
-    <a asp-page="" class="btn btn-primary"></a>
-    <a asp-page="" class="btn btn-primary"></a>
+    @if(!Model.isAuthor)
+    {
+        <a href="/ApplicationPages/Create?postId=@Model.Post.Id" class="btn btn-primary">Apply</a>
+    }
 </div>

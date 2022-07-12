@@ -27,7 +27,7 @@ ViewData["Title"] = "Home page";
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/HomePage/Index">Home</a>
+                            <a class="nav-link text-dark" href="/HomePage/Index">Home</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
@@ -90,7 +90,7 @@ ViewData["Title"] = "Home page";
         </nav>
     </header>
     <div class="container">
-        <main role="main" class="pb-3">
+        <main role="main" class="w-100 p-3">
             @RenderBody()
         </main>
     </div>

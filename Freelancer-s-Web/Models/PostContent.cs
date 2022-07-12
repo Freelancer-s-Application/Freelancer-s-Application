@@ -9,8 +9,7 @@ namespace Freelancer_s_Web.Models
     {
         public int Type { get; set; }
         public int PostId { get; set; }
-        public string Url { get; set; }
-
+        public byte[] File { get; set; }
         public virtual Post Post { get; set; }
     }
 }

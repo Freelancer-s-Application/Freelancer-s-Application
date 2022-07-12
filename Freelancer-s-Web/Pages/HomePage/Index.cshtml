@@ -2,7 +2,14 @@
 @model Freelancer_s_Web.Pages.HomePage.IndexModel
 
 @{
-    ViewData["Title"] = "HomePage";
+@using Freelancer_s_Web.Commons
+    @using Freelancer_s_Web.Models;
+    @using Freelancer_s_Web.ViewModel
+    @using Microsoft.AspNetCore.Http;
+    @using Utils
+    LoginUserVM loginUser = CustomAuthorization.loginUser;
+    ViewData["Title"] = "Home page";
+
 }
 <style>
 
@@ -10,6 +17,11 @@
     .filterDiv {
         display: none;
     }
+
+    .filterDiv2 {
+        display: none;
+    }
+
     .show {
         display: contents;
     }
@@ -21,6 +33,30 @@
         <input type="text" id="myFilter" class="form-control" onkeyup="myFunction()" placeholder="Search for card name...">
     </div>
 </div>
+
+
+
+<div id="myBtnContainer" class="card d-flex flex-row">
+    <h3 class="mx-3 my-3">Discovery</h3>
+    @{if (loginUser == null)
+        {
+
+        }
+        else if (loginUser.Role == "USER")
+        {
+        <div class="ml-auto mx-3 my-3">
+            <button class="btn active btn-primary" onclick="filterSelection2('all')"> Show all</button>
+            <button class="btn btn-primary" onclick="filterSelection2('@CustomAuthorization.loginUser.Id')">My Post</button>
+        </div>
+        }
+        else
+        {
+
+        }
+    }
+</div>
+
+<br />
 <div id="myBtnContainer">
     <button class="btn active" onclick="filterSelection('all')"> Show all</button>
     <button class="btn" onclick="filterSelection('6')"> SE</button>
@@ -29,31 +65,41 @@
     <button class="btn" onclick="filterSelection('9')">AI</button>
     <button class="btn" onclick="filterSelection('10')">General</button>
 </div>
-<br />
 <div id="myProducts">
     @foreach (var item in Model.Post)
     {
-    
-    <div class="filterDiv @Html.DisplayFor(modelItem => item.MajorId)">
-        <a href="#">
-            <div class="card ">
-                <div class="card-title p-2">
-                    <h2>@Html.DisplayFor(modelItem => item.Title)</h2>
-                </div>
-                <div class="card-body">
-                    <p class="card-text">@Html.DisplayFor(modelItem => item.Description).</p>
-                    <p class="card-text">@Html.DisplayFor(modelItem => item.Major.Name).</p>
-                    <p class="card-text"></p>
-                    <div class="d-flex flex-row">
-                        <p class="card-text">Comment: @Html.DisplayFor(modelItem => item.Comments.Count).</p>
-                    </div>
 
+    <div class="filterDiv @Html.DisplayFor(modelItem => item.MajorId)">
+        <div class="filterDiv2 @Html.DisplayFor(modelItem => item.UserId) ">
+            <a asp-page="/PostPage/Details" asp-route-id="@item.Id">
+                <div class="card box-shadow my-5">
+                    <div class="text-dark  d-flex flex-row card-title p-2">
+                        <h2>@Html.DisplayFor(modelItem => item.Title)</h2>
+                        <div class="text-dark ml-auto">
+                            <span>@item.User.DisplayName</span>
+
+                            <img class="rounded-circle mx-1 border" src="@item.User.Avatar" width="27" height="27" />
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <p class="text-dark card-text">@Html.DisplayFor(modelItem => item.Description).</p>
+                        <p class="text-dark card-text">@Html.DisplayFor(modelItem => item.Major.Name).</p>
+                        <p class="text-dark card-text"></p>
+                        <div class="d-flex flex-row">
+                            <p class=" text-dark card-text">Comment: @Html.DisplayFor(modelItem => item.Comments.Count).</p>
+                            @if(@Model.LoginUser != null && @Model.LoginUser.Id != item.UserId && Model.LoginUser.Role != CommonEnums.ROLE.ADMINISTRATOR)
+                            {
+                                <a asp-page="/ApplicationPages/Create" asp-route-postId="@item.Id" class="btn btn-primary ml-auto">Apply</a>
+                            }
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </a>
-            <br />
+            </a>
         </div>
-   
+    </div>
+      
+
+
     }
 </div>
 <script defer>
@@ -82,7 +128,16 @@
             if (x[i].className.indexOf(c) > -1) w3AddClass(x[i], "show");
         }
     }
-
+    filterSelection2("all")
+    function filterSelection2(c) {
+        var x, i;
+        x = document.getElementsByClassName("filterDiv2");
+        if (c == "all") c = "";
+        for (i = 0; i < x.length; i++) {
+            w3RemoveClass(x[i], "show");
+            if (x[i].className.indexOf(c) > -1) w3AddClass(x[i], "show");
+        }
+    }
     function w3AddClass(element, name) {
         var i, arr1, arr2;
         arr1 = element.className.split(" ");
@@ -114,4 +169,7 @@
             this.className += " active";
         });
     }
+
+
+
 </script>

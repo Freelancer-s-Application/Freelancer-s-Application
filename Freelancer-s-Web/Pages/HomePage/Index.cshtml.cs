@@ -29,7 +29,36 @@ namespace Freelancer_s_Web.Pages.HomePage
         {
             using (var work = _unitOfWorkFactory.Get)
             {
-                Post = await work.PostRepository.GetAll(post => post.Status == CommonEnums.POST_STATUS.PUBLIC, null, "User,Major,Comments").ToListAsync();
+                Post = await work.PostRepository.GetAll(post => post.Status == CommonEnums.POST_STATUS.PUBLIC && !post.IsDeleted, null, "User,Major,Comments").ToListAsync();
+                LoginUser = CustomAuthorization.loginUser;
+            }
+        }
+        public async Task OnGetMyselfAsync()
+        {
+            using (var work = _unitOfWorkFactory.Get)
+            {
+                Post = await work.PostRepository.GetAll(post => post.UserId == CustomAuthorization.loginUser.Id, null, "User,Major,Comments").ToListAsync();
+                LoginUser = CustomAuthorization.loginUser;
+            }
+        }
+
+        public async Task OnGetApprovedAsync()
+        {
+            using (var work = _unitOfWorkFactory.Get)
+            {
+                Post = new List<Post>();
+                var posts = await work.PostRepository.GetAll(post => post.UserId != CustomAuthorization.loginUser.Id && !post.IsDeleted, null, "User,Major,Comments,ApplicationForms").ToListAsync();
+                foreach(var post in posts)
+                {
+                    foreach(var form in post.ApplicationForms)
+                    {
+                        if(form.UserId == CustomAuthorization.loginUser.Id && form.Status == CommonEnums.APPLICATION_FORM_STATUS.APPROVED)
+                        {
+                            Post.Add(post);
+                            break;
+                        }
+                    }
+                }
                 LoginUser = CustomAuthorization.loginUser;
             }
         }

@@ -24,6 +24,7 @@ namespace Freelancer_s_Web.Pages.PostPage
             _unitOfWorkFactory = unitOfWorkFactory;
         }
 
+        [BindProperty]
         public Post Post { get; set; }
         public IList<PostContentBase64> postContents { get; set; }
         public IEnumerable<Comment> comments { get; set; }
@@ -32,6 +33,8 @@ namespace Freelancer_s_Web.Pages.PostPage
 
         public Boolean isAuthor { get; set; }
         public User User { get; set; }
+
+        [BindProperty]
         public Comment comment { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int id)
@@ -172,6 +175,7 @@ namespace Freelancer_s_Web.Pages.PostPage
         }
         public async Task<IActionResult> OnPostRemoveAsync(int id)
         {
+            comment = new Comment();
             using (var work = _unitOfWorkFactory.Get)
             {
                 try
@@ -243,8 +247,10 @@ namespace Freelancer_s_Web.Pages.PostPage
 
         public async Task<IActionResult> OnPostAsync()
         {
-            try
-            {
+            //try
+            //{
+            //comment = new Comment();
+                comment.PostId = Post.Id;
                 comment.UserId = CustomAuthorization.loginUser.Id;
                 comment.CreatedAt = DateTime.Now;
                 comment.CreatedBy = CustomAuthorization.loginUser.Email;
@@ -254,12 +260,12 @@ namespace Freelancer_s_Web.Pages.PostPage
                 }
                 return Redirect("/PostPage/Details?id=" + Post.Id);
                 //return Page();
-            }
-            catch (Exception ex)
-            {
-                ViewData["Error"] = ex.Message;
-                return Page();
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    ViewData["Error"] = ex.Message;
+            //    return Page();
+            //}
         }
 
     }

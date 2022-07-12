@@ -66,7 +66,7 @@ namespace Repositories
             {
                 foreach (var includedProp in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
                 {
-                    query = query.Include(includedProp);
+                    query = query.AsNoTracking().Include(includedProp);
                 }
             }
 

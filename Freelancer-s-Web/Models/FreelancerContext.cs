@@ -22,8 +22,8 @@ namespace Freelancer_s_Web.Models
         public virtual DbSet<Comment> Comments { get; set; }
         public virtual DbSet<Major> Majors { get; set; }
         public virtual DbSet<Message> Messages { get; set; }
-        public virtual DbSet<MessageImage> MessageImages { get; set; }
-        public virtual DbSet<Notification> Notifications { get; set; }
+        //public virtual DbSet<MessageImage> MessageImages { get; set; }
+        //public virtual DbSet<Notification> Notifications { get; set; }
         public virtual DbSet<Post> Posts { get; set; }
         public virtual DbSet<PostContent> PostContents { get; set; }
         public virtual DbSet<Report> Reports { get; set; }
@@ -155,68 +155,68 @@ namespace Freelancer_s_Web.Models
                     .HasConstraintName("FK_Messages_Users");
             });
 
-            modelBuilder.Entity<MessageImage>(entity =>
-            {
-                entity.Property(e => e.CreatedAt).HasColumnType("datetime");
+            //modelBuilder.Entity<MessageImage>(entity =>
+            //{
+            //    entity.Property(e => e.CreatedAt).HasColumnType("datetime");
 
-                entity.Property(e => e.CreatedBy)
-                    .IsRequired()
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
+            //    entity.Property(e => e.CreatedBy)
+            //        .IsRequired()
+            //        .HasMaxLength(50)
+            //        .IsUnicode(false);
 
-                entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
+            //    entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
 
-                entity.Property(e => e.UpdatedBy)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
+            //    entity.Property(e => e.UpdatedBy)
+            //        .HasMaxLength(50)
+            //        .IsUnicode(false);
 
-                entity.Property(e => e.Url)
-                    .IsRequired()
-                    .IsUnicode(false)
-                    .HasColumnName("URL");
+            //    entity.Property(e => e.Url)
+            //        .IsRequired()
+            //        .IsUnicode(false)
+            //        .HasColumnName("URL");
 
-                entity.HasOne(d => d.Message)
-                    .WithMany(p => p.MessageImages)
-                    .HasForeignKey(d => d.Messageid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_MessageImages_Messages");
-            });
+            //    entity.HasOne(d => d.Message)
+            //        .WithMany(p => p.MessageImages)
+            //        .HasForeignKey(d => d.Messageid)
+            //        .OnDelete(DeleteBehavior.ClientSetNull)
+            //        .HasConstraintName("FK_MessageImages_Messages");
+            //});
 
-            modelBuilder.Entity<Notification>(entity =>
-            {
-                entity.Property(e => e.Content)
-                    .IsRequired()
-                    .HasMaxLength(1000);
+            //modelBuilder.Entity<Notification>(entity =>
+            //{
+            //    entity.Property(e => e.Content)
+            //        .IsRequired()
+            //        .HasMaxLength(1000);
 
-                entity.Property(e => e.CreatedAt).HasColumnType("datetime");
+            //    entity.Property(e => e.CreatedAt).HasColumnType("datetime");
 
-                entity.Property(e => e.CreatedBy)
-                    .IsRequired()
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
+            //    entity.Property(e => e.CreatedBy)
+            //        .IsRequired()
+            //        .HasMaxLength(50)
+            //        .IsUnicode(false);
 
-                entity.Property(e => e.Title)
-                    .IsRequired()
-                    .HasMaxLength(255);
+            //    entity.Property(e => e.Title)
+            //        .IsRequired()
+            //        .HasMaxLength(255);
 
-                entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
+            //    entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
 
-                entity.Property(e => e.UpdatedBy)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
+            //    entity.Property(e => e.UpdatedBy)
+            //        .HasMaxLength(50)
+            //        .IsUnicode(false);
 
-                entity.HasOne(d => d.Receiver)
-                    .WithMany(p => p.NotificationReceivers)
-                    .HasForeignKey(d => d.ReceiverId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Notifications_Users1");
+            //    entity.HasOne(d => d.Receiver)
+            //        .WithMany(p => p.NotificationReceivers)
+            //        .HasForeignKey(d => d.ReceiverId)
+            //        .OnDelete(DeleteBehavior.ClientSetNull)
+            //        .HasConstraintName("FK_Notifications_Users1");
 
-                entity.HasOne(d => d.Sender)
-                    .WithMany(p => p.NotificationSenders)
-                    .HasForeignKey(d => d.SenderId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Notifications_Users");
-            });
+            //    entity.HasOne(d => d.Sender)
+            //        .WithMany(p => p.NotificationSenders)
+            //        .HasForeignKey(d => d.SenderId)
+            //        .OnDelete(DeleteBehavior.ClientSetNull)
+            //        .HasConstraintName("FK_Notifications_Users");
+            //});
 
             modelBuilder.Entity<Post>(entity =>
             {

@@ -13,8 +13,8 @@ namespace Freelancer_s_Web.Models
             Comments = new HashSet<Comment>();
             MessageReceivers = new HashSet<Message>();
             MessageSenders = new HashSet<Message>();
-            NotificationReceivers = new HashSet<Notification>();
-            NotificationSenders = new HashSet<Notification>();
+            //NotificationReceivers = new HashSet<Notification>();
+            //NotificationSenders = new HashSet<Notification>();
             Posts = new HashSet<Post>();
             ReportReportees = new HashSet<Report>();
             ReportReporters = new HashSet<Report>();
@@ -31,8 +31,8 @@ namespace Freelancer_s_Web.Models
         public virtual ICollection<Comment> Comments { get; set; }
         public virtual ICollection<Message> MessageReceivers { get; set; }
         public virtual ICollection<Message> MessageSenders { get; set; }
-        public virtual ICollection<Notification> NotificationReceivers { get; set; }
-        public virtual ICollection<Notification> NotificationSenders { get; set; }
+        //public virtual ICollection<Notification> NotificationReceivers { get; set; }
+        //public virtual ICollection<Notification> NotificationSenders { get; set; }
         public virtual ICollection<Post> Posts { get; set; }
         public virtual ICollection<Report> ReportReportees { get; set; }
         public virtual ICollection<Report> ReportReporters { get; set; }

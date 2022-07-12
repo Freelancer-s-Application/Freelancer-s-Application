@@ -50,7 +50,7 @@ namespace Repositories.Messages
             {
                 if ((message.SenderId == currentUserId && message.ReceiverId == id) || (message.ReceiverId == currentUserId && message.SenderId == id))
                 {
-                    if (message.ReceiverId == currentUserId) message.IsSeen = true;
+                    //if (message.ReceiverId == currentUserId) message.IsSeen = true;
                     Conversation.Add(new KeyValuePair<int, Message>(message.SenderId, message));
                 }
             }

@@ -16,6 +16,6 @@ namespace Repositories.Posts
 
         Task CreatePost(Post post);
 
-        void UpdatePost(Post post);
+        Task UpdatePost(Post post);
     }
 }

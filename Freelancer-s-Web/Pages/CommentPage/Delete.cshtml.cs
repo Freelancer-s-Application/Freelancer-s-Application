@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,7 +10,7 @@ using Freelancer_s_Web.UnitOfWork;
 using Freelancer_s_Web.Commons;
 using Freelancer_s_Web.Utils;
 
-namespace Freelancer_s_Web.Pages.PostPage
+namespace Freelancer_s_Web.Pages.CommentPage
 {
     [Authorized("USER,ADMIN")]
     public class DeleteModel : PageModel
@@ -21,21 +21,24 @@ namespace Freelancer_s_Web.Pages.PostPage
         {
             _unitOfWorkFactory = unitOfWorkFactory;
         }
-
         [BindProperty]
-        public Post Post { get; set; }
+        public Comment comment { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (id == null)
+            if(id == null)
             {
                 return NotFound();
             }
-            using (var work = _unitOfWorkFactory.Get)
+            using(var work = _unitOfWorkFactory.Get)
             {
-                Post = work.PostRepository.GetFirstOrDefault(p => p.Id == id);
+                comment = work.CommentRepository.GetFirstOrDefault(c => c.Id == id);    
             }
-            if (Post == null)
+            if(comment == null)
+            {
+                return NotFound();
+            }
+            if (comment.IsDeleted)
             {
                 return NotFound();
             }
@@ -51,26 +54,19 @@ namespace Freelancer_s_Web.Pages.PostPage
 
             using (var work = _unitOfWorkFactory.Get)
             {
-                Post = work.PostRepository.GetFirstOrDefault(p => p.Id == id);
-                if (Post == null)
+                comment = work.CommentRepository.GetFirstOrDefault(p => p.Id == id);
+                var post = work.PostRepository.GetFirstOrDefault(p => p.Id == comment.PostId);
+                if (comment == null)
                 {
                     return NotFound();
                 }
-                Post.Status = CommonEnums.POST_STATUS.REMOVE;
-                Post.IsDeleted = true;
-                Post.UpdatedAt = DateTime.Now;
-                Post.UpdatedBy = CustomAuthorization.loginUser.Email;
-                await work.PostRepository.UpdatePost(Post);
-                work.Save();
+                comment.IsDeleted = true;
+                comment.UpdatedAt = DateTime.Now;
+                comment.UpdatedBy = CustomAuthorization.loginUser.Email;
+                await work.CommentRepository.UpdateComment(comment);
+                return Redirect("/PostPage/Details?id=" + post.Id); 
             }
-            if (CustomAuthorization.loginUser.Role == CommonEnums.ROLE.ADMINISTRATOR)
-            {
-                return RedirectToPage("./Index");
-            }
-            else
-            {
-                return RedirectToPage("/HomePage/Index");
-            }
+            
         }
     }
 }

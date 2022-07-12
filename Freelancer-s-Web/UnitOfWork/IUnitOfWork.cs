@@ -2,7 +2,6 @@
 using Repositories.Comments;
 using Repositories.Majors;
 using Repositories.Messages;
-using Repositories.Notifications;
 using Repositories.PostContents;
 using Repositories.Posts;
 using Repositories.Reports;
@@ -21,7 +20,6 @@ namespace Freelancer_s_Web.UnitOfWork
         ICommentRepository CommentRepository { get; }
         IMajorRepository MajorRepository { get; }
         IMessageRepository MessageRepository { get; }
-        INotificationRepository NotificationRepository { get; }
         IPostRepository PostRepository { get; }
         IPostContentRepository PostContentRepository { get; }
         IReportRepository ReportRepository { get; }

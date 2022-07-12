@@ -14,6 +14,7 @@
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
+                <label asp-for="Post.UserId" class="control-label"></label>
                 <input asp-for="Post.UserId" type="hidden" value="ViewBag.UserId"/>
             </div>
             <div class="form-group">
@@ -38,7 +39,7 @@
 </div>
 
 <div>
-    <a asp-page="/HomePage/Index">Back to List</a>
+    <a asp-page="Index">Back to List</a>
 </div>
 
 @section Scripts {

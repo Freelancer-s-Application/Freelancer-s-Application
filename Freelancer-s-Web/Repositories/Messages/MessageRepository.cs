@@ -68,7 +68,6 @@ namespace Repositories.Messages
             var currentUser = CustomAuthorization.loginUser;
             //var receiver = await _dbContext.Users.FindAsync(id);
             Message message = new Message { Content = messageContent.Trim(), ReceiverId = id, SenderId = currentUser.Id, IsSeen = false, CreatedAt = DateTime.Now, CreatedBy = currentUser.Email, IsDeleted = false};
-
             await _dbContext.Messages.AddAsync(message);
             await _dbContext.SaveChangesAsync();
         }

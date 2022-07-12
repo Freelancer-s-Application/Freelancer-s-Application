@@ -27,7 +27,7 @@ namespace Freelancer_s_Web.Pages.UserPage
             using (var work = _unitOfWorkFactory.Get)
             {
                 User = work.UserRepository
-                    .GetAll(u => !u.Email.ToLower().Equals(CustomAuthorization.loginUser.Email.ToLower()), null, "Major,ReportReportees,ReportReporters")
+                    .GetAll(u => !u.Email.ToLower().Equals(CustomAuthorization.loginUser.Email.ToLower()), null, "Major")
                     .ToList();
                 return Page();
             }
@@ -50,8 +50,7 @@ namespace Freelancer_s_Web.Pages.UserPage
                     await work.UserRepository.UpdateUser(user);
                 } catch (Exception ex)
                 {
-                    TempData["Error"] = "Something went wrong! Error: " + ex.Message;
-                    return Redirect("/Index");
+
                 }
                 User = work.UserRepository
                     .GetAll(u => !u.Email.ToLower().Equals(CustomAuthorization.loginUser.Email.ToLower()), null, "Major")
@@ -76,8 +75,7 @@ namespace Freelancer_s_Web.Pages.UserPage
                 }
                 catch (Exception ex)
                 {
-                    TempData["Error"] = "Something went wrong! Error: " + ex.Message;
-                    return Redirect("/Index");
+
                 }
                 User = work.UserRepository
                     .GetAll(u => !u.Email.ToLower().Equals(CustomAuthorization.loginUser.Email.ToLower()), null, "Major")

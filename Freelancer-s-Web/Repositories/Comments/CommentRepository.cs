@@ -18,14 +18,27 @@ namespace Repositories.Comments
             _dbContext = dbContext;
         }
 
+        public async Task CreateComment(Comment comment)
+        {
+            _dbContext.Comments.Add(comment);
+            await _dbContext.SaveChangesAsync();
+        }
+
         public async Task<IEnumerable<Comment>> GetAllCommentByPostId(int id)
         {
-            var comments = await _dbContext.Comments
+            var comments = await _dbContext.Comments.AsNoTracking()
                 .Include(c => c.User)
-                .Where(pc => pc.PostId == id).ToListAsync();
+                .Where(pc => pc.PostId == id)
+                .Where(c => c.IsDeleted == false).ToListAsync();
 
             return comments;
         }
 
+        public async Task UpdateComment(Comment comment)
+        {
+            //_dbContext.Attach(comment).State = EntityState.Modified;
+            _dbContext.Comments.Update(comment);
+            await _dbContext.SaveChangesAsync();
+        }
     }
 }

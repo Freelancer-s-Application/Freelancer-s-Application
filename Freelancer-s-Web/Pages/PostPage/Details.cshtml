@@ -32,6 +32,23 @@
      color: black;
      font-weight: bold;
      }
+
+     #ava-cmt{
+         width:100% ;
+         height:100%;
+     }
+
+     #buttong{
+         margin-left:440px;
+         float:right;
+         background-color: blueviolet;
+         color:white;
+     }
+
+     #btn-person{
+     background-color:white;
+     border:none;
+     }
     </style>
 </head>
 
@@ -124,33 +141,53 @@
                                     <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        }
-
-    }
-    
-    
-</div>
-
-<div class="row">
-            <div class="col-sm-5 col-md-6 col-12 pb-4">
+                            <div class="row">
+            <div class="col-sm-8">
                 <h3>Comments</h3>
                 <hr />
+                	<h2>New Comment</h2>
+                	<form method="post">
+                    <fieldset>
+                        <div class="row">
+                            <div class="col-sm-10 col-lg-2 hidden-xs">
+                            	<img src="@Model.User.Avatar" alt="" class="rounded-circle" id="ava-cmt">
+                            </div>
+                            <div class="form-group col-xs-12 col-sm-9 col-lg-10">
+                                <textarea asp-for="comment.Content" class="form-control" id="message" placeholder="Your comment"></textarea>
+                            </div>
+                        </div>  	
+                    </fieldset>
+                    <button type="submit" class="btn btn-normal pull-right" id="buttong">Comment</button>
+                    </form>
                 @foreach(var item in Model.comments) {
-                <div class="comment mt-4 text-justify float-left">
+                    if(item.UserId == @Model.User.Id){
+                    
+                    <div class="comment mt-4 text-justify float-left">
                     <img src="@item.User.Avatar" alt="" class="rounded-circle" width="40" height="40">
                     <h4>@item.User.DisplayName</h4>
-                    <span>- @item.CreatedAt</span>
+                    <br>
+                    <span> @item.CreatedAt</span>
                     <br>
                     <p>@item.Content</p>
-                </div>
+                    </div>
+                    <br>
+                    <a asp-page="/CommentPage/Edit" asp-route-id="@item.Id" id="btn-person">Edit</a> 
+                    <a asp-page="/CommentPage/Delete" asp-route-id="@item.Id" id="btn-person">Delete</a>
+                    }else
+                    {
+                    <div class="comment mt-4 text-justify float-left">
+                    <img src="@item.User.Avatar" alt="" class="rounded-circle" width="40" height="40">
+                    <h4>@item.User.DisplayName</h4>
+                    <br>
+                    <span> @item.CreatedAt</span>
+                    <br>
+                    <p>@item.Content</p>
+                    </div>
+                    }
                 }
             </div>
 </div>
-
+<br>
 <div>
     @if(!Model.isAuthor)
     {

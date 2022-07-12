@@ -1,4 +1,6 @@
 @page
+@using Freelancer_s_Web.Commons
+@using Freelancer_s_Web.Utils
 @model IndexModel
 
 @{
@@ -62,7 +64,7 @@
     {
         <a asp-page="./Edit" asp-route-id="@Model.User.Id">Edit</a> 
     }
-    @if (Model.IsLoggingIn != null && Model.IsLoggingIn == false)
+    @if (Model.IsLoggingIn != null && Model.IsLoggingIn == false && CustomAuthorization.loginUser.Role != CommonEnums.ROLE.ADMINISTRATOR)
     {
         <form method="post" asp-page-handler="Report" asp-route-id="@Model.User.Id">
             <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#report-user">Report</button>

@@ -95,7 +95,6 @@ namespace Freelancer_s_Web.Pages.PostPage
                 TempData["Error"] = ex.Message;
                 return Redirect("/Index");
             }
-            return RedirectToPage("./Index");
         }
     }
 }

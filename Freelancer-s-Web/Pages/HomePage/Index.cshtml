@@ -2,6 +2,7 @@
 @model Freelancer_s_Web.Pages.HomePage.IndexModel
 
 @{
+@using Freelancer_s_Web.Commons
     @using Freelancer_s_Web.Models;
     @using Freelancer_s_Web.ViewModel
     @using Microsoft.AspNetCore.Http;
@@ -86,9 +87,10 @@
                         <p class="text-dark card-text"></p>
                         <div class="d-flex flex-row">
                             <p class=" text-dark card-text">Comment: @Html.DisplayFor(modelItem => item.Comments.Count).</p>
-                            
-                            <a asp-page="/ApplicationPages/Create" asp-route-postId="@item.Id" class="btn btn-primary ml-auto">Apply</a>
-
+                            @if(@Model.LoginUser != null && @Model.LoginUser.Id != item.UserId && Model.LoginUser.Role != CommonEnums.ROLE.ADMINISTRATOR)
+                            {
+                                <a asp-page="/ApplicationPages/Create" asp-route-postId="@item.Id" class="btn btn-primary ml-auto">Apply</a>
+                            }
                         </div>
                     </div>
                 </div>

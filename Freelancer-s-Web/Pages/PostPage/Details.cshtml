@@ -59,7 +59,10 @@
         <p> @Html.DisplayNameFor(model => model.Post.Major): @Html.DisplayFor(model => model.Post.Major.Name)</p>
         <p class="mx-5">@Html.DisplayFor(model => model.Post.CreatedAt)</p>
         <a class="text-dark ml-auto" asp-area="" asp-page="/Profile/Index" asp-page-handler="Detail" asp-route-id="@Model.Post.UserId"> <img class="rounded-circle mx-1 border" src="@Model.Post.User.Avatar" width="27" height="27" />@Html.DisplayFor(model => model.Post.User.DisplayName)</a>
+        
+        
     </div>
+    
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
@@ -73,7 +76,7 @@
 <div class="col-md-4">
         @if (Model.isAuthor)
         {
-        <form method="post" asp-page-handler="Upload" enctype="multipart/form-data">
+        <form method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" name="postId" value="@Model.Post.Id" />
             <p>Upload audio, pdf, image, video</p>
@@ -88,66 +91,182 @@
 
         }
 </div>
-<div style="float:left; width:100%; margin-bottom:30px">
-    <h3>Contents</h3>
+<h3>Contents</h3>
     <hr />
-    @foreach(var pc in Model.postContents)
+<div class="row d-flex flex-column justify-content-center align-content-center">
+    
+    @if (!Model.isAuthor)
     {
-        if (CommonEnums.POST_CONTENT_TYPE.IMAGE.Contains(pc.Type))
+        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" style="width: fit-content">
+            <div class="carousel-inner">
+      
+              @foreach(var pc in Model.postContents.Select((value, i) => new { i, value }))
+            {
+                if (CommonEnums.POST_CONTENT_TYPE.IMAGE.Contains(pc.value.Type))
+                {
+                    if (pc.i == 0)
+                    {
+                        <div class="carousel-item active"> 
+                            <div class="d-flex justify-content-center">
+                                <img class="d-block" src="data:@pc.value.Type;base64,@pc.value.FileBase64" alt="" style="max-height: 50vh" >
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="carousel-item ">   
+                            <div class="d-flex justify-content-center">
+                            <img class="d-block " src="data:@pc.value.Type;base64,@pc.value.FileBase64" alt="" >
+                            </div>
+                        </div>
+                    }
+                }
+                else if (CommonEnums.POST_CONTENT_TYPE.VIDEO.Contains(pc.value.Type))
+                {
+                    if (pc.i == 0)
+                    {
+                        <div class="carousel-item active">
+                            <div class="d-flex justify-content-center">
+                            <video class="d-block " src="data:@pc.value.Type;base64,@pc.value.FileBase64" controls>
+                            </video>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="carousel-item ">
+                            <div class="d-flex justify-content-center">
+                            <video class="d-block " src="data:@pc.value.Type;base64,@pc.value.FileBase64" controls>
+                            </video>
+                            </div>
+                        </div>
+                    }
+                }
+                else if (CommonEnums.POST_CONTENT_TYPE.PDF.Contains(pc.value.Type))
+                {
+                    if (pc.i == 0)
+                    {
+                        <div class="carousel-item active">
+                            <div class="d-flex justify-content-center">
+                            <embed class="d-block " src="data:@pc.value.Type;base64,@pc.value.FileBase64"/>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="carousel-item ">
+                            <div class="d-flex justify-content-center">
+                            <embed class="d-block " src="data:@pc.value.Type;base64,@pc.value.FileBase64"/>
+                            </div>
+                        </div>
+                    }
+                }
+                else if (CommonEnums.POST_CONTENT_TYPE.AUDIO.Contains(pc.value.Type))
+                {
+                    if (pc.i == 0)
+                    {
+                        <div class="carousel-item active">
+                            <div class="d-flex justify-content-center">
+                            <audio controls="controls" autobuffer="autobuffer" autoplay="autoplay">
+                                <source class="d-block " src="data:@pc.value.Type;base64,@pc.value.FileBase64"/>
+                            </audio>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="carousel-item ">
+                            <div class="d-flex justify-content-center">
+                            <audio controls="controls" autobuffer="autobuffer" autoplay="autoplay">
+                                <source class="d-block " src="data:@pc.value.Type;base64,@pc.value.FileBase64"/>
+                            </audio>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="carousel-item active">
+                        <p>Cannot read file.</p>
+                    </div>
+                }
+            }
+    
+        </div>
+            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+    }
+    else
+    {
+            @foreach(var pc in Model.postContents)
         {
-            <div class="img">
-                <img src="data:@pc.Type;base64,@pc.FileBase64" alt="" style="float:left;">
-            </div>
-        }
-        else if (CommonEnums.POST_CONTENT_TYPE.VIDEO.Contains(pc.Type))
-        {
-            <div class="vid">
-                <video src="data:@pc.Type;base64,@pc.FileBase64" style="width:70%; height:500px; float:left;" controls>
-                </video>
-            </div>
-        }
-        else if (CommonEnums.POST_CONTENT_TYPE.PDF.Contains(pc.Type))
-        {
-            <div class="img">
-                <embed src="data:@pc.Type;base64,@pc.FileBase64"/>
-            </div>
-        }
-        else if (CommonEnums.POST_CONTENT_TYPE.AUDIO.Contains(pc.Type))
-        {
-            <audio controls="controls" autobuffer="autobuffer" autoplay="autoplay">
-                <source src="data:@pc.Type;base64,@pc.FileBase64"/>
-            </audio>
-        }
-        else
-        {
-            <p>Cannot read file.</p>
-        }
-        @if (Model.isAuthor)
-        {
-            <div>
-                <form method="post" asp-page-handler="Remove" asp-route-id="@pc.Id">
-                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#remove-content-@pc.Id">Remove</button>
-                    <div class="modal" id="remove-content-@pc.Id" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h2 class="modal-title">Cancel</h2>
-                                </div>
-                                <div class="modal-body">
-                                    <p>Are you sure you want to remove this file?</p>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="submit" class="btn btn-success">Yes, Remove</button>
-                                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+            if (CommonEnums.POST_CONTENT_TYPE.IMAGE.Contains(pc.Type))
+            {
+                <div class="col-md-8 d-flex flex-row justify-content-center align-content-center">
+                    <img src="data:@pc.Type;base64,@pc.FileBase64" alt="">
+                </div>
+            }
+            else if (CommonEnums.POST_CONTENT_TYPE.VIDEO.Contains(pc.Type))
+            {
+                <div class="col-md-8 d-flex flex-row justify-content-center align-content-center">
+                    <video src="data:@pc.Type;base64,@pc.FileBase64" style="max-height:50vh;" controls>
+                    </video>
+                </div>
+            }
+            else if (CommonEnums.POST_CONTENT_TYPE.PDF.Contains(pc.Type))
+            {
+                <div class="col-md-8 d-flex flex-row justify-content-center align-content-center">
+                    <embed src="data:@pc.Type;base64,@pc.FileBase64"/>
+                </div>
+            }
+            else if (CommonEnums.POST_CONTENT_TYPE.AUDIO.Contains(pc.Type))
+            {
+                <div class="col-md-8 d-flex flex-row justify-content-center align-content-center">
+                    <audio controls="controls" autobuffer="autobuffer" autoplay="autoplay">
+                        <source src="data:@pc.Type;base64,@pc.FileBase64"/>
+                    </audio>
+                </div>
+            }
+            else
+            {
+                <p>Cannot read file.</p>
+            }
+            @if (Model.isAuthor)
+            {
+                <div>
+                    <form method="post" asp-page-handler="Remove" asp-route-id="@pc.Id" class="d-flex flex-row justify-content-center align-content-center">
+                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#remove-content-@pc.Id">Remove</button>
+                        <div class="modal" id="remove-content-@pc.Id" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h2 class="modal-title">Cancel</h2>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Are you sure you want to remove this file?</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-success">Yes, Remove</button>
+                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </form>
-            </div>
-        }
+                    </form>
+                </div>
+            }
 
+        }
     }
+
+    
     
     
 </div>
@@ -157,7 +276,7 @@
                 <h3>Comments</h3>
                 <hr />
                 	<h2>New Comment</h2>
-                	<form method="post" asp-page-handler="Comment">
+                	<form method="post">
                     <fieldset>
                         <div class="row">
                             <div class="col-sm-10 col-lg-2 hidden-xs">
@@ -165,9 +284,8 @@
                             </div>
                             <div class="form-group col-xs-12 col-sm-9 col-lg-10">
                                 <textarea asp-for="comment.Content" class="form-control" id="message" placeholder="Your comment"></textarea>
-                                <input asp-for="comment.PostId" value="@Model.Post.Id" type="hidden"/>
                             </div>
-                        </div>
+                        </div>  	
                     </fieldset>
                     <button type="submit" class="btn btn-normal pull-right" id="buttong">Comment</button>
                     </form>
@@ -204,5 +322,6 @@
     @if(!Model.isAuthor)
     {
         <a href="/ApplicationPages/Create?postId=@Model.Post.Id" class="btn btn-primary">Apply</a>
+        <a class="btn btn-primary mx-3" asp-page="/Message/ChatRoom" asp-route-id="@Model.Post.UserId">Chat</a>
     }
 </div>

@@ -34,10 +34,10 @@ namespace Freelancer_s_Web.Pages.CommentPage
             using (var work = _unitOfWorkFactory.Get)
             {
                 comment = work.CommentRepository.GetFirstOrDefault(c => c.Id == id);
-                if (comment.Id != CustomAuthorization.loginUser.Id)
-                {
-                    return Redirect("/Unauthorized");
-                }
+                //if (comment.Id != CustomAuthorization.loginUser.Id)
+                //{
+                //    return Redirect("/Unauthorized");
+                //}
             }
             if (comment == null)
             {
@@ -58,7 +58,7 @@ namespace Freelancer_s_Web.Pages.CommentPage
                 {
                     var cmt = work.CommentRepository.GetFirstOrDefault(c => c.Id == comment.Id);
                     if (cmt == null) { return NotFound(); }
-                    var post = work.PostRepository.GetFirstOrDefault(p => p.Id == comment.Id);
+                    var post = work.PostRepository.GetFirstOrDefault(p => p.Id == comment.PostId);
                     cmt.Content = comment.Content;
                     cmt.UpdatedAt = DateTime.Now;
                     cmt.UpdatedBy = CustomAuthorization.loginUser.Email;

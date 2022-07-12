@@ -59,7 +59,7 @@ namespace Freelancer_s_Web.Pages.PostPage
                 {
                     await work.CommentRepository.CreateComment(comment);
                 }
-                return RedirectToPage("/PostPage/Details/{id}");
+                return Redirect("/PostPage/Details?id=" + Post.Id);
                 //return Page();
             }
             catch (Exception ex)

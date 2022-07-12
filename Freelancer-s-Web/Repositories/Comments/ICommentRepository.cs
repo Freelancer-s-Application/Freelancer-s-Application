@@ -11,7 +11,7 @@ namespace Repositories.Comments
     public interface ICommentRepository : IRepository<Comment>
     {
         Task<IEnumerable<Comment>> GetAllCommentByPostId(int id);
-        Task CreateComment(Comment comment);
+        void CreateComment(Comment comment);
         Task UpdateComment(Comment comment);
     }
 }

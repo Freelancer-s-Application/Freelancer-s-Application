@@ -98,6 +98,14 @@ namespace Freelancer_s_Web.Pages.PostPage
                 using (var work = _unitOfWorkFactory.Get)
                 {
                     Post = await work.PostRepository.GetPost(postId);
+                    if (Post == null)
+                    {
+                        return NotFound();
+                    }
+                    if (Post.IsDeleted && CustomAuthorization.loginUser.Role != CommonEnums.ROLE.ADMINISTRATOR)
+                    {
+                        return NotFound();
+                    }
                     if (Post.UserId == CustomAuthorization.loginUser.Id || CustomAuthorization.loginUser.Role == CommonEnums.ROLE.ADMINISTRATOR)
                     {
                         isAuthor = true;
@@ -105,11 +113,6 @@ namespace Freelancer_s_Web.Pages.PostPage
                     else
                     {
                         isAuthor = false;
-                    }
-                    if (Post == null)
-                    {
-                        return NotFound();
-
                     }
                     using (var memoryStream = new MemoryStream())
                     {
@@ -142,7 +145,7 @@ namespace Freelancer_s_Web.Pages.PostPage
                                 });
                             }
                             comments = await work.CommentRepository.GetAllCommentByPostId(postId);
-                            return Page();
+                            return Redirect("/PostPage/Details?id=" + Post.Id);
                         }
                         else
                         {
@@ -162,7 +165,7 @@ namespace Freelancer_s_Web.Pages.PostPage
                             }
                             comments = await work.CommentRepository.GetAllCommentByPostId(postId);
                             ModelState.AddModelError("File", "The file is too large.");
-                            return Page();
+                            return Redirect("/PostPage/Details?id=" + Post.Id);
                         }
                     }
                 }
@@ -245,21 +248,21 @@ namespace Freelancer_s_Web.Pages.PostPage
             }
         }
 
-        public IActionResult OnPost()
+        public IActionResult OnPostComment()
         {
             //try
             //{
             //comment = new Comment();
-                comment.PostId = Post.Id;
+                //comment.PostId = Post.Id;
                 comment.UserId = CustomAuthorization.loginUser.Id;
                 comment.CreatedAt = DateTime.Now;
                 comment.CreatedBy = CustomAuthorization.loginUser.Email;
                 using (var work = _unitOfWorkFactory.Get)
                 {
-                    work.CommentRepository.Add(comment);
+                    work.CommentRepository.CreateComment(comment);
                     work.Save();
                 }
-                return Redirect("/PostPage/Details?id=" + Post.Id);
+                return Redirect("/PostPage/Details?id=" + comment.PostId);
                 //return Page();
             //}
             //catch (Exception ex)

@@ -18,10 +18,9 @@ namespace Repositories.Comments
             _dbContext = dbContext;
         }
 
-        public async Task CreateComment(Comment comment)
+        public void CreateComment(Comment comment)
         {
             _dbContext.Comments.Add(comment);
-            await _dbContext.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<Comment>> GetAllCommentByPostId(int id)

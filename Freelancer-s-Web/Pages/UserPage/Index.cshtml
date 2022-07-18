@@ -8,10 +8,10 @@
 <h1>User Management</h1>
 <div class="row">
     <div class="col-sm-4 mb-4">
-        <input type="text" id="myFilter" class="form-control" onkeyup="myFunction()" placeholder="Search user name or email...">
+        <input type="text" id="searchBox" class="form-control" onkeyup="myFunction()" placeholder="Search user name or email...">
     </div>
 </div>
-    <table class="table w-100 ">
+    <table class="table w-100 " id="myTable">
         <thead>
             <tr>
                 <th>
@@ -44,98 +44,123 @@
         <tbody id="myProducts">
             @foreach (var item in Model.User)
             {
-                <tr class="table">
-                    <td>
-                        <img class="rounded-circle mx-1 border" src="@item.Avatar" width="27" height="27" />
-                    </td>
-                    <td class="title">
-                        <a asp-page="/Profile/Index" asp-page-handler="Detail" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Email)</a>
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Address)
-                    </td>
-                    <td class="title">
-                        @Html.DisplayFor(modelItem => item.DisplayName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.PhoneNumber)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Description)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Major.Name)
-                    </td>
-                    <td>
-                        <a href="/ReportPage/ReportedList?id=@item.Id">@Html.DisplayFor(modelItem => item.ReportReportees.Count)</a>
-                    </td>
-                    <td>
-                        @if (item.IsDeleted == false)
-                        {
-                            <form class="d-flex flex-row" method="post" asp-page-handler="Remove" asp-route-id="@item.Id">
-                                <button type="button" class="btn btn-link text-danger" data-toggle="modal" data-target="#remove-user-@item.Id">Remove</button>
-                                <div class="modal" id="remove-user-@item.Id" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                                    <div class="modal-dialog" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h2 class="modal-title">Cancel</h2>
-                                            </div>
-                                            <div class="modal-body">
-                                                <p>Are you sure you want to remove @item.Email?</p>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="submit" class="btn btn-success">Yes, Delete</button>
-                                                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
-                                            </div>
+            <tr class="table">
+                <td>
+                    <img class="rounded-circle mx-1 border" src="@item.Avatar" width="27" height="27" />
+                </td>
+                <td class="title">
+                    <a asp-page="/Profile/Index" asp-page-handler="Detail" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Email)</a>
+                </td>
+                <td class="title">
+                    @Html.DisplayFor(modelItem => item.DisplayName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Address)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.PhoneNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Major.Name)
+                </td>
+                <td>
+                    <a href="/ReportPage/ReportedList?id=@item.Id">@Html.DisplayFor(modelItem => item.ReportReportees.Count)</a>
+                </td>
+                <td>
+                    @if (item.IsDeleted == false)
+                    {
+                        <form class="d-flex flex-row" method="post" asp-page-handler="Remove" asp-route-id="@item.Id">
+                            <button type="button" class="btn btn-link text-danger" data-toggle="modal" data-target="#remove-user-@item.Id">Remove</button>
+                            <div class="modal" id="remove-user-@item.Id" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h2 class="modal-title">Cancel</h2>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>Are you sure you want to remove @item.Email?</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn btn-success">Yes, Delete</button>
+                                            <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
                                         </div>
                                     </div>
                                 </div>
-                            </form>
-                        }
-                        else
-                        {
-                            <form class="d-flex flex-row" method="post" asp-page-handler="Activate" asp-route-id="@item.Id">
-                                <button type="button" class="btn btn-link text-success" data-toggle="modal" data-target="#activate-user-@item.Id">Activate</button>
-                                <div class="modal" id="activate-user-@item.Id" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                                    <div class="modal-dialog" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h2 class="modal-title">Cancel</h2>
-                                            </div>
-                                            <div class="modal-body">
-                                                <p>Are you sure you want to activate @item.Email?</p>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="submit" class="btn btn-success">Yes, Activate</button>
-                                                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
-                                            </div>
+                            </div>
+                        </form>
+                    }
+                    else
+                    {
+                        <form class="d-flex flex-row" method="post" asp-page-handler="Activate" asp-route-id="@item.Id">
+                            <button type="button" class="btn btn-link text-success" data-toggle="modal" data-target="#activate-user-@item.Id">Activate</button>
+                            <div class="modal" id="activate-user-@item.Id" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h2 class="modal-title">Cancel</h2>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>Are you sure you want to activate @item.Email?</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn btn-success">Yes, Activate</button>
+                                            <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
                                         </div>
                                     </div>
                                 </div>
-                            </form>
-                        }
+                            </div>
+                        </form>
+                    }
 
 
-                    </td>
+                </td>
 
-                </tr>
+            </tr>
             }
         </tbody>
     </table>
 <script>
-    function myFunction() {
-        var input, filter, cards, cardContainer, title, i;
-        input = document.getElementById("myFilter");
-        filter = input.value.toUpperCase();
-        cardContainer = document.getElementById("myProducts");
-        cards = cardContainer.getElementsByClassName("table");
-        for (i = 0; i < cards.length; i++) {
-            title = cards[i].querySelector(".title");
-            if (title.innerText.toUpperCase().indexOf(filter) > -1) {
-                cards[i].style.display = "";
-            } else {
-                cards[i].style.display = "none";
+    function performSearch() {
+
+        // Declare search string 
+        var filter = searchBox.value.toUpperCase();
+
+        // Loop through first tbody's rows
+        for (var rowI = 0; rowI < trs.length; rowI++) {
+
+            // define the row's cells
+            var tds = trs[rowI].getElementsByTagName("td");
+
+            // hide the row
+            trs[rowI].style.display = "none";
+
+            // loop through row cells
+            for (var cellI = 1; cellI < 3; cellI++) {
+
+                // if there's a match
+                if (tds[cellI].innerHTML.toUpperCase().indexOf(filter) > -1) {
+
+                    // show the row
+                    trs[rowI].style.display = "";
+
+                    // skip to the next row
+                    continue;
+
+                }
             }
         }
+
     }
+
+    // declare elements
+    const searchBox = document.getElementById('searchBox');
+    const table = document.getElementById("myTable");
+    const trs = table.tBodies[0].getElementsByTagName("tr");
+
+    // add event listener to search box
+    searchBox.addEventListener('keyup', performSearch);
 </script>

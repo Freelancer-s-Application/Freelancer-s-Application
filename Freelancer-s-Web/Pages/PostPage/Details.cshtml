@@ -283,7 +283,7 @@
                             	<img src="@Model.LoginUser.Avatar" alt="" class="rounded-circle" id="ava-cmt">
                             </div>
                             <div class="form-group col-xs-12 col-sm-9 col-lg-10">
-                                <textarea asp-for="comment.Content" class="form-control" id="message" placeholder="Your comment"></textarea>
+                                <textarea asp-for="comment.Content" class="form-control" id="message" placeholder="Your comment" required></textarea>
                                 <input asp-for="comment.PostId" value="@Model.Post.Id" type="hidden"/>
                             </div>
                         </div>  	
